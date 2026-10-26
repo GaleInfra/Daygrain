@@ -1,0 +1,14 @@
+{
+  "name": "esf-daygrain",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/cf-run.mjs dev",
+    "deploy": "node scripts/cf-run.mjs deploy",
+    "whoami": "node scripts/cf-run.mjs whoami",
+    "tail": "node scripts/cf-run.mjs tail",
+    "d1:migrate": "node scripts/cf-run.mjs d1-migrate",
+    "bake-h5": "node scripts/cf-run.mjs bake-h5",
+    "deploy-all": "node scripts/cf-run.mjs deploy-all"
+  }
+}

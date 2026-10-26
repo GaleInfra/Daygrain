@@ -1,0 +1,128 @@
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader ->
+        localProperties.load(reader)
+    }
+}
+
+def flutterRoot = localProperties.getProperty('flutter.sdk')
+if (flutterRoot == null) {
+    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+}
+
+def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
+if (flutterVersionCode == null) {
+    flutterVersionCode = '1'
+}
+
+def flutterVersionName = localProperties.getProperty('flutter.versionName')
+if (flutterVersionName == null) {
+    flutterVersionName = '1.0'
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+
+///// 获取渠道参数使用,这里设置一下默认值
+//def dartEnvironmentVariables = [
+//        debug: 'debug',
+//        produce: 'produce',
+//]
+//
+//if (project.hasProperty('dart-defines')) {
+//    println('print dart defines proerty')
+//    dartEnvironmentVariables = dartEnvironmentVariables + project.property('dart-defines')
+//            .split(',')
+//            .collectEntries { entry ->
+//                def pair = new String(entry.decodeBase64(), 'UTF-8').split('=')
+//                println(pair.first()+':'+pair.last())
+//                [(pair.first()): pair.last()]
+//            }
+//}
+
+android {
+    compileSdkVersion 34
+    ndkVersion flutter.ndkVersion
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    signingConfigs {
+        envDebug {
+            storeFile file('bonhub_test.jks')
+            storePassword '123456'
+            keyAlias 'bonhub_test'
+            keyPassword '123456'
+        }
+    }
+
+    defaultConfig {
+        applicationId "com.example.untitled1"
+        minSdkVersion 21
+        targetSdkVersion 34
+        versionCode flutterVersionCode.toInteger()
+        versionName flutterVersionName
+
+        resValue "string", "app_name", "BonHub-Debug"
+        def createTime = new Date().format("yyyyMMddHHmmss", TimeZone.getTimeZone("GMT+8"))
+        setProperty("archivesBaseName", "BonHub_${applicationId}-v${versionName}-${versionCode}-${createTime}")
+
+        ndk {
+            abiFilters "armeabi-v7a" , 'arm64-v8a'
+        }
+    }
+
+//    flavorDimensions 'app'
+//
+//    productFlavors {
+//        envDebug {
+//            dimension "app"
+//            applicationId "com.android.tahc"
+//            resValue "string", "app_name", "ChatHub-Debug"
+//            signingConfig signingConfigs.envDebug
+//        }
+//        envProduce {
+////            dimension "app"
+////            applicationId "com.bobo.happy"
+////            resValue "string", "app_name", "BoBo"
+////            signingConfig signingConfigs.envProduce
+//        }
+//    }
+
+    buildTypes {
+        release {
+            // TODO: Add your own signing config for the release build.
+            // Signing with the debug keys for now, so `flutter run --release` works.
+            signingConfig signingConfigs.envDebug
+            // 启用用混淆 排除融云 im so 文件
+            minifyEnabled true
+            shrinkResources true //移除未使用的资源
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+flutter {
+    source '../..'
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'cn.rongcloud.sdk:im_libcore:5.3.1.1'
+    implementation 'cn.rongcloud.sdk:im_chatroom:5.3.1.1'
+
+    implementation 'com.android.installreferrer:installreferrer:2.2'
+    implementation 'com.appsflyer:af-android-sdk:6.10.3'
+}

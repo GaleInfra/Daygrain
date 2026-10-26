@@ -1,0 +1,25 @@
+{
+    "name": "bon-hub-web",
+    "version": "1.0.0",
+    "description": "Bon Hub 应用的 Web 支持",
+    "main": "index.html",
+    "scripts": {
+      "start": "serve .",
+      "build": "echo '无需构建步骤'",
+      "install:taobao": "npm install --registry=https://registry.npmmirror.com"
+    },
+    "keywords": [
+      "flutter",
+      "web",
+      "融云",
+      "即时通讯"
+    ],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+      "rongcloud-imlib": "^5.4.0"
+    },
+    "devDependencies": {
+      "serve": "^14.2.1"
+    }
+  }

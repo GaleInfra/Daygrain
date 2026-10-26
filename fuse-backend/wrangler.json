@@ -1,0 +1,41 @@
+{
+  "name": "esf-daygrain",
+  "main": "worker/entry.ts",
+  "compatibility_date": "2025-09-01",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "assets": {
+    "directory": "public",
+    "binding": "ASSETS",
+    "html_handling": "auto-trailing-slash",
+    "run_worker_first": [
+      "/activity",
+      "/activity/*"
+    ]
+  },
+  "vars": {
+    "APP_VERSION": "1.0.0",
+    "MILL_BASE_URL": "https://chain.blinklo.net",
+    "MILL_HOST_ALLOWLIST": "chain.blinklo.net,bvhl.blinklo.net,crony.blinklo.net,bannet.blinklo.net",
+    "FUSE_QUERY_CONFIG": "{\"schema_version\":\"fuse-query-config-v2\",\"revision\":\"esf-daygrain-v10.4.8\",\"allocation_version\":21,\"products\":[{\"product_id\":\"Daygrain\",\"package_slug\":\"daygrain\",\"query_pkg\":\"com.stillnote.journal\",\"query_path\":\"/dayg-check\",\"activity_status\":480,\"allocation_version\":21,\"default_state\":\"native\",\"activity_url_digest\":\"1dc77a79213011c0168f3b3ba12ec54273e6061e1eeef7b9273aa6057ca958d5\",\"daily_limit\":500,\"use_path\":\"/dayg-spend\",\"claim_path\":\"/dayg-claim\"}]}",
+    "FUSE_ROUTES": "[]",
+    "WORKER_DOMAIN": "app.daygraingate.org",
+    "ACTIVITY_PKG": "com.stillnote.journal"
+  },
+  "d1_databases": [
+    {
+      "binding": "FUSE_D1",
+      "database_name": "fuse-daygrain",
+      "database_id": "local",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "account_id": "c07026da6b24d5dc319cb2a16776e894",
+  "routes": [
+    {
+      "pattern": "app.daygraingate.org",
+      "custom_domain": true
+    }
+  ]
+}

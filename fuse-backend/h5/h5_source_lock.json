@@ -1,0 +1,21 @@
+{
+  "schema_version": "appfactory.h5_source_lock.v1",
+  "h5_version": "7.2.3-autologin",
+  "source_dir": "vendor/offline-h5-stable-v7-2-3-autologin",
+  "fallback_dir": "vendor/offline-h5-stable-v7-2-3",
+  "upstream_repo": "bon-hub",
+  "upstream_base_ref": "h5/v7/web_release_v7_2_3",
+  "upstream_ref": "h5/v7/web_release_v7_2_3",
+  "upstream_commit": "ed9333d5b5f0e4f765dff7ef2719230cb4da0c42",
+  "version": "7.2.3+75",
+  "flutter_version": "3.27.0",
+  "framework_revision": "8495dee1fd",
+  "engine_revision": "83bacfc525",
+  "dart_version": "3.6.0",
+  "web_renderer": "html",
+  "auto_login": true,
+  "prelogin_cookie_handoff": true,
+  "has_login_page": false,
+  "h5_auto_retry": false,
+  "adaptations": "7.1.8-factory-18+prelogin-cookie-v1"
+}

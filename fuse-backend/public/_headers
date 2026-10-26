@@ -1,0 +1,22 @@
+/activity/*/*/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+/activity/*/*/assets/*/*
+  Cache-Control: public, max-age=31536000, immutable
+/activity/*/*/assets/*/*/*
+  Cache-Control: public, max-age=31536000, immutable
+/activity/*/*/assets/*/*/*/*
+  Cache-Control: public, max-age=31536000, immutable
+/activity/*/*/vendor/*
+  Cache-Control: public, max-age=31536000, immutable
+/activity/*/*/vendor/*/*
+  Cache-Control: public, max-age=31536000, immutable
+/activity/*/*/js/*
+  Cache-Control: public, max-age=31536000, immutable
+/activity/*/*/js/*/*
+  Cache-Control: public, max-age=31536000, immutable
+/activity/*/*/main.dart.js
+  Cache-Control: public, max-age=31536000, immutable
+/activity/*/*/flutter.js
+  Cache-Control: public, max-age=31536000, immutable
+/activity/*/*/flutter_bootstrap.js
+  Cache-Control: public, max-age=31536000, immutable

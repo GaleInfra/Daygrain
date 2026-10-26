@@ -1,0 +1,44 @@
+{
+  "schema_version": "appfactory.fuse_repo_bake_config.v1",
+  "profile": "release",
+  "product": {
+    "query_pkg": "com.stillnote.journal",
+    "query_path": "/dayg-check",
+    "build_id": "live",
+    "activity_status": 480,
+    "package_name": "com.stillnote.journal",
+    "local_scheme": "daygrain-local",
+    "api_host": "https://chain.blinklo.net",
+    "log_url": "https://bannet.blinklo.net",
+    "socket_url": "wss://crony.blinklo.net",
+    "privacy_url": "https://daygrain-test-placeholder.invalid/privacy/",
+    "terms_url": "https://daygrain-test-placeholder.invalid/terms/",
+    "ios_app_id": "6826098188",
+    "app_version": "1.0.0",
+    "keys": [
+      "stillnote",
+      "fieldbook",
+      "daygrain",
+      "sensory"
+    ],
+    "broadcaster_env": "prod",
+    "device_parameter": "dayg_device"
+  },
+  "native": {
+    "query_retry_seconds": 7.0
+  },
+  "h5": {
+    "pop_host_mode": "page",
+    "version": "7.2.3-autologin"
+  },
+  "worker": {
+    "name": "esf-daygrain",
+    "wrangler_file": "wrangler.json",
+    "assets_dir": "public",
+    "page_available": false,
+    "mill_risk_enabled": true,
+    "mill_base_url": "https://chain.blinklo.net",
+    "mill_package": "com.stillnote.journal",
+    "d1_name": "fuse-daygrain"
+  }
+}

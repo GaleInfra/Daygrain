@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!--
+      If you are serving your web app in a path other than the root, change the
+      href value below to reflect the base path you are serving from.
+
+      The path provided below has to start and end with a slash "/" in order for
+      it to work correctly.
+
+      For more details:
+      * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+
+      This is a placeholder for base href that will be replaced by the value of
+      the `--base-href` argument provided to `flutter build`.
+    -->
+    <base href="$FLUTTER_BASE_HREF">
+    <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,viewport-fit=cover" name="viewport"/>
+    <meta charset="UTF-8">
+    <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+    <meta name="description" content="Video Chat">
+    <meta name="app-version" content="ttVersion123456"/>
+    <!-- 全屏设置 -->
+    <!-- Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <!-- Access-Control-Allow-Origin -->
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+
+    <!-- iOS meta tags & icons -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Video Chat">
+    
+
+
+    <!-- 允许跨域 -->
+    <meta name="referrer" content="no-referrer">
+    <title>Video Chat</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="preload" href="main.dart.js" as="script">
+
+    <!-- This script adds the flutter initialization JS code -->
+
+   <!-- 自检逻辑脚本 -->
+   <script>
+    // 自检逻辑
+    (() => {
+      // 获取当前版本号
+      const metaVersion = document.querySelector('meta[name="app-version"]').content;
+      
+      // 检查本地存储版本
+      const storageKey = 'app_version';
+      const storedVersion = localStorage.getItem(storageKey);
+      
+      // TODO 将console.log改成调用WebLog
+      console.log("[版本检查] 当前版本: " + metaVersion + ", 存储版本: " + storedVersion);
+      
+      if (storedVersion !== metaVersion) {
+        console.log("[版本检查] 版本不一致，静默更新并清理旧缓存");
+        localStorage.setItem(storageKey, metaVersion);
+        if ('caches' in window) {
+          caches.keys().then(cacheNames => {
+            cacheNames.forEach(cacheName => caches.delete(cacheName));
+          });
+        }
+      } else {
+        console.log("[版本检查] 版本一致，无需刷新");
+      }
+    })();
+    </script>
+
+    <script>
+      (function () {
+        try {
+          var origins = JSON.parse(localStorage.getItem('fuse_preconnect_origins') || '[]');
+          origins.slice(0, 4).forEach(function (origin) {
+            if (typeof origin !== 'string' || origin.indexOf('https://') !== 0) return;
+            var link = document.createElement('link');
+            link.rel = 'preconnect';
+            link.href = origin;
+            link.crossOrigin = 'anonymous';
+            document.head.appendChild(link);
+          });
+        } catch (e) {}
+      })();
+    </script>
+    <script>
+      window.__ensureAgoraLoaded = function () {
+        if (window.__agoraPromise) return window.__agoraPromise;
+        window.__agoraPromise = new Promise(function (resolve, reject) {
+          var script = document.createElement('script');
+          script.src = './js/AgoraRTC_N-4.22.1.js';
+          script.onload = function () { resolve(window.AgoraRTC); };
+          script.onerror = function () { reject(new Error('agora_load_failed')); };
+          document.head.appendChild(script);
+        });
+        return window.__agoraPromise;
+      };
+      window.addEventListener('load', function () {
+        setTimeout(function () {
+          var warm = function () { window.__ensureAgoraLoaded().catch(function () {}); };
+          if (window.requestIdleCallback) window.requestIdleCallback(warm, { timeout: 5000 });
+          else warm();
+        }, 3000);
+      });
+    </script>
+    <script defer src="./js/RongIMLib-5.7.10.prod.js" onerror="loadFallbackRongIMLib('https://cdn.ronghub.com/RongIMLib-5.7.10.prod.js')"></script>
+    <script>
+      function loadFallbackRongIMLib(src) {
+        const script = document.createElement('script');
+        script.src = src;
+        document.head.appendChild(script);
+        console.error('主脚本加载失败，已加载备用脚本');
+      }
+    </script>
+    <script defer src="./js/rc_manager.js"></script>
+    <!-- <script src="./lib/index.min.js"></script> -->
+
+    <!-- css -->
+    <style>
+     #body {
+        --sat: env(safe-area-inset-top);
+        --sar: env(safe-area-inset-right);
+        --sab: env(safe-area-inset-bottom);
+        --sal: env(safe-area-inset-left);
+        background-color: #2C2B29;
+        overscroll-behavior: contain;
+    }
+    </style>
+
+    <script>
+      window.isInited = false;
+      window.messageHandleKeys = new Array();
+      window.propertysKeys = new Array();
+      window.appEventKeys = new Array();
+      window.eventKeys = new Array();
+      window.my_log_header = {};
+      window.waitHandleAppEvent = null;
+      (function () {
+        function read(params, names) {
+          for (var i = 0; i < names.length; i++) {
+            var value = params && params.get(names[i]);
+            if (value) return value;
+          }
+          return '';
+        }
+        var search = new URLSearchParams(location.search);
+        var hash = location.hash || '';
+        var mark = hash.indexOf('?');
+        var hashParams = mark >= 0 ? new URLSearchParams(hash.slice(mark + 1)) : null;
+        var scheme = read(search, ['scheme', 'localScheme']) || read(hashParams, ['scheme', 'localScheme']) || window.__FUSE_LOCAL_SCHEME__ || '';
+        var entryDevice = read(search, ['device', 'device-id', 'glim_device']) || read(hashParams, ['device', 'device-id', 'glim_device']) || '';
+        if (entryDevice) {
+          window.__FUSE_ENTRY_DEVICE_ID__ = entryDevice;
+          try { sessionStorage.setItem('h5_activity_device', entryDevice); } catch (e) {}
+        } else {
+          try { window.__FUSE_ENTRY_DEVICE_ID__ = sessionStorage.getItem('h5_activity_device') || ''; } catch (e) {}
+        }
+        if (!scheme) return;
+        window.__FUSE_LOCAL_SCHEME__ = scheme;
+        if (!window.__FUSE_PRIMARY_SCHEME__) window.__FUSE_PRIMARY_SCHEME__ = scheme.replace(/-local$/, '');
+        window.messageHandleKeys = ['logout', 'browser', 'reserved', 'pay', 'setting', 'wakelock', 'log', 'reserved', 'recharge'];
+        window.eventKeys = ['event', 'url', 'type', 'bizType'];
+        window.isInited = true;
+      })();
+        function initSDK(mMessageHandleKeys,mPropertysKeys,mAppEventKeys,mEventKeys) {
+          
+          window.messageHandleKeys = JSON.parse(mMessageHandleKeys);
+          window.propertysKeys = JSON.parse(mPropertysKeys);
+          window.appEventKeys = JSON.parse(mAppEventKeys);
+          window.eventKeys = JSON.parse(mEventKeys);
+          window.__FUSE_LEGACY_BRIDGE__ = true;
+          window.isInited = true;
+          if(window.waitHandleAppEvent != null){
+            const [e, t] = window.waitHandleAppEvent;
+            window.waitHandleAppEvent = null;
+            window.onAppEvent(e, t);
+          }
+        }
+        //声明类型
+        window.onAppEvent = function(e, t) {
+          if(!window.isInited){
+            window.waitHandleAppEvent = [e, t];
+            return;
+          } 
+          if(e == window.appEventKeys[1]) {
+            //支付成功
+            if(waitPayCallBack != null ) {
+            
+              waitPayCallBack.onSuccess(""+t);
+
+            }
+
+          }else if(e == window.appEventKeys[0]) {
+            //支付失败
+            if(waitPayCallBack  != null) {
+              waitPayCallBack.onError(-1);
+            }
+          }else if(e == window.appEventKeys[2]){
+            try {
+              onLifecycleState(t);
+            } catch (error) {
+              
+            }
+          }else if(e == window.appEventKeys[3]){
+            var header = JSON.parse(t);
+            window.my_log_header = header;
+            try {
+              update_my_log_header(header);
+            } catch (error) {
+              
+            }
+          }else if(e == window.appEventKeys[4]){
+            onKeyBoardShow(t);
+          }else if(e == window.appEventKeys[5]){
+            onKeyBoardHide("");
+          } else if(e == window.appEventKeys[6]){
+            onGetRecharge("");
+          }else if(e == window.appEventKeys[7]){
+            
+            if(waitSelectImageCallBack  != null) {
+              waitSelectImageCallBack.onSuccess(""+t)
+            }
+          }
+          
+          // else if(e == "my_tip_remind") {
+          //   onGetRemind(""+t);
+          // }else if(e == "my_show_alter_remind") {
+          //   onShowNoticeAlter("");
+          // }
+
+        }
+
+
+        function get_update_my_log_header(callback) {
+          callback.onSuccess(window.my_log_header);
+        }
+
+
+        function localPrivacyScheme() {
+          var fromWindow = window.__APP_LOCAL_SCHEME__ || '';
+          var fromBaked = window.__FUSE_LOCAL_SCHEME__ || '';
+          var scheme = String(fromWindow || fromBaked || '').trim();
+          if (!scheme) return '';
+          return scheme.endsWith('-local') ? scheme : scheme + '-local';
+        }
+        function toHttpsPayUrl(raw) {
+          if (typeof raw !== 'string' || !raw) return '';
+          try {
+            var parsed = new URL(raw);
+            if (parsed.protocol !== 'https:') return '';
+            return parsed.toString();
+          } catch (e) {
+            return '';
+          }
+        }
+        function openOutside(raw) {
+          var safe = toHttpsPayUrl(raw);
+          var local = localPrivacyScheme();
+          if (!safe || !local) return false;
+          window.open(local + '://browser?url=' + encodeURIComponent(safe), '_blank', 'noopener,noreferrer');
+          return true;
+        }
+        function openInside(raw) {
+          var safe = toHttpsPayUrl(raw);
+          var local = localPrivacyScheme();
+          if (!safe || !local) return false;
+          window.open(local + '://page?url=' + encodeURIComponent(safe), '_blank', 'noopener,noreferrer');
+          return true;
+        }
+        document.addEventListener('visibilitychange', function () {
+          if (document.visibilityState === 'visible' && typeof window.__fusePayResume === 'function') {
+            window.__fusePayResume('');
+          }
+        });
+        // App lifecycle for the Flutter app (my_app.dart listens on window.onLifecycleState).
+        // Hosts never send appEventKeys[2], so page visibility drives online/offline. Same state is never sent twice,
+        // so the host's synthetic visibilitychange on didBecomeActive does not repeat 'resumed'.
+        (function () {
+          var lastLifecycle = document.visibilityState === 'hidden' ? 'paused' : 'resumed';
+          function emitLifecycle(state) {
+            if (state === lastLifecycle || typeof window.onLifecycleState !== 'function') return;
+            lastLifecycle = state;
+            try { window.onLifecycleState(state); } catch (e) {}
+          }
+          window.__fuseLifecycleEmit = emitLifecycle;
+          document.addEventListener('visibilitychange', function () {
+            emitLifecycle(document.visibilityState === 'hidden' ? 'paused' : 'resumed');
+          });
+          window.addEventListener('pagehide', function () { emitLifecycle('paused'); });
+        })();
+        function openActivityLegal(doc) {
+          var local = localPrivacyScheme();
+          if (!local || ['privacy', 'terms', 'support'].indexOf(doc) < 0) return false;
+          window.open(local + '://page?doc=' + doc, '_blank', 'noopener,noreferrer');
+          return true;
+        }
+        function legalDocFor(raw) {
+          var text = String(raw || '').toLowerCase();
+          if (!text) return '';
+          if (text.indexOf('privacy') >= 0) return 'privacy';
+          if (text.indexOf('term') >= 0) return 'terms';
+          if (text.indexOf('support') >= 0) return 'support';
+          return '';
+        }
+        function openPop(raw) {
+          var safe = toHttpsPayUrl(raw);
+          var local = localPrivacyScheme();
+          if (!safe || !local) return false;
+          var host = window.__FUSE_POP_HOST_MODE__ === 'page' ? 'page' : 'pop';
+          window.open(local + '://' + host + '?url=' + encodeURIComponent(safe) + '&close=1', '_blank', 'noopener,noreferrer');
+          return true;
+        }
+        function openNativeBrowser(url, type, bizType) {
+          if (Number(type) === 0) return openInside(url) || openActivityLegal(legalDocFor(url)) || false;
+          return openOutside(url) || false;
+        }
+
+        function my_browser(url,type,bizType) {
+          if (window.__FUSE_LEGACY_BRIDGE__ !== true && openNativeBrowser(url, type, bizType)) return;
+          const k1 = window.eventKeys[1];
+          const k2 = window.eventKeys[2];
+          const k3 = window.eventKeys[3];
+          sendEvent(window.messageHandleKeys[1],{
+            [k1]: url,
+            [k2]: type,
+            [k3]: bizType,
+          })
+        }
+
+
+        var waitPayCallBack = null;
+        function my_log_p( goodsCode, source, entry,callback){
+          waitPayCallBack = callback;
+
+          const k1 = window.eventKeys[1];
+          const k2 = window.eventKeys[2];
+          const k3 = window.eventKeys[3];
+          sendEvent(window.messageHandleKeys[3],{
+            [k1]: goodsCode,
+            [k2]: source,
+            [k3]: entry,
+          })
+        }
+
+        function sendEvent(event,data) {
+          if(!window.isInited) return;
+          var key1 = window.eventKeys[0];
+          var params = {
+            [key1]:event
+          }
+          if(data != null){
+           // 遍历数组
+            for (var key in data) {
+              params[key] = data[key];
+            }
+          }
+          if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.event) {
+            window.webkit.messageHandlers.event.postMessage(params);
+          } else if (window.flutter_inappwebview && window.flutter_inappwebview.callHandler) {
+            window.flutter_inappwebview.callHandler("event", params);
+          }
+        }
+
+        function hasNativePayBridge() {
+          var mode = String(window.__FUSE_COMMERCE_MODE__ || '');
+          if (mode.indexOf('h5_iap') === 0) return true;
+          var handler = !!(window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.event)
+            || !!(window.flutter_inappwebview && window.flutter_inappwebview.callHandler);
+          return window.__FUSE_LEGACY_BRIDGE__ === true && handler && typeof window.my_log_p === 'function';
+        }
+
+    
+        //退出登录
+        function my_log_out() {
+          sendEvent(window.messageHandleKeys[0],null);
+        }
+
+        //获取是否是充值用户
+        function my_log_recharge(recharge) {
+          const k1 = window.eventKeys[1];
+          sendEvent(window.messageHandleKeys[8],{
+            [k1]: recharge
+          });
+          // window.webkit.messageHandlers.my_load_recharge.postMessage(recharge);
+        }
+
+        //my_log_setting_o
+        // 赋值而不是 function 声明。声明会用 DefineProperty 盖掉原生 documentStart
+        // 注入的 getter/setter。有 setter 时这次赋值走进包装；没有包装时再调用先前的函数。
+        var __fuseMyLogSettingPrior = null;
+        var __fuseMyLogSettingWrapped = false;
+        try {
+          var __fuseMyLogSettingDesc = Object.getOwnPropertyDescriptor(window, 'my_log_setting');
+          __fuseMyLogSettingWrapped = !!(__fuseMyLogSettingDesc && typeof __fuseMyLogSettingDesc.set === 'function');
+          if (typeof window.my_log_setting === 'function') {
+            __fuseMyLogSettingPrior = window.my_log_setting;
+          }
+        } catch (e) {}
+        window.my_log_setting = function () {
+          try {
+            if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.mediaCapture) {
+              window.webkit.messageHandlers.mediaCapture.postMessage({kind: 'settings'});
+            }
+          } catch (e) {}
+          try {
+            if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.event) {
+              window.webkit.messageHandlers.event.postMessage({kind: 'settings'});
+            }
+          } catch (e) {}
+          var scheme = String(window.__FUSE_PRIMARY_SCHEME__ || '').trim();
+          if (scheme) {
+            window.open(scheme + '://settings', '_blank', 'noopener,noreferrer');
+          }
+          sendEvent(window.messageHandleKeys[4],null);
+          if (!__fuseMyLogSettingWrapped && typeof __fuseMyLogSettingPrior === 'function' && __fuseMyLogSettingPrior !== window.my_log_setting) {
+            try { return __fuseMyLogSettingPrior.apply(this, arguments); } catch (e2) {}
+          }
+        };
+
+        //my_log_wakelock_o
+        function my_log_wakelock(isLock) {
+          const k1 = window.eventKeys[1];
+          sendEvent(window.messageHandleKeys[5],{
+            [k1]: isLock+""
+          });
+        }
+        //my_log_o
+        function my_log(price,currency) {
+          const k1 = window.eventKeys[1];
+          const k2 = window.eventKeys[2];
+          sendEvent(window.messageHandleKeys[2],{
+            [k1]: price,
+            [k2]: currency,
+          })
+
+        }
+
+
+        //关闭Loading
+        function dismissLoading() {
+          sendEvent(window.messageHandleKeys[7],null);
+        }
+
+        //修改原生储存的token
+        function setId_token(token) {
+          const k1 = window.eventKeys[1];
+          sendEvent(window.messageHandleKeys[6],{
+            [k1]: token,
+          });
+        }
+
+        //更新策略
+        function updateStrategy(model){
+          const k1 = window.eventKeys[1];
+          sendEvent(window.messageHandleKeys[9],{
+            [k1]: model,
+          });
+        }
+
+        var waitSelectImageCallBack = null
+        //选择图片
+        function selectImage(callback){
+          waitSelectImageCallBack = callback
+          sendEvent(window.messageHandleKeys[10],null);
+        }
+
+
+
+
+
+        //
+
+          let rtc = {
+            localAudioTrack: null,
+            localVideoTrack: null,
+            client: null,
+            createPromise: null,
+            isHaseLocalTrack: false,
+            isJoined: false,
+          };
+        function renderRemoteVideo(remoteVideoTrack, retryCount) {
+          if (!remoteVideoTrack || rtc.client == null) return;
+          var count = typeof retryCount === 'number' ? retryCount : 0;
+          var iframe = document.getElementById('remoteVideoFrame');
+          var iframeDocument = iframe && (iframe.contentDocument || (iframe.contentWindow && iframe.contentWindow.document));
+          var remotePlayerContainer = iframeDocument && iframeDocument.getElementById('remote-player-container');
+          if (!remotePlayerContainer) {
+            if (rtc.client != null && count < 30) {
+              setTimeout(function () {
+                renderRemoteVideo(remoteVideoTrack, count + 1);
+              }, 200);
+            }
+            return;
+          }
+          try {
+            remoteVideoTrack.play(remotePlayerContainer);
+          } catch (error) {
+            console.log(error);
+          }
+        }
+        async function createClient()  {
+          var task = (async function () {
+          if (typeof window.__ensureAgoraLoaded === 'function') {
+            await window.__ensureAgoraLoaded();
+          }
+          // try {
+          //   // 开启日志上传功能
+          //   AgoraRTC.enableLogUpload();
+          //   // 将日志输出级别设置为 INFO
+          //   AgoraRTC.setLogLevel(1);
+          // } catch (error) {
+            
+          // }
+
+
+          rtc.isHaseLocalTrack = false;
+          rtc.isJoined = false;
+          //初始化置空
+          if(rtc.client!= null){
+            try {
+              await rtc.client.leave();
+            } catch (error) { }
+            rtc.client = null;
+          }
+          if(rtc.localVideoTrack!= null){
+            try {
+              rtc.localVideoTrack.close();
+            } catch (error) {
+              
+            }
+            rtc.localVideoTrack = null;
+          }
+          if(rtc.localAudioTrack!= null){
+            try {
+              rtc.localAudioTrack.close();
+            } catch (error) {
+              
+            }
+            rtc.localAudioTrack = null;
+          }
+
+
+            rtc.client = AgoraRTC.createClient({ mode: 'rtc', codec: 'h264' });
+            //监听加入频道事件
+            rtc.client.on('user-left', function (user,r) {
+              userLeft(user._uintid,r)
+            });
+
+            rtc.client.on('user-joined', function (user) {
+              userJoined(user._uintid)
+            });
+
+            rtc.client.on("connection-state-change", function (curState,revState,reason) {
+              if(curState == "CONNECTED"){
+                myJoined(rtc.client._joinInfo.uid)
+                if(!rtc.isJoined){
+                  rtc.isJoined = true;
+                  if(rtc.isHaseLocalTrack){
+                    startPushStream();
+                  }
+                }
+              }
+            });
+            
+
+
+            // Listen for the "user-published" event, from which you can get an AgoraRTCRemoteUser object.
+          rtc.client.on("user-published", async (user, mediaType) => {
+              // Subscribe to the remote user when the SDK triggers the "user-published" event
+              await rtc.client.subscribe(user, mediaType);
+              console.log("subscribe success");
+
+              // If the remote user publishes a video track.
+              if (mediaType === "video") {
+                  // Get the RemoteVideoTrack object in the AgoraRTCRemoteUser object.
+                  const remoteVideoTrack = user.videoTrack;
+
+                  remoteVideoTrack.on("first-frame-decoded", function(state,reason) {
+                    onFirstFrameDecoded();
+                  });
+
+                  renderRemoteVideo(remoteVideoTrack, 0);
+              }
+
+              // If the remote user publishes an audio track.
+              if (mediaType === "audio") {
+                  // Get the RemoteAudioTrack object in the AgoraRTCRemoteUser object.
+                  const remoteAudioTrack = user.audioTrack;
+                  // Play the remote audio track. No need to pass any DOM element.
+                  remoteAudioTrack.play();
+              }
+
+              // Listen for the "user-unpublished" event
+              rtc.client.on("user-unpublished", user => {
+
+              });
+          });
+          rtc.client.on("exception", function (event) {
+            console.log("exception code: " + event.code + ", msg: " + event.msg + ", uid: " + event.uid);
+            if(event.code == 1003){
+                //回调原生
+                rtcSendVideoBitrateTooLow();
+            }
+          });
+          initLocalTrack();
+          })();
+          rtc.createPromise = task;
+          return await task;
+          }
+          var localPlayerContainer = null;
+          //加入频道
+          async function joinChannel(appid,channel,token,account) {
+            if (rtc.createPromise) {
+              try {
+                await rtc.createPromise;
+              } catch (error) {
+                console.log(error);
+              }
+            } else if (rtc.client == null) {
+              await createClient();
+            }
+            try {
+              AgoraRTC.setParameter("ENABLE_AUT_CC", true)
+            } catch (error) {
+              console.log(error);
+              // return;
+            }
+              try {
+              AgoraRTC.setParameter("ENABLE_PRE_SUB", true)
+            } catch (error) {
+              console.log(error);
+              // return;
+            }
+            // Join an RTC channel.
+            try {
+              await rtc.client.join(appid, channel, token, account);
+            } catch (error) {
+              console.log(error);
+            }
+            // startPushStream();
+            
+          }
+          //执行渲染
+          async function renderLocalVideo() {
+           if(rtc.isHaseLocalTrack || rtc.client == null) return;
+            var iframe = document.getElementById('localVideoFrame');
+            if(iframe == null){
+              //页面初始化失败
+              if(rtc.client != null){
+                //设置1秒后重试
+                setTimeout(()=>{
+                  renderLocalVideo();
+                },1000)
+              }else{
+                //因为已经被释放
+                rtc.isHaseLocalTrack = false;
+              }
+              return;
+            }
+            
+            var iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+            if(iframeDocument == null){
+              //页面初始化失败
+              if(rtc.client!= null){
+                //设置1秒后重试
+                setTimeout(()=>{
+                  renderLocalVideo();
+                },1000)
+              }
+              return;
+            }
+            localPlayerContainer = iframeDocument.getElementById("local-player-container");
+            if(localPlayerContainer == null){
+              //页面初始化失败
+              if(rtc.client!= null){
+                //设置1秒后重试
+                setTimeout(()=>{
+                  renderLocalVideo();
+                },1000)
+              }
+              return;
+            }
+      
+
+
+            rtc.isHaseLocalTrack =true;
+             
+            // Create a local video track from the video captured by a camera.
+              console.log("joinChannel"," init localVideoTrack");
+              try {
+                if(rtc.localVideoTrack.isPlaying){
+                    rtc.localVideoTrack.stop();
+                  }
+                  rtc.localVideoTrack.play(localPlayerContainer);
+              } catch (error) {
+                
+              }
+              if(rtc.isJoined){
+                startPushStream();
+              }
+          }
+          //开始推流
+
+          async function startPushStream() {
+            if(rtc.client == null){
+              return;
+            }
+            var tracks = [];
+            if(rtc.localVideoTrack != null){
+                tracks.push(rtc.localVideoTrack);
+            }
+              
+              if(rtc.localAudioTrack!= null){
+                tracks.push(rtc.localAudioTrack);
+              }
+              console.log("joinChannel"," init localVideoTrack end");
+              
+              try {
+                await rtc.client.publish(tracks);
+              } catch (error) {
+                await rtc.client.publish(tracks);
+              }
+          }
+
+
+          //播放页面
+          async function initLocalTrack() {
+            if(rtc.client == null){
+              return;
+            }
+           
+            if(rtc.localVideoTrack == null){
+                  console.log("joinChannel"," init localVideoTrack == null");
+                  const cameraConfig = { facingMode: rtcCameraMode};
+                 try {
+                  rtc.localVideoTrack = await AgoraRTC.createCameraVideoTrack(cameraConfig);
+                 } catch (error) {
+                    console.log(error);
+                 }
+              }
+              if(rtc.localAudioTrack == null){
+                  console.log("joinChannel"," init localAudioTrack == null");
+                 try {
+                  rtc.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+                 } catch (error) {
+                    console.log(error);
+                 }
+              }
+              try {
+                await renderLocalVideo();
+              } catch (error) {
+                
+              }
+          }
+          
+
+          async function moveLocalVideo() {
+            //滑动中，停止渲染
+            if(rtc.localVideoTrack != null && rtc.localVideoTrack.isEnabled){
+              if(rtc.localVideoTrack.isPlaying){
+              rtc.localVideoTrack.stop();
+            }
+            }
+            
+          }
+          async function endMoveLocalVideo() {
+            //滑动结束，重新渲染
+            if( rtc.localVideoTrack != null && rtc.localVideoTrack.isEnabled){
+              if(localPlayerContainer != null && !rtc.localVideoTrack.isPlaying){
+                rtc.localVideoTrack.play(localPlayerContainer);
+              }
+            }
+          }
+          
+          //销毁
+          async function leaveChannel() {
+            //因为已经被释放
+            rtc.isHaseLocalTrack = false;
+             // Destroy the local audio and video tracks.
+             try {
+               if(rtc.localVideoTrack != null){
+                 if(rtc.localVideoTrack.isPlaying){
+                   try {
+                    rtc.localVideoTrack.stop();
+                   } catch (error) {
+                    
+                   }
+                 }
+
+                  localPlayerContainer = null;
+                 rtc.localVideoTrack.close();
+                 rtc.localVideoTrack = null;
+                 
+               }
+             } catch (error) {
+               
+             }
+
+            try {
+              if(rtc.localAudioTrack != null){
+                if(rtc.localAudioTrack.isPlaying){
+                  try {
+                    rtc.localAudioTrack.stop();
+                  } catch (error) {
+
+                  }
+                }
+                rtc.localAudioTrack.close();
+                rtc.localAudioTrack = null;
+              }
+            } catch (error) {
+                
+            }
+           
+               if(rtc.client != null){
+                  try {
+                  await rtc.client.leave();
+                  } catch (error) { }
+                  rtc.client = null;
+               }
+
+          }
+          var rtcCameraMode = "user";
+          // 切换摄像头
+          function onOpenSwitchCamera() {
+            rtcCameraMode = rtcCameraMode == "user" ? "environment" : "user";
+            rtc.localVideoTrack.setDevice({facingMode: rtcCameraMode});
+          }
+
+          function onSwitchCamera() {
+                // 调用 Flutter 依赖的方法，切换摄像头
+                onSwitchCameraFlutter();
+            }
+            window.onSwitchCamera = onSwitchCamera;
+    </script>
+    <!--loading 样式 -->
+  <style type="text/css">
+    .startup-shell { box-sizing: border-box; width: min(100%, 480px); height: 100%; min-height: 100%; margin: auto; padding: max(env(safe-area-inset-top), 47px) 16px max(env(safe-area-inset-bottom), 20px); display: flex; flex-direction: column; gap: 18px; background: #151413; color: #eef1ff; }
+    .startup-header, .startup-tabs { display: flex; align-items: center; justify-content: space-between; }
+    .startup-header { height: 36px; }
+    .startup-block { display: block; background: #343332; border-radius: 8px; width: 64px; height: 12px; }
+    .startup-header .startup-block:first-child { width: 110px; height: 22px; }
+    .startup-header .startup-block:last-child { width: 28px; height: 28px; border-radius: 50%; }
+    .startup-grid { flex: 1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .startup-card { border-radius: 14px; border: 1px solid #302f2e; background: #242322; display: flex; align-items: flex-end; padding: 14px; }
+    .startup-state { min-height: 42px; display: flex; gap: 10px; justify-content: center; align-items: center; }
+    .startup-spinner { width: 16px; height: 16px; border: 2px solid #484746; border-top-color: #2bfbe4; border-radius: 50%; animation: startup-spin .8s linear infinite; }
+    .startup-tabs { height: 40px; justify-content: space-around; }
+    .startup-tabs .startup-block { width: 24px; height: 24px; border-radius: 7px; }
+    #app_splash { position: fixed; inset: 0; z-index: 9999; background: #151413; transition: opacity .2s ease-out; }
+    #app_splash.leaving { opacity: 0; pointer-events: none; }
+    @keyframes startup-spin { to { transform: rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce) { .startup-spinner { animation: none; } }
+  </style>
+</head>
+<body style="--sat: env(safe-area-inset-top); --sar: env(safe-area-inset-right); --sab: env(safe-area-inset-bottom); --sal: env(safe-area-inset-left); background-color: #2C2B29;">
+<!--loading 标签-->
+<div id="app_splash">
+  <div class="startup-shell" aria-busy="true">
+    <div class="startup-header"><span class="startup-block"></span><span class="startup-block"></span></div>
+    <div class="startup-grid">
+      <div class="startup-card"><span class="startup-block"></span></div>
+      <div class="startup-card"><span class="startup-block"></span></div>
+      <div class="startup-card"><span class="startup-block"></span></div>
+      <div class="startup-card"><span class="startup-block"></span></div>
+    </div>
+    <div class="startup-state"><span class="startup-spinner"></span><span>Loading...</span></div>
+    <div class="startup-tabs"><span class="startup-block"></span><span class="startup-block"></span><span class="startup-block"></span><span class="startup-block"></span></div>
+  </div>
+</div>
+<script>
+  window.addEventListener('flutter-first-frame', function () {
+      var splash = document.getElementById("app_splash");
+      if (!splash) return;
+      splash.classList.add('leaving');
+      setTimeout(function () { splash.remove(); }, 220);
+    });
+
+  </script>
+<!-- <script src="flutter_bootstrap.js" async></script> -->
+
+
+<script defer src="main.dart.js"></script>
+<script>
+
+
+window.addEventListener('load', function(ev) {
+
+
+    
+
+  // _flutter.loader.load({
+  // onEntrypointLoaded: async function(engineInitializer) {
+  //   const appRunner = await engineInitializer.initializeEngine({
+  //         useColorEmoji: true
+  //       });
+  //获取css样式
+  try {
+    var cssStyle = getComputedStyle(window.document.querySelector('body'));
+    console.log("---xx>"+cssStyle.getPropertyValue('--sat'));
+    console.log("---xx>"+cssStyle.getPropertyValue('--sar'));
+    console.log("---xx>"+cssStyle.getPropertyValue('--sab'));
+    console.log("---xx>"+cssStyle.getPropertyValue('--sal'));
+    window.sat = cssStyle.getPropertyValue('--sat');
+  
+    window.sab = cssStyle.getPropertyValue('--sab');
+    
+    //兜底 如果都拿不到
+    //判断当前是否iphoneX
+    if(window.sat == null || window.sab == null || window.sat == "0px" || window.sab == "0px") {
+      if(window.screen.height == 812 || window.screen.height == 896) {
+        window.sat = "20px";
+        window.sab = "34px";
+      }else{
+        window.sat = "20px";
+        window.sab = "0px";
+      }
+    }
+
+  } catch (error) {
+    
+  }
+//     await appRunner.runApp();
+//   }
+// });
+    });
+
+
+
+</script>
+
+</body>
+</html>

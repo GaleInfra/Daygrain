@@ -1,0 +1,16 @@
+enum PurchaseEventEnum {
+  create_order,
+  create_order_resp,
+  review_order,
+  review_order_resp,
+  launch_pay,
+  launch_pay_resp,
+  verify_order,
+  verify_order_resp,
+  consume_order,
+  consume_order_resp,
+  refresh_coins,
+  refresh_coins_resp,
+  acknowledged_order,
+  acknowledged_order_resp,
+}

@@ -1,0 +1,46 @@
+{
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "bon-hub",
+            "request": "launch",
+            "type": "dart",
+            "program": "./lib/main.dart",
+            "args": [
+                "-d",
+                "chrome",
+                "--web-renderer=html",
+                "--web-hostname=192.168.110.129",
+                "--web-port=8089", // 指定端口
+                // "--no-launch-browser" // 禁用自动打开浏览器
+            ],
+            "flutterMode": "debug"
+        },
+        {
+            "name": "bon-hub (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile",
+            "program": "./lib/main.dart",
+            "args": [
+                "--web-renderer=canvaskit",
+                "--web-hostname=192.168.0.40",
+                "--web-port=8089", // 指定端口
+            ]
+        },
+        {
+            "name": "bon-hub (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release",
+            "args": [
+                "--web-renderer=html",
+                "--web-hostname=192.168.110.2",
+                "--web-port=8089", // 指定端口
+            ]
+        }
+    ]
+}

@@ -1,0 +1,33 @@
+{
+  "schema": "fuse-deploy-record/v1",
+  "package": "Daygrain",
+  "template_version": "v10.4.8",
+  "template_digest": "ba8d343e72cb5e085246492edd65692ad1f60306a03856afeb4d31c7dc7cd2e3",
+  "config_commit": "74937df3c2e1cf92ab66766134739145e4b5949fef8c205ccda55cfc4004ff86",
+  "legal_digest": "92ced968acff9236927f3ceb8e8802cad80e5e686c214048ce29319af9041962",
+  "config_fingerprint": {
+    "query_path": "/dayg-check",
+    "activity_status": 480,
+    "worker_name": "esf-daygrain"
+  },
+  "artifacts": [
+    "wrangler.json",
+    "query-config.json",
+    "routes.json",
+    "h5-bake.env.json",
+    "migrations/0001_fuse_query.sql",
+    "worker/entry.mjs",
+    "public/activity/com.stillnote.journal/live/bridge.js",
+    "public/activity/com.stillnote.journal/live/adjust-web.js",
+    "public/activity/com.stillnote.journal/live/h5_jump.js",
+    "public/activity/com.stillnote.journal/live/payment.js",
+    "public/activity/com.stillnote.journal/live/event.js",
+    "public/activity/com.stillnote.journal/live/device_param.js",
+    "public/activity/com.stillnote.journal/live/activity-boot.js",
+    "public/activity/com.stillnote.journal/live/index.html"
+  ],
+  "worker_version_id": null,
+  "rollback_id": null,
+  "created_at": "2026-10-26T16:27:18.829Z",
+  "status": "generated_not_deployed"
+}
