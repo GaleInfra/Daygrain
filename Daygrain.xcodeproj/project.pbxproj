@@ -1,0 +1,456 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		073BEA374D258096E211EA9B /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB474F0BCC551A9A1E00ADF1 /* Theme.swift */; };
+		0B3B342DDED15716B2B1DFFB /* EmotionTagsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE9260DCF6483D3912E65D6A /* EmotionTagsView.swift */; };
+		14E757E10349801DAE32AF9F /* AppPrivacy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6ABFCD03E9C62E26CD285E /* AppPrivacy.swift */; };
+		1A85DC1EBB39669DF3D52715 /* EntryEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EFEBB5B81FB52BA7019A922 /* EntryEditorView.swift */; };
+		1B09C682FA8A455169341B26 /* DaygrainApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80AEF07DF608573A691A0341 /* DaygrainApp.swift */; };
+		222F0DBFFE5EB23DCD3FD16F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5B04B2273026590A440D27C9 /* Assets.xcassets */; };
+		2AA3F64B4693BA9ECD250E88 /* WorkflowModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D7CD73383E167FCCBAF496 /* WorkflowModels.swift */; };
+		3484FEB79BE7447EF2073C7E /* JournalStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A572C99D8C8CFDF4DE95B247 /* JournalStore.swift */; };
+		364F0AF5F4AF9E66FC9A6E46 /* EntryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8AFE846D2BEEE66D2BA8876 /* EntryDetailView.swift */; };
+		372EF9BE0EE5D50EE88DD320 /* Pods_Daygrain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4893B3D00F09A379284FF3F9 /* Pods_Daygrain.framework */; };
+		39B70FD7BCE22F6FD3A3F3A5 /* ReminderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 563F1757DF4751DE63A32B42 /* ReminderManager.swift */; };
+		45C98824F3FF93EA69177CDF /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = F076EB272487E1DCA3E36BA6 /* Components.swift */; };
+		4C7D1A7A959D8425FC2AC83C /* ReviewAndRevisitViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E39BFD5466D5847911506C /* ReviewAndRevisitViews.swift */; };
+		5A048A5962D239BE0A1D024E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D1FC7E20CAFB535E6B1E9F /* SettingsView.swift */; };
+		5AD1B6066E1529FD1C3CF867 /* FieldbooksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D2DD7E0C1478156E0818B8D /* FieldbooksView.swift */; };
+		65A60F841A7E9762789F5ACC /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA67C53FED405A3F376AAE7B /* TodayView.swift */; };
+		9AB9D87D308F3421001E2500 /* DaygrainScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9AB9D87C308F3421001E2500 /* DaygrainScreen.storyboard */; };
+		A42A690B72CA136CE915489C /* SensoryCompass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB6DA1CC80D011F61E7ACD2 /* SensoryCompass.swift */; };
+		B82BEDC36D3BF4DE8C70150E /* DraftsAndTrashViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D39924CB279D934878918D3 /* DraftsAndTrashViews.swift */; };
+		C29D59E0D9A022EF612D5859 /* PhotoLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE96EA8BD303B82E4A86FA39 /* PhotoLibrary.swift */; };
+		CAF63E89F3BB11CDD7D5E76B /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC8F9B50E0CA5CACE16BB40 /* RootView.swift */; };
+		CEC414AC830AA476549C8307 /* JournalModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1171A1C9F6C1A3708275E5D /* JournalModels.swift */; };
+		D6542D1C09B8730785A999E5 /* JournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A246472750FEE1888639DE6A /* JournalView.swift */; };
+		D8DA8ED7C3215F3F16C30064 /* SavedMomentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18FF833FBF9C1BC63909548B /* SavedMomentView.swift */; };
+		E8CEDBDB41CCDAD800DFFE3C /* InsightsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3D302197291C87B1B6545F /* InsightsView.swift */; };
+		ECEEA0346EA710E5EAA22643 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 28DDF1AF7DBB75E111EE13BE /* PrivacyInfo.xcprivacy */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0D39924CB279D934878918D3 /* DraftsAndTrashViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraftsAndTrashViews.swift; sourceTree = "<group>"; };
+		1507F021100E808DBE2FAA00 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		18FF833FBF9C1BC63909548B /* SavedMomentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedMomentView.swift; sourceTree = "<group>"; };
+		28DDF1AF7DBB75E111EE13BE /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		38A007151ABE87CC01A5B6E9 /* Daygrain.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Daygrain.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3BB6DA1CC80D011F61E7ACD2 /* SensoryCompass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensoryCompass.swift; sourceTree = "<group>"; };
+		3D2DD7E0C1478156E0818B8D /* FieldbooksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldbooksView.swift; sourceTree = "<group>"; };
+		4893B3D00F09A379284FF3F9 /* Pods_Daygrain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Daygrain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		563F1757DF4751DE63A32B42 /* ReminderManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderManager.swift; sourceTree = "<group>"; };
+		5A6ABFCD03E9C62E26CD285E /* AppPrivacy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPrivacy.swift; sourceTree = "<group>"; };
+		5B04B2273026590A440D27C9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		5B3D302197291C87B1B6545F /* InsightsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsightsView.swift; sourceTree = "<group>"; };
+		6CDFF331A9B49D3969181C51 /* Pods-Daygrain.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Daygrain.release.xcconfig"; path = "Target Support Files/Pods-Daygrain/Pods-Daygrain.release.xcconfig"; sourceTree = "<group>"; };
+		6EFEBB5B81FB52BA7019A922 /* EntryEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryEditorView.swift; sourceTree = "<group>"; };
+		7C022D46E2DD7914E0BF10A3 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		80AEF07DF608573A691A0341 /* DaygrainApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaygrainApp.swift; sourceTree = "<group>"; };
+		9AB9D87C308F3421001E2500 /* DaygrainScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DaygrainScreen.storyboard; sourceTree = "<group>"; };
+		9CC8F9B50E0CA5CACE16BB40 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		A246472750FEE1888639DE6A /* JournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalView.swift; sourceTree = "<group>"; };
+		A572C99D8C8CFDF4DE95B247 /* JournalStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalStore.swift; sourceTree = "<group>"; };
+		AA67C53FED405A3F376AAE7B /* TodayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayView.swift; sourceTree = "<group>"; };
+		AE96EA8BD303B82E4A86FA39 /* PhotoLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibrary.swift; sourceTree = "<group>"; };
+		B0D7CD73383E167FCCBAF496 /* WorkflowModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowModels.swift; sourceTree = "<group>"; };
+		B4D1FC7E20CAFB535E6B1E9F /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		DB474F0BCC551A9A1E00ADF1 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		DDE9767E9060341A8FA4FC48 /* Pods-Daygrain.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Daygrain.debug.xcconfig"; path = "Target Support Files/Pods-Daygrain/Pods-Daygrain.debug.xcconfig"; sourceTree = "<group>"; };
+		DE9260DCF6483D3912E65D6A /* EmotionTagsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmotionTagsView.swift; sourceTree = "<group>"; };
+		E8AFE846D2BEEE66D2BA8876 /* EntryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryDetailView.swift; sourceTree = "<group>"; };
+		F076EB272487E1DCA3E36BA6 /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
+		F1171A1C9F6C1A3708275E5D /* JournalModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalModels.swift; sourceTree = "<group>"; };
+		F2E39BFD5466D5847911506C /* ReviewAndRevisitViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewAndRevisitViews.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		7561BFB015D8F536760CB671 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				372EF9BE0EE5D50EE88DD320 /* Pods_Daygrain.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		00C45FD35CB0F9C5F764F070 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				38A007151ABE87CC01A5B6E9 /* Daygrain.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		3A585FA15D66223CDC83266F /* Design */ = {
+			isa = PBXGroup;
+			children = (
+				3BB6DA1CC80D011F61E7ACD2 /* SensoryCompass.swift */,
+				F076EB272487E1DCA3E36BA6 /* Components.swift */,
+				DB474F0BCC551A9A1E00ADF1 /* Theme.swift */,
+			);
+			path = Design;
+			sourceTree = "<group>";
+		};
+		4949E7225CB09DCDC006E784 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				DDE9767E9060341A8FA4FC48 /* Pods-Daygrain.debug.xcconfig */,
+				6CDFF331A9B49D3969181C51 /* Pods-Daygrain.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		58492F208780FA5EF3807E8F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				18FF833FBF9C1BC63909548B /* SavedMomentView.swift */,
+				0D39924CB279D934878918D3 /* DraftsAndTrashViews.swift */,
+				F2E39BFD5466D5847911506C /* ReviewAndRevisitViews.swift */,
+				3D2DD7E0C1478156E0818B8D /* FieldbooksView.swift */,
+				DE9260DCF6483D3912E65D6A /* EmotionTagsView.swift */,
+				E8AFE846D2BEEE66D2BA8876 /* EntryDetailView.swift */,
+				6EFEBB5B81FB52BA7019A922 /* EntryEditorView.swift */,
+				5B3D302197291C87B1B6545F /* InsightsView.swift */,
+				A246472750FEE1888639DE6A /* JournalView.swift */,
+				9CC8F9B50E0CA5CACE16BB40 /* RootView.swift */,
+				B4D1FC7E20CAFB535E6B1E9F /* SettingsView.swift */,
+				AA67C53FED405A3F376AAE7B /* TodayView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		6EE67047A4B2648DDBB08231 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				5A6ABFCD03E9C62E26CD285E /* AppPrivacy.swift */,
+				A572C99D8C8CFDF4DE95B247 /* JournalStore.swift */,
+				AE96EA8BD303B82E4A86FA39 /* PhotoLibrary.swift */,
+				563F1757DF4751DE63A32B42 /* ReminderManager.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		B37F104B5E28EAF99F49ADA1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4893B3D00F09A379284FF3F9 /* Pods_Daygrain.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BF657CFE8769AAE6C0570C29 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B0D7CD73383E167FCCBAF496 /* WorkflowModels.swift */,
+				F1171A1C9F6C1A3708275E5D /* JournalModels.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		CF8D0BD4B75E8C2C174692A5 /* Daygrain */ = {
+			isa = PBXGroup;
+			children = (
+				80AEF07DF608573A691A0341 /* DaygrainApp.swift */,
+				BF657CFE8769AAE6C0570C29 /* Models */,
+				6EE67047A4B2648DDBB08231 /* Services */,
+				3A585FA15D66223CDC83266F /* Design */,
+				58492F208780FA5EF3807E8F /* Views */,
+				5B04B2273026590A440D27C9 /* Assets.xcassets */,
+				1507F021100E808DBE2FAA00 /* Info.plist */,
+				28DDF1AF7DBB75E111EE13BE /* PrivacyInfo.xcprivacy */,
+				9AB9D87C308F3421001E2500 /* DaygrainScreen.storyboard */,
+			);
+			path = Daygrain;
+			sourceTree = "<group>";
+		};
+		DF891E785808226D241F246E = {
+			isa = PBXGroup;
+			children = (
+				CF8D0BD4B75E8C2C174692A5 /* Daygrain */,
+				7C022D46E2DD7914E0BF10A3 /* README.md */,
+				00C45FD35CB0F9C5F764F070 /* Products */,
+				4949E7225CB09DCDC006E784 /* Pods */,
+				B37F104B5E28EAF99F49ADA1 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0E8A3AD980EC179856012B7E /* Daygrain */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D576D6FF5C67D7609A164F70 /* Build configuration list for PBXNativeTarget "Daygrain" */;
+			buildPhases = (
+				C3F87C400960FD167444ADD7 /* [CP] Check Pods Manifest.lock */,
+				BCE16DD0260827ECF338C787 /* Sources */,
+				7561BFB015D8F536760CB671 /* Frameworks */,
+				0189424A5A60FED329FA868E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Daygrain;
+			productName = Daygrain;
+			productReference = 38A007151ABE87CC01A5B6E9 /* Daygrain.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		98F54143AB4E86B28C3AFEE0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					0E8A3AD980EC179856012B7E = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = 1B009C507BCDF4CF637220A9 /* Build configuration list for PBXProject "Daygrain" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = DF891E785808226D241F246E;
+			productRefGroup = 00C45FD35CB0F9C5F764F070 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0E8A3AD980EC179856012B7E /* Daygrain */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0189424A5A60FED329FA868E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				222F0DBFFE5EB23DCD3FD16F /* Assets.xcassets in Resources */,
+				ECEEA0346EA710E5EAA22643 /* PrivacyInfo.xcprivacy in Resources */,
+				9AB9D87D308F3421001E2500 /* DaygrainScreen.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		C3F87C400960FD167444ADD7 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Daygrain-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BCE16DD0260827ECF338C787 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D8DA8ED7C3215F3F16C30064 /* SavedMomentView.swift in Sources */,
+				A42A690B72CA136CE915489C /* SensoryCompass.swift in Sources */,
+				B82BEDC36D3BF4DE8C70150E /* DraftsAndTrashViews.swift in Sources */,
+				4C7D1A7A959D8425FC2AC83C /* ReviewAndRevisitViews.swift in Sources */,
+				5AD1B6066E1529FD1C3CF867 /* FieldbooksView.swift in Sources */,
+				2AA3F64B4693BA9ECD250E88 /* WorkflowModels.swift in Sources */,
+				45C98824F3FF93EA69177CDF /* Components.swift in Sources */,
+				073BEA374D258096E211EA9B /* Theme.swift in Sources */,
+				CEC414AC830AA476549C8307 /* JournalModels.swift in Sources */,
+				14E757E10349801DAE32AF9F /* AppPrivacy.swift in Sources */,
+				3484FEB79BE7447EF2073C7E /* JournalStore.swift in Sources */,
+				C29D59E0D9A022EF612D5859 /* PhotoLibrary.swift in Sources */,
+				39B70FD7BCE22F6FD3A3F3A5 /* ReminderManager.swift in Sources */,
+				1B09C682FA8A455169341B26 /* DaygrainApp.swift in Sources */,
+				0B3B342DDED15716B2B1DFFB /* EmotionTagsView.swift in Sources */,
+				364F0AF5F4AF9E66FC9A6E46 /* EntryDetailView.swift in Sources */,
+				1A85DC1EBB39669DF3D52715 /* EntryEditorView.swift in Sources */,
+				E8CEDBDB41CCDAD800DFFE3C /* InsightsView.swift in Sources */,
+				D6542D1C09B8730785A999E5 /* JournalView.swift in Sources */,
+				CAF63E89F3BB11CDD7D5E76B /* RootView.swift in Sources */,
+				5A048A5962D239BE0A1D024E /* SettingsView.swift in Sources */,
+				65A60F841A7E9762789F5ACC /* TodayView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		5283471FF90C511CFE244FFF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		59E1BEE911F66DA37FEBACDC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DDE9767E9060341A8FA4FC48 /* Pods-Daygrain.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 9SR2Y2NA5T;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Daygrain/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.stillnote.journal;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = journalprofile;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		AB52CB08E0FDF02BF6C67C33 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		F4C425279CD5DDD18FD6DC6D /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6CDFF331A9B49D3969181C51 /* Pods-Daygrain.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 9SR2Y2NA5T;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Daygrain/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.stillnote.journal;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = journalprofile;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1B009C507BCDF4CF637220A9 /* Build configuration list for PBXProject "Daygrain" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AB52CB08E0FDF02BF6C67C33 /* Debug */,
+				5283471FF90C511CFE244FFF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D576D6FF5C67D7609A164F70 /* Build configuration list for PBXNativeTarget "Daygrain" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				59E1BEE911F66DA37FEBACDC /* Debug */,
+				F4C425279CD5DDD18FD6DC6D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 98F54143AB4E86B28C3AFEE0 /* Project object */;
+}

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="clay" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#B36E51"/><stop offset="1" stop-color="#80526A"/></linearGradient>
+    <radialGradient id="wash-color0" gradientUnits="userSpaceOnUse" cx="61.44" cy="40.96" r="983.04"><stop stop-color="#F5C79F" stop-opacity="0.42"/><stop offset="1" stop-color="#F5C79F" stop-opacity="0"/></radialGradient>
+    <radialGradient id="wash-color1" gradientUnits="userSpaceOnUse" cx="1024" cy="81.92" r="839.68"><stop stop-color="#B9C99D" stop-opacity="0.26"/><stop offset="1" stop-color="#B9C99D" stop-opacity="0"/></radialGradient>
+    <radialGradient id="wash-color2" gradientUnits="userSpaceOnUse" cx="81.92" cy="1024" r="921.6"><stop stop-color="#E8CA7B" stop-opacity="0.32"/><stop offset="1" stop-color="#E8CA7B" stop-opacity="0"/></radialGradient>
+    <radialGradient id="wash-color3" gradientUnits="userSpaceOnUse" cx="1024" cy="1024" r="1075.2"><stop stop-color="#B9A3D1" stop-opacity="0.46"/><stop offset="1" stop-color="#B9A3D1" stop-opacity="0"/></radialGradient>
+    <linearGradient id="grain0" gradientUnits="userSpaceOnUse" x1="0" y1="-.355" x2="0" y2="-.035"><stop stop-color="#FBE5AE"/><stop offset="1" stop-color="#E7AF56"/></linearGradient>
+    <linearGradient id="grain1" gradientUnits="userSpaceOnUse" x1="0" y1="-.355" x2="0" y2="-.035"><stop stop-color="#DCE7BA"/><stop offset="1" stop-color="#A0BF8F"/></linearGradient>
+    <linearGradient id="grain2" gradientUnits="userSpaceOnUse" x1="0" y1="-.355" x2="0" y2="-.035"><stop stop-color="#FFDBB7"/><stop offset="1" stop-color="#F1A076"/></linearGradient>
+    <linearGradient id="grain3" gradientUnits="userSpaceOnUse" x1="0" y1="-.355" x2="0" y2="-.035"><stop stop-color="#F4D0D5"/><stop offset="1" stop-color="#E29BAE"/></linearGradient>
+    <linearGradient id="grain4" gradientUnits="userSpaceOnUse" x1="0" y1="-.355" x2="0" y2="-.035"><stop stop-color="#E6D7F4"/><stop offset="1" stop-color="#B49AD7"/></linearGradient>
+  </defs>
+  <path fill="url(#clay)" d="M0 0H1024V1024H0Z"/>
+  <path fill="url(#wash-color0)" d="M0 0H1024V1024H0Z"/>
+  <path fill="url(#wash-color1)" d="M0 0H1024V1024H0Z"/>
+  <path fill="url(#wash-color2)" d="M0 0H1024V1024H0Z"/>
+  <path fill="url(#wash-color3)" d="M0 0H1024V1024H0Z"/>
+  <circle cx="512" cy="512" r="381" fill="none" stroke="#F8EBD5" stroke-opacity=".17" stroke-width="2"/>
+  <g transform="translate(512 512) scale(839.68)">
+    <ellipse cx="0" cy="-0.195" rx="0.095" ry="0.16" transform="rotate(0)" fill="url(#grain0)"/>
+    <ellipse cx="0" cy="-0.195" rx="0.095" ry="0.16" transform="rotate(72)" fill="url(#grain1)"/>
+    <ellipse cx="0" cy="-0.195" rx="0.095" ry="0.16" transform="rotate(144)" fill="url(#grain2)"/>
+    <ellipse cx="0" cy="-0.195" rx="0.095" ry="0.16" transform="rotate(216)" fill="url(#grain3)"/>
+    <ellipse cx="0" cy="-0.195" rx="0.095" ry="0.16" transform="rotate(288)" fill="url(#grain4)"/>
+    <circle r=".04" fill="#DFB77E"/>
+  </g>
+</svg>
