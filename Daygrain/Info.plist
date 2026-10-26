@@ -52,5 +52,21 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>Daygrain uses the camera when the activity page needs a photo.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Daygrain uses the microphone when the activity page needs audio.</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>daygrain</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>daygrain</string>
+				<string>daygrain-local</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>

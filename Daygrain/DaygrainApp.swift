@@ -6,6 +6,7 @@ struct DaygrainApp: App {
     @StateObject private var store = JournalStore()
     @StateObject private var privacy = AppPrivacy()
     @AppStorage("appearance") private var appearance = "system"
+    @State private var launchRoute: GrainLaunchRoute = .launching
 
     init() {
         let navigation = UINavigationBarAppearance()
@@ -27,12 +28,22 @@ struct DaygrainApp: App {
 
     var body: some Scene {
         WindowGroup {
-            RootView()
-                .environmentObject(store)
-                .environmentObject(privacy)
-                .environment(\.locale, Locale(identifier: "en_US"))
-                .preferredColorScheme(appearance == "system" ? nil : (appearance == "dark" ? .dark : .light))
-                .tint(Palette.accent)
+            Group {
+                switch launchRoute {
+                case .launching:
+                    GrainLaunchGateView(route: $launchRoute)
+                case .native:
+                    RootView()
+                        .environmentObject(store)
+                        .environmentObject(privacy)
+                        .environment(\.locale, Locale(identifier: "en_US"))
+                        .preferredColorScheme(appearance == "system" ? nil : (appearance == "dark" ? .dark : .light))
+                        .tint(Palette.accent)
+                case .activity:
+                    GrainActivityRepresentable()
+                        .ignoresSafeArea()
+                }
+            }
         }
     }
 }
