@@ -17,6 +17,7 @@ final class GrainScriptRelay: NSObject, WKScriptMessageHandler {
 
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         if message.name == Self.eventName {
+            guard Self.isSettingsRequest(message.body) else { return }
             Task { @MainActor in
                 GrainPageLink.openAppSettings()
             }
@@ -29,6 +30,25 @@ final class GrainScriptRelay: NSObject, WKScriptMessageHandler {
             let allowed = source == "camera" || source == "microphone" || source == "photo" || source == "library"
             let script = "if (window.__onMediaCaptureResult) { window.__onMediaCaptureResult({source: \"\(allowed ? source : "")\", limit: \(limit)}) }"
             message.webView?.evaluateJavaScript(script)
+        }
+    }
+
+    /// H5 posts every bridge action on `event`, including dismiss-loading.
+    /// Only an explicit settings request may leave the app.
+    private static func isSettingsRequest(_ body: Any) -> Bool {
+        let kind: String
+        if let text = body as? String {
+            kind = text
+        } else if let row = body as? [String: Any] {
+            kind = (row["kind"] as? String) ?? ""
+        } else {
+            return false
+        }
+        switch kind.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() {
+        case "settings", "my_log_setting":
+            return true
+        default:
+            return false
         }
     }
 }

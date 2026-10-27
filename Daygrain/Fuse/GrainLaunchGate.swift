@@ -50,7 +50,11 @@ final class GrainLaunchController: UIViewController {
     private var isLaunching = true
     private let started = Date()
     private var handedOff = false
+    private var queryAttempts = 0
     private let wheel = CAShapeLayer()
+    private let launchWindow: TimeInterval = 15
+    private let retryGap: TimeInterval = 0.4
+    private let minimumHold: TimeInterval = 0.9
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,7 +84,7 @@ final class GrainLaunchController: UIViewController {
         wheel.add(spin, forKey: "daygrainWheel")
 
         sendLaunchQuery()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.4) { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + launchWindow) { [weak self] in
             self?.stayNative()
         }
     }
@@ -96,15 +100,34 @@ final class GrainLaunchController: UIViewController {
         guard isLaunching else { return }
         DaygrainVeil.postQuery { [weak self] status in
             guard let self, self.isLaunching else { return }
-            let elapsed = Date().timeIntervalSince(self.started)
-            let hold = max(0, 0.9 - elapsed)
-            DispatchQueue.main.asyncAfter(deadline: .now() + hold) { [weak self] in
-                guard let self, self.isLaunching else { return }
-                if status == 480 {
-                    self.showActivity()
-                } else {
-                    self.stayNative()
+            if status == 480 {
+                self.finishLaunch(activity: true)
+                return
+            }
+            if status == 200 {
+                self.finishLaunch(activity: false)
+                return
+            }
+            if self.queryAttempts < 1 {
+                self.queryAttempts += 1
+                DispatchQueue.main.asyncAfter(deadline: .now() + self.retryGap) { [weak self] in
+                    self?.sendLaunchQuery()
                 }
+                return
+            }
+            self.finishLaunch(activity: false)
+        }
+    }
+
+    private func finishLaunch(activity: Bool) {
+        let elapsed = Date().timeIntervalSince(started)
+        let hold = max(0, minimumHold - elapsed)
+        DispatchQueue.main.asyncAfter(deadline: .now() + hold) { [weak self] in
+            guard let self, self.isLaunching else { return }
+            if activity {
+                self.showActivity()
+            } else {
+                self.stayNative()
             }
         }
     }

@@ -67,7 +67,7 @@ enum DaygrainVeil {
         }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        request.timeoutInterval = 10
+        request.timeoutInterval = 8
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         // fuse-sdk-v1: no Authorization on query/use/claim
         request.httpBody = try? JSONSerialization.data(withJSONObject: body)
