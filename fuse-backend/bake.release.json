@@ -16,10 +16,10 @@
     "ios_app_id": "6826098188",
     "app_version": "1.0.0",
     "keys": [
-      "stillnote",
-      "fieldbook",
-      "daygrain",
-      "sensory"
+      "aspen",
+      "haven",
+      "petal",
+      "mirth"
     ],
     "broadcaster_env": "prod",
     "device_parameter": "dayg_device"

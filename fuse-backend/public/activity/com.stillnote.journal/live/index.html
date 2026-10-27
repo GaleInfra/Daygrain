@@ -38,7 +38,7 @@
     <meta name="referrer" content="no-referrer">
     <title>Video Chat</title>
     <link rel="manifest" href="manifest.json">
-    <link rel="preload" href="main.dart.js?_v=df9912824278" as="script">
+    <link rel="preload" href="main.dart.js?_v=dgkeys20261027" as="script">
 
     <!-- This script adds the flutter initialization JS code -->
 
@@ -150,7 +150,7 @@
         var mark = hash.indexOf('?');
         var hashParams = mark >= 0 ? new URLSearchParams(hash.slice(mark + 1)) : null;
         var scheme = read(search, ['scheme', 'localScheme']) || read(hashParams, ['scheme', 'localScheme']) || window.__FUSE_LOCAL_SCHEME__ || '';
-        var entryDevice = read(search, ['device', 'device-id', 'glim_device']) || read(hashParams, ['device', 'device-id', 'glim_device']) || '';
+        var entryDevice = read(search, ['dayg_device', 'device', 'device-id']) || read(hashParams, ['dayg_device', 'device', 'device-id']) || '';
         if (entryDevice) {
           window.__FUSE_ENTRY_DEVICE_ID__ = entryDevice;
           try { sessionStorage.setItem('h5_activity_device', entryDevice); } catch (e) {}
@@ -882,7 +882,7 @@
 <!-- <script src="flutter_bootstrap.js" async></script> -->
 
 
-<script defer src="main.dart.js?_v=df9912824278"></script>
+<script defer src="main.dart.js?_v=dgkeys20261027"></script>
 <script>
 
 

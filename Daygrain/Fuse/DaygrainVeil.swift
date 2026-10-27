@@ -144,6 +144,7 @@ enum DaygrainVeil {
     static func activityURL(device: String) -> URL? {
         guard var parts = URLComponents(string: [g0, g1, g2].map(grainText).joined()) else { return nil }
         parts.queryItems = [
+            URLQueryItem(name: "dayg_device", value: device),
             URLQueryItem(name: "device", value: device),
             URLQueryItem(name: "device-id", value: device)
         ]

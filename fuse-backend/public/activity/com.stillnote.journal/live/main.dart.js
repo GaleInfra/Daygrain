@@ -41352,7 +41352,7 @@ b5=$.mJ()
 b6=b5.h(0,"__FUSE_ENTRY_DEVICE_ID__")
 c3=b6==null?null:B.d.e9(J.bD(b6))
 b6=t.s
-c4=A.bLL(c0,A.a(["device","device-id","device-id","glim_device"],b6))
+c4=A.bLL(c0,A.a(["dayg_device","device","device-id","device-id"],b6))
 if(c4==null)c4=c3!=null&&c3.length!==0?c3:null
 if(c4!=null)d=c4
 c5=A.bLL(c0,A.a(["pkg","packageName"],b6))
@@ -41362,7 +41362,7 @@ if(c6!=null)e=c6
 c7=A.bLL(c0,A.a(["scheme","localScheme"],b6))
 if(c7!=null)b5.l(0,"__FUSE_LOCAL_SCHEME__",c7)
 b5=j
-if(b5==null)j=new A.a5_("fieldbook","daygrain","sensory")
+if(b5==null)j=new A.a5_("haven","petal","mirth")
 b5=p
 A.bRZ(b5==null?"https://chain.blinklo.net":b5)
 b5=n

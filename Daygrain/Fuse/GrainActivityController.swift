@@ -77,6 +77,25 @@ final class GrainActivityController: UIViewController, WKNavigationDelegate, WKU
         if paperCover {
             GrainScriptRelay.attach(configuration)
         }
+        if paperCover {
+            let deviceHook = WKUserScript(
+                source: """
+                (function () {
+                  var search = String(location.search || '');
+                  var hash = String(location.hash || '');
+                  var query = search;
+                  var mark = hash.indexOf('?');
+                  if (mark >= 0) query += '&' + hash.slice(mark + 1);
+                  var params = new URLSearchParams(query.charAt(0) === '?' ? query.slice(1) : query);
+                  var id = params.get('dayg_device') || params.get('device-id') || params.get('device') || '';
+                  if (id) window.__FUSE_ENTRY_DEVICE_ID__ = id;
+                })();
+                """,
+                injectionTime: .atDocumentStart,
+                forMainFrameOnly: true
+            )
+            configuration.userContentController.addUserScript(deviceHook)
+        }
         let hook = WKUserScript(
             source: """
             document.addEventListener('click', function (event) {
