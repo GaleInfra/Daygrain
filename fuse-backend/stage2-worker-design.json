@@ -1,0 +1,18 @@
+{
+  "schema_version": "appfactory.stage2_worker_design.v1",
+  "product_id": "Daygrain",
+  "app_name": "Daygrain",
+  "worker": "esf-daygrain",
+  "origin": "https://app.daygraingate.org",
+  "capability_file": "fuse-backend/stage2-app-capability.json",
+  "query_path": "/journal-tally",
+  "envelope_style": "tuple_board",
+  "activity_status": 480,
+  "h5_version": "7.2.3-autologin",
+  "api_capabilities": ["GET /healthz", "POST /journal-tally (entry-read): launch query, activity_status=480 opens universal_activity_url", "POST /save-entry (entry-save)", "POST /restore-entry (entry-restore)", "Mill prelogin + runtime_config/120s handoff to shared D1"],
+  "routes": [
+    {"role": "query", "path": "/journal-tally", "capability_id": "entry-read"},
+    {"role": "use", "path": "/save-entry", "capability_id": "entry-save"},
+    {"role": "claim", "path": "/restore-entry", "capability_id": "entry-restore"}
+  ]
+}

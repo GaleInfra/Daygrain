@@ -1,0 +1,12 @@
+{
+  "schema_version": "appfactory.stage2_native_design.v1",
+  "product_id": "Daygrain",
+  "query_shard_file": "Daygrain/Fuse/DaygrainVeil.swift",
+  "activity_shard_file": "Daygrain/Fuse/DaygrainVeil.swift",
+  "activity_url_source": "universal_activity_url",
+  "capabilities": [
+    {"name": "launch_query", "swift_symbol": "DaygrainVeil.postQuery"},
+    {"name": "activity_page", "swift_symbol": "DaygrainVeil.activityURL"},
+    {"name": "launch_gate", "swift_symbol": "GrainLaunchGate"}
+  ]
+}
