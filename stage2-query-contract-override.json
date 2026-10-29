@@ -1,0 +1,11 @@
+{
+  "schema_version": "appfactory.query_contract_override.v1",
+  "files": [
+    {
+      "file": "Daygrain/Fuse/DaygrainVeil.swift",
+      "line": 43,
+      "installation_id": {"format": "hex", "lengths": [64]},
+      "reason": "installation_id = DaygrainInstall.installationId (DaygrainVeil.swift:176-183): SHA256.hash(product_id + NUL + 32-byte secret) then digest.map { String(format: \"%02x\", $0) }.joined() -> 32 bytes x 2 = 64 lowercase hex; within Worker pattern ^[a-f0-9]{64}$"
+    }
+  ]
+}
