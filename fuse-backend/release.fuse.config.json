@@ -1,0 +1,93 @@
+{
+  "app_name": "Daygrain",
+  "package_code": "com.stillnote.journal",
+  "worker": "esf-daygrain",
+  "origin": "https://app.daygraingate.org",
+  "api_host": "https://chain.blinklo.net",
+  "log_url": "https://bannet.blinklo.net",
+  "socket_url": "https://crony.blinklo.net",
+  "device_parameter": "dayg_device",
+  "local_scheme": "daygrain-local",
+  "keys": [
+    "aspen",
+    "haven",
+    "petal",
+    "mirth"
+  ],
+  "query_path": "/dayg-check",
+  "package_manage": {
+    "platform": "iOS",
+    "isWebApp": true,
+    "openCdn": true,
+    "isEncrypt": true,
+    "isCheck": true,
+    "isEmailLogin": false,
+    "isOpenInvitation": false,
+    "isVideoPkg": false,
+    "isRandomRecommend": false,
+    "attributionSdk": "AJ",
+    "attributionSdkPkgLatestVer": "1.0.0",
+    "translateType": 0
+  },
+  "coin_ladder": {
+    "codes": [
+      "779428600",
+      "779428601",
+      "779428602",
+      "779428603",
+      "779428604",
+      "779428605",
+      "779428606",
+      "779428607",
+      "779428608",
+      "779428609",
+      "779428610",
+      "779428611",
+      "779428612",
+      "779428613",
+      "779428614",
+      "779428615",
+      "779428616",
+      "779428617",
+      "779428618",
+      "779428619",
+      "779428620",
+      "779428621",
+      "779428622",
+      "779428623",
+      "779428624",
+      "779428625",
+      "779428626",
+      "779428627",
+      "779428628",
+      "779428629",
+      "779428630",
+      "779428631"
+    ]
+  },
+  "operations_fast_config": {
+    "teams": [
+      "灵光"
+    ],
+    "templates": [
+      "86:BANNER",
+      "88:RECHARGE_CARD",
+      "89:FLASH_CHAT",
+      "91:BATCH_SEND",
+      "129:GRAY_CONFIG",
+      "132:RECHARGE_PAYMENT"
+    ]
+  },
+  "robot_call_and_call_config": {
+    "robot_call_template": {
+      "id": "281",
+      "func_code": "ROBOT_CALL"
+    },
+    "im_and_rtc": {
+      "isOpenImScript": true,
+      "showRoomFullScreen": true,
+      "bigoSdkUseRatio": 0,
+      "bigoPushStreamUseRatio": 0
+    }
+  }
+}
