@@ -201,8 +201,8 @@ struct VoiceAttachmentsList: View {
     @EnvironmentObject private var store: JournalStore
     let entryID: UUID
     @State private var files: [URL] = []
-    @State private var player: AVAudioPlayer?
-    @State private var playing: URL?
+    @StateObject private var playback = VoicePlayback()
+    private var playing: URL? { playback.playing }
 
     var body: some View {
         Group {
@@ -216,23 +216,68 @@ struct VoiceAttachmentsList: View {
                             }
                             Spacer()
                             Button(role: .destructive) {
-                                if playing == url { player?.stop(); playing = nil }
+                                if playing == url { playback.stop() }
                                 store.deleteAudio(url); reload()
                             } label: { Image(systemName: "trash") }.accessibilityLabel("Delete recording")
                         }.font(.subheadline)
                     }
                 }.surface()
             }
-        }.onAppear(perform: reload)
+        }.onAppear(perform: reload).onDisappear { playback.stop() }
     }
 
     private func reload() { files = store.audioFiles(for: entryID) }
 
     private func toggle(_ url: URL) {
-        if playing == url { player?.stop(); playing = nil; return }
-        try? AVAudioSession.sharedInstance().setCategory(.playback)
-        player = try? AVAudioPlayer(contentsOf: url)
-        player?.play()
-        playing = player == nil ? nil : url
+        if playing == url { playback.stop() } else { playback.play(url) }
+    }
+}
+
+/// Plays one recording; restores the previous AVAudioSession category and
+/// deactivates the session when playback finishes or is stopped.
+@MainActor
+final class VoicePlayback: NSObject, ObservableObject, AVAudioPlayerDelegate {
+    @Published private(set) var playing: URL?
+    private var player: AVAudioPlayer?
+    private var savedCategory: (AVAudioSession.Category, AVAudioSession.Mode, AVAudioSession.CategoryOptions)?
+
+    func play(_ url: URL) {
+        stop()
+        let session = AVAudioSession.sharedInstance()
+        savedCategory = (session.category, session.mode, session.categoryOptions)
+        do {
+            try session.setCategory(.playback)
+            try session.setActive(true)
+            let p = try AVAudioPlayer(contentsOf: url)
+            p.delegate = self
+            guard p.play() else { restoreSession(); return }
+            player = p
+            playing = url
+        } catch {
+            restoreSession()
+        }
+    }
+
+    func stop() {
+        guard player != nil || savedCategory != nil else { return }
+        player?.stop()
+        player = nil
+        playing = nil
+        restoreSession()
+    }
+
+    nonisolated func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        Task { @MainActor in self.stop() }
+    }
+
+    nonisolated func audioPlayerDecodeErrorDidOccur(_ player: AVAudioPlayer, error: Error?) {
+        Task { @MainActor in self.stop() }
+    }
+
+    private func restoreSession() {
+        let session = AVAudioSession.sharedInstance()
+        try? session.setActive(false, options: .notifyOthersOnDeactivation)
+        if let saved = savedCategory { try? session.setCategory(saved.0, mode: saved.1, options: saved.2) }
+        savedCategory = nil
     }
 }

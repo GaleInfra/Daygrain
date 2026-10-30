@@ -24,6 +24,7 @@ struct EntryEditorView: View {
     @State private var showCamera = false
     @State private var cameraDenied = false
     @State private var voiceRevision = 0
+    @State private var sessionAudio: [URL] = []
     private let isEditing: Bool
     private let startWithVoice: Bool
 
@@ -106,7 +107,7 @@ struct EntryEditorView: View {
             .pageBackground().tint(entry.kind.tone.ink)
             .navigationTitle(isEditing ? "Edit note" : "New \(entry.kind.title.lowercased()) note").navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .cancellationAction) { Button("Close") { dismissKeyboard(); if isDirty || hasDraft { showDiscard = true } else { finished = true; dismiss() } } }
+                ToolbarItem(placement: .cancellationAction) { Button("Close") { dismissKeyboard(); if isDirty || hasDraft { showDiscard = true } else { discardSessionAudio(); finished = true; dismiss() } } }
                 ToolbarItem(placement: .confirmationAction) { Button("Save", action: save).font(.subheadline.weight(.semibold)).disabled(!canSave) }
                 ToolbarItem(placement: .primaryAction) {
                     Button { dismissKeyboard(); showVoice = true } label: { Label("Speak", systemImage: "mic") }
@@ -118,7 +119,7 @@ struct EntryEditorView: View {
             .confirmationDialog("Leave this unfinished note?", isPresented: $showDiscard, titleVisibility: .visible) {
                 Button("Keep draft") { if persistDraft() { finished = true; draftTask?.cancel(); dismiss() } }
                 Button("Discard changes", role: .destructive) {
-                    do { try store.deleteDraft(entry.id); finished = true; draftTask?.cancel(); dismiss() }
+                    do { try store.deleteDraft(entry.id); discardSessionAudio(); finished = true; draftTask?.cancel(); dismiss() }
                     catch { self.error = error.localizedDescription }
                 }
                 Button("Keep writing", role: .cancel) {}
@@ -139,7 +140,7 @@ struct EntryEditorView: View {
                     let words = text.trimmingCharacters(in: .whitespacesAndNewlines)
                     if !words.isEmpty { entry.notes = entry.notes.isEmpty ? words : entry.notes + "\n" + words }
                     if let audio = audio {
-                        do { try store.attachAudio(from: audio, to: entry.id); voiceRevision += 1 }
+                        do { sessionAudio.append(try store.attachAudio(from: audio, to: entry.id)); voiceRevision += 1 }
                         catch { self.error = "The recording could not be saved: \(error.localizedDescription)" }
                     }
                     scheduleDraft()
@@ -342,6 +343,12 @@ struct EntryEditorView: View {
                 if cameraDenied { PermissionDeniedNote(message: "Camera access is off. You can still add photos from your library.") }
             }
         }
+    }
+
+    /// Recordings made in this editor session are removed when the user leaves without saving.
+    private func discardSessionAudio() {
+        sessionAudio.forEach { store.deleteAudio($0) }
+        sessionAudio.removeAll()
     }
 
     private func photoButtonLabel(_ title: String, symbol: String, busy: Bool = false) -> some View {
