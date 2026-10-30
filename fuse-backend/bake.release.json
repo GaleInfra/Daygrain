@@ -29,7 +29,8 @@
   },
   "h5": {
     "pop_host_mode": "page",
-    "version": "7.2.3-autologin"
+    "version": "7.2.3-autologin",
+    "universal_activity_url": "https://release.q-fero.com/activity/7.2.3-autologin/0.0.14/"
   },
   "worker": {
     "name": "esf-daygrain",
