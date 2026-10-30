@@ -29,6 +29,7 @@
 		A9B2C14A78B642759D3C14B5 /* GrainLaunchGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85FE00F87AB446A5819712F8 /* GrainLaunchGate.swift */; };
 		B82BEDC36D3BF4DE8C70150E /* DraftsAndTrashViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D39924CB279D934878918D3 /* DraftsAndTrashViews.swift */; };
 		C29D59E0D9A022EF612D5859 /* PhotoLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE96EA8BD303B82E4A86FA39 /* PhotoLibrary.swift */; };
+		D6A1C0DE7F3B4A2E9C5D0B11 /* VoiceJournalRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A1C0DE7F3B4A2E9C5D0B12 /* VoiceJournalRecorder.swift */; };
 		CAF63E89F3BB11CDD7D5E76B /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC8F9B50E0CA5CACE16BB40 /* RootView.swift */; };
 		CD2FBCAB00464A209384156B /* DaygrainVeil.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F31D12D9FE46F09CA81F19 /* DaygrainVeil.swift */; };
 		CDFC4EC8175F491CBD543833 /* GrainPageLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A3D26EAD524876A5C11F15 /* GrainPageLink.swift */; };
@@ -65,6 +66,7 @@
 		A572C99D8C8CFDF4DE95B247 /* JournalStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalStore.swift; sourceTree = "<group>"; };
 		AA67C53FED405A3F376AAE7B /* TodayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayView.swift; sourceTree = "<group>"; };
 		AE96EA8BD303B82E4A86FA39 /* PhotoLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibrary.swift; sourceTree = "<group>"; };
+		D6A1C0DE7F3B4A2E9C5D0B12 /* VoiceJournalRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceJournalRecorder.swift; sourceTree = "<group>"; };
 		B0D7CD73383E167FCCBAF496 /* WorkflowModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowModels.swift; sourceTree = "<group>"; };
 		B4D1FC7E20CAFB535E6B1E9F /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		D7F31D12D9FE46F09CA81F19 /* DaygrainVeil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaygrainVeil.swift; sourceTree = "<group>"; };
@@ -141,6 +143,7 @@
 				5A6ABFCD03E9C62E26CD285E /* AppPrivacy.swift */,
 				A572C99D8C8CFDF4DE95B247 /* JournalStore.swift */,
 				AE96EA8BD303B82E4A86FA39 /* PhotoLibrary.swift */,
+				D6A1C0DE7F3B4A2E9C5D0B12 /* VoiceJournalRecorder.swift */,
 				563F1757DF4751DE63A32B42 /* ReminderManager.swift */,
 			);
 			path = Services;
@@ -315,6 +318,7 @@
 				14E757E10349801DAE32AF9F /* AppPrivacy.swift in Sources */,
 				3484FEB79BE7447EF2073C7E /* JournalStore.swift in Sources */,
 				C29D59E0D9A022EF612D5859 /* PhotoLibrary.swift in Sources */,
+				D6A1C0DE7F3B4A2E9C5D0B11 /* VoiceJournalRecorder.swift in Sources */,
 				39B70FD7BCE22F6FD3A3F3A5 /* ReminderManager.swift in Sources */,
 				1B09C682FA8A455169341B26 /* DaygrainApp.swift in Sources */,
 				0B3B342DDED15716B2B1DFFB /* EmotionTagsView.swift in Sources */,

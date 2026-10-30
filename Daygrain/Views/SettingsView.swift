@@ -146,6 +146,18 @@ struct SettingsView: View {
                 NavigationLink { PrivacyInfoView() } label: {
                     SettingsRow(symbol: "hand.raised", title: "Privacy & local storage", subtitle: "Your journal, in your hands", color: Palette.sage)
                 }.buttonStyle(.plain)
+                Divider()
+                Button { LegalRoute.open(.privacy) } label: {
+                    SettingsRow(symbol: "doc.plaintext", title: "Privacy Policy", subtitle: "How Daygrain handles your data", color: Palette.sage)
+                }.buttonStyle(.plain)
+                Divider()
+                Button { LegalRoute.open(.terms) } label: {
+                    SettingsRow(symbol: "doc.text", title: "Terms", subtitle: "Terms of use", color: Palette.sage)
+                }.buttonStyle(.plain)
+                Divider()
+                Button { LegalRoute.open(.support) } label: {
+                    SettingsRow(symbol: "questionmark.circle", title: "Support", subtitle: "Get help with Daygrain", color: Palette.sage)
+                }.buttonStyle(.plain)
             }.tint(JournalTone.sage.action).surface(tint: Palette.sage)
         }
     }
@@ -253,7 +265,8 @@ struct PrivacyInfoView: View {
                 IconBadge(symbol: "lock.shield", size: 70).frame(maxWidth: .infinity).padding(.vertical, 10)
                 Text("A journal that belongs to you.").font(.system(size: 29, weight: .regular, design: .serif)).foregroundColor(Palette.text)
                 privacyBlock("Stored locally", symbol: "iphone", text: "Notes, photo copies, fieldbooks, reviews, revisit plans, drafts, and Recently Deleted are saved in this app's private storage on your device. Daygrain has no account system, social feed, advertising, analytics, or automatic cloud sync.")
-                privacyBlock("Only the photos you choose", symbol: "photo", text: "Daygrain uses the system photo picker. It receives only the images you select and stores resized copies. Removing a photo from a note does not change your photo library.")
+                privacyBlock("Voice journal stays here", symbol: "mic", text: "Voice journal recordings are saved only in Daygrain's private storage on this iPhone. Transcription uses Apple speech recognition, on device when supported. You can play or delete a recording from its note at any time.")
+                privacyBlock("Only the photos you choose", symbol: "photo", text: "Tapping Recent Photos asks for photo library access. Daygrain then shows thumbnails of your 30 most recent photos on this device, and only the photo you tap is saved to the entry. Nothing is uploaded. The system Photos picker needs no permission and only gives Daygrain the photos you pick. Daygrain stores resized copies of the photos you add, and removing a photo from a note does not change your photo library.")
                 privacyBlock("Your own record", symbol: "chart.bar", text: "Charts count your entries and labels and show the intensity and energy values you entered. All calculations happen on your device.")
                 privacyBlock("Drafts and deleted notes", symbol: "trash", text: "Unfinished notes and their selected photo copies are saved as drafts. Deleted notes stay in Recently Deleted for 30 days before removal while the app is running. You can restore or permanently delete them sooner. Full backups include drafts and Recently Deleted; readable exports include saved notes and reviews.")
                 privacyBlock("An extra layer of privacy", symbol: "lock", text: "App Lock uses your device's authentication. When enabled, your journal locks after the app goes into the background. The app switcher hides your journal's contents. Unlocking takes you back to where you left off.")

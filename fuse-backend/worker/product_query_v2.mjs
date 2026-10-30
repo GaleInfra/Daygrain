@@ -6,6 +6,16 @@
 import { assertQueryPath, functionPathAllowed, isSemanticQueryPath } from "./query_path.mjs";
 import { createMemoryQueryStore, createMemoryRateLimiter } from "./query_store.mjs";
 
+// Slim release query body. 32-hex and 64-hex installation ids are both hex.
+// Unknown keys (for example "app") are ignored. Sablier's pkg + 64-hex
+// installation_id + optional adid + optional device-id body stays valid.
+export const SLIM_QUERY_CONTRACT = {"schema":"slim-release-query-body.v1","installation_id_pattern":"^[a-f0-9]{32}$|^[a-f0-9]{64}$","installation_id_flags":"i","ignore_unknown_fields":true,"known_fields":["pkg","installation_id","adid","device-id"]};
+
+const INSTALLATION_ID = new RegExp(
+  SLIM_QUERY_CONTRACT.installation_id_pattern,
+  SLIM_QUERY_CONTRACT.installation_id_flags,
+);
+
 /**
  * @typedef {{
  *   product_id: string,
@@ -64,8 +74,56 @@ export function parseQueryConfigV2(raw) {
     products.add(p.product_id);
     paths.add(p.query_path);
     statuses.add(p.activity_status);
+    if (p.route_aliases !== undefined) {
+      const aliases = p.route_aliases;
+      if (!aliases || typeof aliases !== "object" || Array.isArray(aliases)) {
+        throw new Error("query_config_invalid");
+      }
+      for (const role of Object.keys(aliases)) {
+        if (!["query", "use", "claim"].includes(role)) throw new Error("query_config_invalid");
+        const list = aliases[role];
+        if (!Array.isArray(list)) throw new Error("query_config_invalid");
+        for (const alias of list) {
+          if (!functionPathAllowed(alias, p.package_slug) || paths.has(alias)) {
+            throw new Error("query_config_invalid");
+          }
+          paths.add(alias);
+        }
+      }
+    }
   }
   return config;
+}
+
+function aliasList(row, role) {
+  const table = row && row.route_aliases;
+  if (!table || typeof table !== "object" || Array.isArray(table)) return [];
+  const paths = table[role];
+  return Array.isArray(paths) ? paths : [];
+}
+
+/**
+ * Canonical path wins. An alias uses the same handler as that role.
+ * @param {string} pathname
+ * @param {QueryProduct[]} products
+ * @returns {{ product: QueryProduct, role: "query"|"use"|"claim" } | null}
+ */
+export function findProductRole(pathname, products) {
+  const roles = ["query", "use", "claim"];
+  const canonical = {
+    query: (row) => row.query_path === pathname,
+    use: (row) => row.use_path && row.use_path === pathname,
+    claim: (row) => row.claim_path && row.claim_path === pathname,
+  };
+  for (const role of roles) {
+    const product = products.find((row) => canonical[role](row));
+    if (product) return { product, role };
+  }
+  for (const role of roles) {
+    const product = products.find((row) => aliasList(row, role).includes(pathname));
+    if (product) return { product, role };
+  }
+  return null;
 }
 
 /** Rate-limit key after token removal — Spec FR-3. */
@@ -114,30 +172,10 @@ export async function handleProductQueryV2(req, product, opts = {}) {
   // Explicitly ignore Bearer — template must not require it.
   void req.headers.get("authorization");
 
-  const limited = await readLimitedBody(req, 4096);
-  if (limited.error) return jsonFail(limited.error, 413);
-  let body;
-  try {
-    const text = new TextDecoder("utf-8", { fatal: true }).decode(limited.bytes);
-    body = JSON.parse(text);
-    if (!body || typeof body !== "object" || Array.isArray(body)) throw new Error();
-    if (Object.keys(body).some((k) => !["pkg", "installation_id", "adid", "device-id"].includes(k))) {
-      throw new Error();
-    }
-  } catch {
-    return jsonFail("invalid_json", 400);
-  }
+  const parsed = await readQueryBody(req);
+  if (parsed.response) return parsed.response;
+  const body = parsed.body;
   if (body.pkg !== product.query_pkg) return jsonFail("product_mismatch", 403);
-  if (typeof body.installation_id !== "string" || !/^[a-f0-9]{64}$/i.test(body.installation_id)) {
-    return jsonFail("installation_id_required", 400);
-  }
-  body.installation_id = body.installation_id.toLowerCase();
-  if (body.adid !== undefined && typeof body.adid !== "string") return jsonFail("invalid_json", 400);
-  if (body["device-id"] !== undefined) {
-    if (typeof body["device-id"] !== "string" || body["device-id"].length > 256) {
-      return jsonFail("device_id_invalid", 400);
-    }
-  }
 
   if (!Number.isSafeInteger(product.daily_limit) || product.daily_limit < 1) {
     return jsonFail("daily_limit_invalid", 503);
@@ -177,7 +215,9 @@ export async function handleProductQueryV2(req, product, opts = {}) {
   }
 
   const day = new Date(now).toISOString().slice(0, 10);
-  const used = await store.incrementDaily(product.product_id, body.installation_id, day, product.daily_limit);
+  const used = typeof store.readDaily === "function"
+    ? await store.readDaily(product.product_id, body.installation_id, day)
+    : 0;
   if (used > product.daily_limit) return jsonFail("daily_limit", 429);
   let open = decision === "activity";
   if (opts.pageAvailable === true) {
@@ -190,7 +230,10 @@ export async function handleProductQueryV2(req, product, opts = {}) {
     open = await opts.shelfOpen({ request: req, body, product }) === true;
   }
   const status = open ? product.activity_status : 200;
-  return jsonOk(quota(product, used, now), status);
+  const pass = typeof store.claimPass === "function"
+    ? await store.claimPass(product.product_id, body.installation_id, day)
+    : 1;
+  return jsonOk(quota(product, used, now, pass), status);
 }
 
 /** Consume one unit on the package use path. No Bearer. */
@@ -207,7 +250,10 @@ export async function handleProductUseV2(req, product, opts = {}) {
   const day = new Date(now).toISOString().slice(0, 10);
   const used = await store.incrementDaily(product.product_id, body.installation_id, day, product.daily_limit);
   if (used > product.daily_limit) return jsonFail("daily_limit", 429);
-  return jsonOk(quota(product, used, now), 200);
+  const pass = typeof store.claimPass === "function"
+    ? await store.claimPass(product.product_id, body.installation_id, day)
+    : 1;
+  return jsonOk(quota(product, used, now, pass), 200);
 }
 
 /** Named claim route. Returns the public quota envelope and does not spend a unit. */
@@ -220,7 +266,25 @@ export async function handleProductClaimV2(req, product, opts = {}) {
   if (body.pkg !== product.query_pkg) return jsonFail("product_mismatch", 403);
   const now = opts.now ?? Date.now();
   if (!Number.isFinite(now)) return jsonFail("query_clock_invalid", 503);
-  return jsonOk(quota(product, 0, now), 200);
+  const store = opts.queryStore ?? createMemoryQueryStore();
+  const day = new Date(now).toISOString().slice(0, 10);
+  if (typeof store.markClaim === "function") await store.markClaim(product.product_id, body.installation_id, day);
+  const used = typeof store.readDaily === "function"
+    ? await store.readDaily(product.product_id, body.installation_id, day)
+    : 0;
+  return jsonOk(quota(product, used, now, 0), 200);
+}
+
+function knownQueryFields(body) {
+  if (!SLIM_QUERY_CONTRACT.ignore_unknown_fields) {
+    const known = new Set(SLIM_QUERY_CONTRACT.known_fields);
+    if (Object.keys(body).some((key) => !known.has(key))) throw new Error("unknown_field");
+  }
+  const picked = {};
+  for (const key of SLIM_QUERY_CONTRACT.known_fields) {
+    if (Object.prototype.hasOwnProperty.call(body, key)) picked[key] = body[key];
+  }
+  return picked;
 }
 
 async function readQueryBody(req) {
@@ -228,12 +292,10 @@ async function readQueryBody(req) {
   if (limited.error) return { response: jsonFail(limited.error, 413) };
   try {
     const text = new TextDecoder("utf-8", { fatal: true }).decode(limited.bytes);
-    const body = JSON.parse(text);
-    if (!body || typeof body !== "object" || Array.isArray(body)) throw new Error();
-    if (Object.keys(body).some((k) => !["pkg", "installation_id", "adid", "device-id"].includes(k))) {
-      throw new Error();
-    }
-    if (typeof body.installation_id !== "string" || !/^[a-f0-9]{64}$/i.test(body.installation_id)) {
+    const parsed = JSON.parse(text);
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) throw new Error();
+    const body = knownQueryFields(parsed);
+    if (typeof body.installation_id !== "string" || !INSTALLATION_ID.test(body.installation_id)) {
       return { response: jsonFail("installation_id_required", 400) };
     }
     body.installation_id = body.installation_id.toLowerCase();
@@ -253,7 +315,8 @@ async function readQueryBody(req) {
  * @param {QueryProduct[]} products
  */
 export function findProductByPath(pathname, products) {
-  return products.find((p) => p.query_path === pathname) ?? null;
+  const matched = findProductRole(pathname, products);
+  return matched && matched.role === "query" ? matched.product : null;
 }
 
 /** Stop reading once the query body passes the byte cap. */
@@ -294,13 +357,16 @@ export async function readLimitedBody(req, max) {
   return { bytes };
 }
 
-function quota(product, used, now) {
+function quota(product, used, now, pass = 1) {
   const date = new Date(now);
-  const resetsAt = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate() + 1)).toISOString();
+  const resetsAt = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate() + 1)).toISOString().replace(".000Z", "Z");
+  const remaining = Math.max(0, product.daily_limit - used);
+  const freeClaim = pass === 0 ? 0 : 1;
   return {
     limit: product.daily_limit,
-    remaining: Math.max(0, product.daily_limit - used),
+    remaining,
     resetsAt,
+    ledger: { pass: freeClaim, left: remaining, cap: product.daily_limit },
   };
 }
 

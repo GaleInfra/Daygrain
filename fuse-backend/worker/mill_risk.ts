@@ -130,13 +130,21 @@ async function postCipher(
   headers: Record<string, string>,
   fetchImpl: typeof fetch,
 ): Promise<string> {
-  const res = await fetchImpl(mill.replace(/\/$/, "") + path, {
+  const url = mill.replace(/\/$/, "") + path;
+  const init: RequestInit = {
     method: "POST",
     headers: { "content-type": "application/json", ...headers },
     body: cipher,
-  });
-  if (!res.ok) return "";
-  return (await res.text()).replace(/[\r\n]/g, "");
+  };
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      const res = await fetchImpl(url, init);
+      if (res.ok) return (await res.text()).replace(/[\r\n]/g, "");
+    } catch {
+      // retry once on network / fetch failure
+    }
+  }
+  return "";
 }
 
 function decodeConfigData(plain: string, keys: MillRiskFace["keys"]): {
@@ -153,9 +161,9 @@ function decodeConfigData(plain: string, keys: MillRiskFace["keys"]): {
   const data = (parsed as { data?: unknown }).data;
   if (!data || typeof data !== "object" || Array.isArray(data)) return { transport: "", appConfig: {} };
   const row = data as Record<string, unknown>;
-  const part2 = typeof row[keys[1]] === "string" ? b64utf8(row[keys[1]] as string) : "";
-  const part3 = typeof row[keys[2]] === "string" ? b64utf8(row[keys[2]] as string) : "";
-  const body = typeof row[keys[3]] === "string" ? b64utf8(row[keys[3]] as string) : "";
+  const part2 = typeof row[keys[1]] === "string" ? b64utf8(row[keys[1]] as string).replace(/[\r\n]/g, "") : "";
+  const part3 = typeof row[keys[2]] === "string" ? b64utf8(row[keys[2]] as string).replace(/[\r\n]/g, "") : "";
+  const body = typeof row[keys[3]] === "string" ? b64utf8(row[keys[3]] as string).replace(/[\r\n]/g, "") : "";
   const dynamic = part2 + part3;
   const size = keySize(dynamic);
   if (!body || !size) return { transport: "", appConfig: {} };

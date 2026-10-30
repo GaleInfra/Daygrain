@@ -20,9 +20,17 @@ struct EntryEditorView: View {
     @State private var finished = false
     @State private var loadedDraft = false
     @State private var savedEntryID: UUID?
+    @State private var showVoice = false
+    @State private var showCamera = false
+    @State private var cameraDenied = false
+    @State private var voiceRevision = 0
+    @State private var sessionAudio: [URL] = []
+    @State private var showRecentPhotos = false
     private let isEditing: Bool
+    private let startWithVoice: Bool
 
-    init(kind: JournalKind, existing: JournalEntry? = nil, initialDate: Date = Date(), seed: JournalEntry? = nil, draft: JournalDraft? = nil) {
+    init(kind: JournalKind, existing: JournalEntry? = nil, initialDate: Date = Date(), seed: JournalEntry? = nil, draft: JournalDraft? = nil, startWithVoice: Bool = false) {
+        self.startWithVoice = startWithVoice
         let initial = draft?.entry ?? existing ?? seed ?? JournalEntry(kind: kind, title: "", date: initialDate)
         _original = State(initialValue: initial)
         isEditing = draft?.isEditingExisting ?? (existing != nil)
@@ -76,6 +84,7 @@ struct EntryEditorView: View {
                         EditorTextArea(placeholder: "Let the moment stay on the page…", text: $entry.notes, minHeight: 125).surface(padding: 14)
                     }
                     photoSection
+                    VoiceAttachmentsList(entryID: entry.id).id(voiceRevision)
                     Toggle(isOn: $entry.isFavorite) {
                         Label("Keep in favorites", systemImage: "bookmark").font(.subheadline.weight(.medium)).foregroundColor(Palette.text)
                     }.tint(JournalTone.honey.action).surface(tint: Palette.gold)
@@ -99,15 +108,19 @@ struct EntryEditorView: View {
             .pageBackground().tint(entry.kind.tone.ink)
             .navigationTitle(isEditing ? "Edit note" : "New \(entry.kind.title.lowercased()) note").navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .cancellationAction) { Button("Close") { dismissKeyboard(); if isDirty || hasDraft { showDiscard = true } else { finished = true; dismiss() } } }
+                ToolbarItem(placement: .cancellationAction) { Button("Close") { dismissKeyboard(); if isDirty || hasDraft { showDiscard = true } else { discardSessionAudio(); finished = true; dismiss() } } }
                 ToolbarItem(placement: .confirmationAction) { Button("Save", action: save).font(.subheadline.weight(.semibold)).disabled(!canSave) }
+                ToolbarItem(placement: .primaryAction) {
+                    Button { dismissKeyboard(); showVoice = true } label: { Label("Speak", systemImage: "mic") }
+                        .accessibilityLabel("Speak a voice journal").disabled(store.isReadOnly)
+                }
                 ToolbarItemGroup(placement: .keyboard) { Spacer(); Button("Done") { dismissKeyboard() } }
             }
             .interactiveDismissDisabled(isDirty || hasDraft || loadingPhotos)
             .confirmationDialog("Leave this unfinished note?", isPresented: $showDiscard, titleVisibility: .visible) {
                 Button("Keep draft") { if persistDraft() { finished = true; draftTask?.cancel(); dismiss() } }
                 Button("Discard changes", role: .destructive) {
-                    do { try store.deleteDraft(entry.id); finished = true; draftTask?.cancel(); dismiss() }
+                    do { try store.deleteDraft(entry.id); discardSessionAudio(); finished = true; draftTask?.cancel(); dismiss() }
                     catch { self.error = error.localizedDescription }
                 }
                 Button("Keep writing", role: .cancel) {}
@@ -123,6 +136,30 @@ struct EntryEditorView: View {
                     if failed > 0 || processed.count < min(images.count, available) { error = "Some photos could not be opened. Please try selecting them again." }
                 }.ignoresSafeArea().interactiveDismissDisabled()
             }
+            .sheet(isPresented: $showVoice) {
+                VoiceJournalSheet { text, audio in
+                    let words = text.trimmingCharacters(in: .whitespacesAndNewlines)
+                    if !words.isEmpty { entry.notes = entry.notes.isEmpty ? words : entry.notes + "\n" + words }
+                    if let audio = audio {
+                        do { sessionAudio.append(try store.attachAudio(from: audio, to: entry.id)); voiceRevision += 1 }
+                        catch { self.error = "The recording could not be saved: \(error.localizedDescription)" }
+                    }
+                    scheduleDraft()
+                }
+            }
+            .fullScreenCover(isPresented: $showCamera) {
+                CameraPicker { image in
+                    showCamera = false
+                    if let image = image, photoCount < 6, let photo = PendingPhoto(image: image) {
+                        pendingPhotos.append(photo); scheduleDraft()
+                    }
+                }.ignoresSafeArea()
+            }
+            .sheet(isPresented: $showRecentPhotos) {
+                RecentPhotosSheet { image in
+                    if photoCount < 6, let photo = PendingPhoto(image: image) { pendingPhotos.append(photo); scheduleDraft() }
+                }
+            }
             .sheet(isPresented: $showTagEditor) { EmotionTagEditor() }
             .sheet(isPresented: $showFieldbookEditor) {
                 FieldbookEditor { book in
@@ -133,6 +170,7 @@ struct EntryEditorView: View {
             .onAppear {
                 guard !loadedDraft else { return }
                 loadedDraft = true
+                if startWithVoice { showVoice = true }
                 if let draft = store.drafts.first(where: { $0.id == entry.id }) {
                     entry = draft.entry
                     selectedSenses = entry.senses.isEmpty ? [.smell] : Set(entry.senses)
@@ -276,7 +314,7 @@ struct EntryEditorView: View {
     private var photoSection: some View {
         VStack(alignment: .leading, spacing: 13) {
             HStack {
-                SectionHeading(title: "A picture of the moment", subtitle: "From your photo library. Up to 6 photos.")
+                SectionHeading(title: "A picture of the moment", subtitle: "Take one now or choose from your library. Up to 6 photos.")
                 Text("\(photoCount)/6").font(.caption.monospacedDigit()).foregroundColor(Palette.secondary)
             }
             if photoCount > 0 {
@@ -292,20 +330,41 @@ struct EntryEditorView: View {
                 }
             }
             if photoCount < 6 {
-                Button {
-                    dismissKeyboard()
-                    loadingPhotos = true
-                    showPhotoPicker = true
-                } label: {
-                    HStack(spacing: 9) {
-                        if loadingPhotos { ProgressView() } else { Image(systemName: "photo.on.rectangle.angled") }
-                        Text(loadingPhotos ? "Opening photos…" : "Add photos")
-                    }.font(.subheadline.weight(.medium)).frame(maxWidth: .infinity).padding(.vertical, 17)
-                        .background(Palette.accent.opacity(0.06)).clipShape(RoundedRectangle(cornerRadius: 15))
-                        .overlay(RoundedRectangle(cornerRadius: 15).stroke(Palette.accent.opacity(0.2), style: StrokeStyle(lineWidth: 1, dash: [5, 4])))
-                }.disabled(loadingPhotos)
+                HStack(spacing: 10) {
+                    if CameraPicker.isAvailable {
+                        Button {
+                            dismissKeyboard()
+                            Task { @MainActor in
+                                if await MediaAccess.camera() == .granted { cameraDenied = false; showCamera = true } else { cameraDenied = true }
+                            }
+                        } label: { photoButtonLabel("Camera", symbol: "camera") }
+                    }
+                    Button {
+                        dismissKeyboard()
+                        loadingPhotos = true
+                        showPhotoPicker = true
+                    } label: { photoButtonLabel(loadingPhotos ? "Opening photos…" : "Photos", symbol: "photo.on.rectangle.angled", busy: loadingPhotos) }
+                        .disabled(loadingPhotos)
+                }
+                Button { dismissKeyboard(); showRecentPhotos = true } label: { photoButtonLabel("Recent Photos", symbol: "clock.arrow.circlepath") }
+                if cameraDenied { PermissionDeniedNote(message: "Camera access is off. You can still add photos from your library.") }
             }
         }
+    }
+
+    /// Recordings made in this editor session are removed when the user leaves without saving.
+    private func discardSessionAudio() {
+        sessionAudio.forEach { store.deleteAudio($0) }
+        sessionAudio.removeAll()
+    }
+
+    private func photoButtonLabel(_ title: String, symbol: String, busy: Bool = false) -> some View {
+        HStack(spacing: 9) {
+            if busy { ProgressView() } else { Image(systemName: symbol) }
+            Text(title)
+        }.font(.subheadline.weight(.medium)).frame(maxWidth: .infinity).padding(.vertical, 17)
+            .background(Palette.accent.opacity(0.06)).clipShape(RoundedRectangle(cornerRadius: 15))
+            .overlay(RoundedRectangle(cornerRadius: 15).stroke(Palette.accent.opacity(0.2), style: StrokeStyle(lineWidth: 1, dash: [5, 4])))
     }
 
     private func photoThumbnail(_ image: UIImage?, remove: @escaping () -> Void) -> some View {

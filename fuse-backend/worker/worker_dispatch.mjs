@@ -1,9 +1,9 @@
 /**
  * Worker dispatch skeleton — exact query_path + declarative routes + healthz.
- * Binding names: FUSE_QUERY_CONFIG, FUSE_D1 (no package-named bindings).
+ * Binding names: FUSE_QUERY_CONFIG, FUSE_D1 (claim/query), FUSE_H5_HANDOFF_D1 (device handoff only).
  */
 
-import { findProductByPath, handleProductClaimV2, handleProductQueryV2, handleProductUseV2, parseQueryConfigV2 } from "./product_query_v2.mjs";
+import { findProductRole, handleProductClaimV2, handleProductQueryV2, handleProductUseV2, parseQueryConfigV2 } from "./product_query_v2.mjs";
 import { isSemanticQueryPath } from "./query_path.mjs";
 import { createD1QueryStore, createD1RateLimiter } from "./d1_query_store.mjs";
 import { createMemoryQueryStore, createMemoryRateLimiter } from "./query_store.mjs";
@@ -15,6 +15,12 @@ const isolateMemory = {
   queryStore: null,
   rateLimiter: null,
 };
+
+function boundQueryD1(env) {
+  // Claim ledger and query_store. Prefer the per-app database. Handoff is a
+  // fallback only when FUSE_D1 is unbound; handoff writes must not use this.
+  return env.FUSE_D1 || env.FUSE_H5_HANDOFF_D1 || null;
+}
 
 function memoryQueryStore() {
   if (!isolateMemory.queryStore) isolateMemory.queryStore = createMemoryQueryStore();
@@ -66,6 +72,9 @@ export async function dispatch(request, env) {
     }
     try {
       const assets = await env.ASSETS.fetch(request);
+      if (assets.status === 304) {
+        return assets;
+      }
       if (assets.status >= 300 && assets.status < 400) {
         if (!activityAssetRedirectAllowed(assets.headers.get("location"), env.WORKER_DOMAIN, pkg)) {
           return json({ ok: false, code: 1, message: "activity_assets_unavailable" }, 503);
@@ -75,7 +84,10 @@ export async function dispatch(request, env) {
       if (pathname.startsWith(`${live}/legal/`) && assets.status === 200) {
         return legalPageResponse(assets);
       }
-      if (assets.status === 200) return assets;
+      if (assets.status === 200) {
+        const cleaned = await stripCloudflareInsights(assets);
+        return cachedActivityResponse(pathname, cleaned);
+      }
       return uncached(assets);
     } catch {
       return json({ ok: false, code: 1, message: "activity_assets_unavailable" }, 503);
@@ -91,17 +103,16 @@ export async function dispatch(request, env) {
       queryConfigBroken = true;
     }
     if (config) {
-      const product = findProductByPath(pathname, config.products);
-      const useProduct = config.products.find((row) => row.use_path && row.use_path === pathname) || null;
-      const claimProduct = config.products.find((row) => row.claim_path && row.claim_path === pathname) || null;
-      const matched = product || useProduct || claimProduct;
-      if (matched) {
-        const queryStore = env.queryStore || (env.FUSE_D1 ? createD1QueryStore(env.FUSE_D1) : memoryQueryStore());
-        const rateLimiter = env.rateLimiter || (env.FUSE_D1 ? createD1RateLimiter(env.FUSE_D1) : memoryRateLimiter());
+      const matchedRole = findProductRole(pathname, config.products);
+      if (matchedRole) {
+        const matched = matchedRole.product;
+        const queryD1 = boundQueryD1(env);
+        const queryStore = env.queryStore || (queryD1 ? createD1QueryStore(queryD1) : memoryQueryStore());
+        const rateLimiter = env.rateLimiter || (queryD1 ? createD1RateLimiter(queryD1) : memoryRateLimiter());
         try {
-          const handler = product
+          const handler = matchedRole.role === "query"
             ? handleProductQueryV2
-            : useProduct
+            : matchedRole.role === "use"
               ? handleProductUseV2
               : handleProductClaimV2;
           return await handler(request, matched, {
@@ -190,6 +201,16 @@ function millClientMessage(error) {
     return message;
   }
   return "mill_unavailable";
+}
+
+async function stripCloudflareInsights(assets) {
+  const type = assets.headers.get("content-type") || "";
+  if (!type.includes("text/html")) return assets;
+  const html = await assets.text();
+  const cleaned = html.replace(/\n?<script\b[^>]*cloudflareinsights\.com\/beacon\.min\.js[^>]*>\s*<\/script>\n?/gi, "\n");
+  const headers = new Headers(assets.headers);
+  headers.delete("content-length");
+  return new Response(cleaned, { status: assets.status, statusText: assets.statusText, headers });
 }
 
 function cachedActivityResponse(pathname, assets) {

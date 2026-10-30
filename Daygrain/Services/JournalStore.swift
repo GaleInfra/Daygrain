@@ -16,6 +16,7 @@ final class JournalStore: ObservableObject {
 
     private let databaseURL: URL
     private let photosURL: URL
+    private let audioURL: URL
     private let imageCache = NSCache<NSString, UIImage>()
     private let encoder: JSONEncoder = {
         let encoder = JSONEncoder()
@@ -30,6 +31,7 @@ final class JournalStore: ObservableObject {
         let root = support.appendingPathComponent("Stillnote", isDirectory: true)
         databaseURL = root.appendingPathComponent("journal.json")
         photosURL = root.appendingPathComponent("Photos", isDirectory: true)
+        audioURL = root.appendingPathComponent("Audio", isDirectory: true)
         imageCache.countLimit = 18
         imageCache.totalCostLimit = 48 * 1_024 * 1_024
         do {
@@ -351,6 +353,31 @@ final class JournalStore: ObservableObject {
         }
         imageCache.setObject(image, forKey: cacheKey, cost: Int(image.size.width * image.size.height * image.scale * image.scale * 4))
         return image
+    }
+
+    // MARK: Voice journal audio (kept in the app sandbox, per entry, deletable)
+    @discardableResult
+    func attachAudio(from temporary: URL, to entryID: UUID) throws -> URL {
+        let folder = audioURL.appendingPathComponent(entryID.uuidString, isDirectory: true)
+        try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+        let target = folder.appendingPathComponent(UUID().uuidString).appendingPathExtension("m4a")
+        try FileManager.default.moveItem(at: temporary, to: target)
+        return target
+    }
+
+    func audioFiles(for entryID: UUID) -> [URL] {
+        let folder = audioURL.appendingPathComponent(entryID.uuidString, isDirectory: true)
+        let files = (try? FileManager.default.contentsOfDirectory(at: folder, includingPropertiesForKeys: [.creationDateKey])) ?? []
+        return files.filter { $0.pathExtension == "m4a" }.sorted {
+            let a = (try? $0.resourceValues(forKeys: [.creationDateKey]).creationDate) ?? .distantPast
+            let b = (try? $1.resourceValues(forKeys: [.creationDateKey]).creationDate) ?? .distantPast
+            return a < b
+        }
+    }
+
+    func deleteAudio(_ url: URL) {
+        guard url.standardizedFileURL.path.hasPrefix(audioURL.standardizedFileURL.path) else { return }
+        try? FileManager.default.removeItem(at: url)
     }
 
     private func photoURL(_ id: String) -> URL { photosURL.appendingPathComponent(id).appendingPathExtension("jpg") }

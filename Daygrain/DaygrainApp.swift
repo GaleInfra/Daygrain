@@ -39,6 +39,7 @@ struct DaygrainApp: App {
                         .environment(\.locale, Locale(identifier: "en_US"))
                         .preferredColorScheme(appearance == "system" ? nil : (appearance == "dark" ? .dark : .light))
                         .tint(Palette.accent)
+                        .onOpenURL { GrainPageLink.consume($0) }
                 case .activity:
                     GrainActivityRepresentable()
                         .ignoresSafeArea()
