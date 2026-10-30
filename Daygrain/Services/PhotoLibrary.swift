@@ -197,3 +197,95 @@ enum MomentCardSaver {
         }
     }
 }
+
+/// "Recent Photos": reads the user's most recent library images (read access requested
+/// on tap only when .notDetermined; .limited counts as allowed) and lets the user pick one.
+@MainActor
+final class RecentPhotosModel: ObservableObject {
+    enum State { case loading, ready, denied }
+    @Published private(set) var state: State = .loading
+    struct Item: Identifiable { let asset: PHAsset; let image: UIImage; var id: String { asset.localIdentifier } }
+    @Published private(set) var thumbnails: [Item] = []
+    private let manager = PHCachingImageManager()
+
+    func load() async {
+        var status = PHPhotoLibrary.authorizationStatus(for: .readWrite)
+        if status == .notDetermined { status = await PHPhotoLibrary.requestAuthorization(for: .readWrite) }
+        guard status == .authorized || status == .limited else { state = .denied; return }
+        let options = PHFetchOptions()
+        options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+        options.fetchLimit = 30
+        let result = PHAsset.fetchAssets(with: .image, options: options)
+        var assets: [PHAsset] = []
+        result.enumerateObjects { asset, _, _ in assets.append(asset) }
+        let request = PHImageRequestOptions()
+        request.deliveryMode = .highQualityFormat
+        request.isNetworkAccessAllowed = true
+        request.isSynchronous = false
+        var items: [Item] = []
+        for asset in assets {
+            if let image = await requestImage(asset, size: CGSize(width: 240, height: 240), contentMode: .aspectFill, options: request) {
+                items.append(Item(asset: asset, image: image))
+            }
+        }
+        thumbnails = items
+        state = .ready
+    }
+
+    func fullImage(_ asset: PHAsset) async -> UIImage? {
+        let request = PHImageRequestOptions()
+        request.deliveryMode = .highQualityFormat
+        request.isNetworkAccessAllowed = true
+        return await requestImage(asset, size: CGSize(width: 1_800, height: 1_800), contentMode: .aspectFit, options: request)
+    }
+
+    private func requestImage(_ asset: PHAsset, size: CGSize, contentMode: PHImageContentMode, options: PHImageRequestOptions) async -> UIImage? {
+        await withCheckedContinuation { cont in
+            manager.requestImage(for: asset, targetSize: size, contentMode: contentMode, options: options) { image, _ in
+                cont.resume(returning: image)
+            }
+        }
+    }
+}
+
+struct RecentPhotosSheet: View {
+    @Environment(\.dismiss) private var dismiss
+    @StateObject private var model = RecentPhotosModel()
+    let onPick: (UIImage) -> Void
+
+    var body: some View {
+        NavigationView {
+            Group {
+                switch model.state {
+                case .loading:
+                    ProgressView().frame(maxWidth: .infinity, maxHeight: .infinity)
+                case .denied:
+                    VStack(spacing: 14) {
+                        Text("Photo library access is off. Allow access in Settings to choose from your recent photos, or use Photos to pick images without granting access.")
+                            .font(.subheadline).foregroundColor(Palette.secondary).multilineTextAlignment(.center)
+                        Button("Open Settings") { MediaAccess.openSettings() }
+                    }.padding(24)
+                case .ready:
+                    ScrollView {
+                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 100), spacing: 6)], spacing: 6) {
+                            ForEach(model.thumbnails) { item in
+                                Button {
+                                    Task { @MainActor in
+                                        if let image = await model.fullImage(item.asset) { onPick(image) }
+                                        dismiss()
+                                    }
+                                } label: {
+                                    Image(uiImage: item.image).resizable().scaledToFill()
+                                        .frame(minWidth: 100, minHeight: 100).frame(height: 100).clipped()
+                                }.accessibilityLabel("Recent photo")
+                            }
+                        }.padding(6)
+                    }
+                }
+            }
+            .navigationTitle("Recent Photos").navigationBarTitleDisplayMode(.inline)
+            .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } } }
+            .task { await model.load() }
+        }.navigationViewStyle(.stack)
+    }
+}

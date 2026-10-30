@@ -25,6 +25,7 @@ struct EntryEditorView: View {
     @State private var cameraDenied = false
     @State private var voiceRevision = 0
     @State private var sessionAudio: [URL] = []
+    @State private var showRecentPhotos = false
     private let isEditing: Bool
     private let startWithVoice: Bool
 
@@ -153,6 +154,11 @@ struct EntryEditorView: View {
                         pendingPhotos.append(photo); scheduleDraft()
                     }
                 }.ignoresSafeArea()
+            }
+            .sheet(isPresented: $showRecentPhotos) {
+                RecentPhotosSheet { image in
+                    if photoCount < 6, let photo = PendingPhoto(image: image) { pendingPhotos.append(photo); scheduleDraft() }
+                }
             }
             .sheet(isPresented: $showTagEditor) { EmotionTagEditor() }
             .sheet(isPresented: $showFieldbookEditor) {
@@ -340,6 +346,7 @@ struct EntryEditorView: View {
                     } label: { photoButtonLabel(loadingPhotos ? "Opening photos…" : "Photos", symbol: "photo.on.rectangle.angled", busy: loadingPhotos) }
                         .disabled(loadingPhotos)
                 }
+                Button { dismissKeyboard(); showRecentPhotos = true } label: { photoButtonLabel("Recent Photos", symbol: "clock.arrow.circlepath") }
                 if cameraDenied { PermissionDeniedNote(message: "Camera access is off. You can still add photos from your library.") }
             }
         }
