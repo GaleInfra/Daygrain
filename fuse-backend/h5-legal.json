@@ -1,5 +1,5 @@
 {
-  "privacy": "privacy.html",
-  "terms": "terms.html",
-  "support": "support.html"
+  "privacy": "grainbook://entry/privacy",
+  "terms": "grainbook://entry/terms",
+  "support": "grainbook://entry/support"
 }

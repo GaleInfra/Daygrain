@@ -18,9 +18,9 @@
       "evidence": "Baserow DB69/table134 row 正式包名=com.stillnote.journal 正式域名(app/h5/im/log) line3 (im)"
     },
     "local_scheme": {
-      "value": "daygrain-local",
+      "value": "grainbook",
       "source": "explicit",
-      "evidence": "user ruling 2026-10-30: package's own <slug>-local"
+      "evidence": "journal legal entry grainbook://entry/{privacy,terms,support}"
     }
   }
 }

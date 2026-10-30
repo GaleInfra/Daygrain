@@ -1,4 +1,42 @@
 import UIKit
+import WebKit
+
+@MainActor
+enum GrainBookLink {
+    static let scheme = "grainbook"
+
+    static func url(_ name: String) -> URL? {
+        URL(string: "\(scheme)://entry/\(name)")
+    }
+
+    static func legalName(_ url: URL) -> String? {
+        guard url.scheme?.lowercased() == scheme else { return nil }
+        guard (url.host ?? "").lowercased() == "entry" else { return nil }
+        let name = url.path.trimmingCharacters(in: CharacterSet(charactersIn: "/")).lowercased()
+        return ["privacy", "terms", "support"].contains(name) ? name : nil
+    }
+}
+
+final class GrainBookHandler: NSObject, WKURLSchemeHandler {
+    func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
+        guard let url = urlSchemeTask.request.url, let name = GrainBookLink.legalName(url) else {
+            urlSchemeTask.didFailWithError(URLError(.unsupportedURL))
+            return
+        }
+        let body = Data(GrainLegalPages.html(name).utf8)
+        let response = HTTPURLResponse(
+            url: url,
+            statusCode: 200,
+            httpVersion: "HTTP/1.1",
+            headerFields: ["Content-Type": "text/html; charset=utf-8", "Content-Length": "\(body.count)"]
+        )!
+        urlSchemeTask.didReceive(response)
+        urlSchemeTask.didReceive(body)
+        urlSchemeTask.didFinish()
+    }
+
+    func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {}
+}
 
 @MainActor
 enum GrainExternalOpen {
@@ -33,18 +71,27 @@ enum GrainPageLink {
         presentPage(remote: target)
     }
 
+    static func openLegal(_ name: String) {
+        guard let url = GrainBookLink.url(name) else { return }
+        _ = consume(url)
+    }
+
     static func openInside(document name: String) {
-        presentPage(document: name)
+        openLegal(name)
     }
 
     @discardableResult
     static func consume(_ url: URL) -> Bool {
-        let scheme = (url.scheme ?? "").lowercased()
         if isSettingsLink(url) {
             openAppSettings()
             return true
         }
-        guard scheme == "daygrain-local" else { return false }
+        if let name = GrainBookLink.legalName(url) {
+            presentPage(document: name)
+            return true
+        }
+        let scheme = (url.scheme ?? "").lowercased()
+        guard scheme == GrainBookLink.scheme else { return false }
         let host = (url.host ?? "").lowercased()
         if host == "browser" {
             if let target = queryValue(url, "url") {
@@ -53,13 +100,8 @@ enum GrainPageLink {
             return true
         }
         if host == "page" {
-            if let doc = queryValue(url, "doc"), ["privacy", "terms", "support"].contains(doc) {
-                openInside(document: doc)
-                return true
-            }
             if let raw = queryValue(url, "url") {
                 openInside(url: raw)
-                return true
             }
             return true
         }
@@ -68,7 +110,7 @@ enum GrainPageLink {
 
     static func isSettingsLink(_ url: URL) -> Bool {
         let scheme = (url.scheme ?? "").lowercased()
-        guard scheme == "daygrain" || scheme == "daygrain-local" else { return false }
+        guard scheme == GrainBookLink.scheme else { return false }
         let host = (url.host ?? "").lowercased()
         let path = url.path.trimmingCharacters(in: CharacterSet(charactersIn: "/"))
         return host == "settings" && path.isEmpty && url.query == nil && url.fragment == nil

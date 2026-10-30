@@ -1,5 +1,6 @@
-import SwiftUI
+import Photos
 import PhotosUI
+import SwiftUI
 import UniformTypeIdentifiers
 
 struct PendingPhoto: Identifiable {
@@ -37,7 +38,7 @@ struct PhotoLibraryPicker: UIViewControllerRepresentable {
     let onComplete: ([UIImage], Int) -> Void
 
     func makeUIViewController(context: Context) -> PHPickerViewController {
-        var configuration = PHPickerConfiguration()
+        var configuration = PHPickerConfiguration(photoLibrary: .shared())
         configuration.filter = .images
         configuration.selectionLimit = max(1, limit)
         let picker = PHPickerViewController(configuration: configuration)

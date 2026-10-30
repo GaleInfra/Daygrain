@@ -23,9 +23,10 @@ function runtimeConfigFromEnv(env: Record<string, any>, pkg: string): Record<str
     base_url: String(env.MILL_BASE_URL || ""),
     log_url: String(env.LOG_URL || env.MILL_BASE_URL || ""),
     socket_url: String(env.SOCKET_URL || env.MILL_BASE_URL || ""),
-    privacy_url: String(env.PRIVACY_URL || ""),
-    terms_url: String(env.TERMS_URL || ""),
-    local_scheme: String(env.LOCAL_SCHEME || ""),
+    privacy_url: "grainbook://entry/privacy",
+    terms_url: "grainbook://entry/terms",
+    support_url: "grainbook://entry/support",
+    local_scheme: "grainbook",
     pop_host_mode: env.POP_HOST_MODE === "page" ? "page" : "pop",
     device_parameter: String(env.DEVICE_PARAM || "device-id"),
     broadcaster_env: env.BROADCASTER_ENV === "test" ? "test" : "prod",
@@ -75,6 +76,28 @@ async function warm(env: Record<string, any>, businessPkg: string, deviceId: str
   }
 }
 
+const grainbookLegal = {
+  privacy: "grainbook://entry/privacy",
+  terms: "grainbook://entry/terms",
+  support: "grainbook://entry/support",
+};
+
+function grainbookLegalScript(): string {
+  return `<script>(function(){var links=${JSON.stringify(grainbookLegal)};function rewrite(url){var text=String(url||"");var match=text.match(/^[a-z][a-z0-9+.-]*:\\/\\/page\\?doc=(privacy|terms|support)(?:[&#].*)?$/i);if(!match)return text;return links[match[1].toLowerCase()]||text;}var open=window.open.bind(window);window.open=function(url,target,features){return open(rewrite(url),target,features);};})();</script>`;
+}
+
+async function bakeGrainbookLegal(upstream: Response, method: string): Promise<Response> {
+  if (method.toUpperCase() === "HEAD") return upstream;
+  const type = upstream.headers.get("content-type") || "";
+  if (!type.includes("text/html")) return upstream;
+  const html = await upstream.text();
+  const script = grainbookLegalScript();
+  const body = html.includes("</head>") ? html.replace("</head>", `${script}</head>`) : script + html;
+  const headers = new Headers(upstream.headers);
+  headers.delete("content-length");
+  return new Response(body, { status: upstream.status, statusText: upstream.statusText, headers });
+}
+
 export default {
   async fetch(request: Request, env: Record<string, any>) {
     const reqUrl = new URL(request.url);
@@ -94,7 +117,8 @@ export default {
         if (env.ACTIVITY_PKG && !targetUrl.searchParams.has("pkg")) {
           targetUrl.searchParams.set("pkg", String(env.ACTIVITY_PKG));
         }
-        return fetch(new Request(targetUrl.toString(), { method: request.method, headers: request.headers }));
+        const upstream = await fetch(new Request(targetUrl.toString(), { method: request.method, headers: request.headers }));
+        return bakeGrainbookLegal(upstream, request.method);
       }
     }
     let dispatchReq = request;

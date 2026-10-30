@@ -38,6 +38,7 @@ struct DaygrainApp: App {
                         .environmentObject(privacy)
                         .environment(\.locale, Locale(identifier: "en_US"))
                         .preferredColorScheme(appearance == "system" ? nil : (appearance == "dark" ? .dark : .light))
+                        .onOpenURL { url in _ = GrainPageLink.consume(url) }
                         .tint(Palette.accent)
                 case .activity:
                     GrainActivityRepresentable()

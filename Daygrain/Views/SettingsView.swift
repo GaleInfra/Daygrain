@@ -143,8 +143,16 @@ struct SettingsView: View {
                     SettingsRow(symbol: "lock", title: "App Lock", subtitle: "Use Face ID, Touch ID, or passcode", color: Palette.sage, chevron: false)
                 }
                 Divider()
-                NavigationLink { PrivacyInfoView() } label: {
-                    SettingsRow(symbol: "hand.raised", title: "Privacy & local storage", subtitle: "Your journal, in your hands", color: Palette.sage)
+                Button { GrainPageLink.openLegal("privacy") } label: {
+                    SettingsRow(symbol: "hand.raised", title: "Privacy", subtitle: "How an entry stays on this iPhone", color: Palette.sage)
+                }.buttonStyle(.plain)
+                Divider()
+                Button { GrainPageLink.openLegal("terms") } label: {
+                    SettingsRow(symbol: "doc.text", title: "Terms", subtitle: "What this journal keeps", color: Palette.sage)
+                }.buttonStyle(.plain)
+                Divider()
+                Button { GrainPageLink.openLegal("support") } label: {
+                    SettingsRow(symbol: "questionmark.circle", title: "Support", subtitle: "Permissions for an entry", color: Palette.sage)
                 }.buttonStyle(.plain)
             }.tint(JournalTone.sage.action).surface(tint: Palette.sage)
         }

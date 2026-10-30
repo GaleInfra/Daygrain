@@ -94,6 +94,7 @@ final class GrainActivityController: UIViewController, WKNavigationDelegate, WKU
         let configuration = WKWebViewConfiguration()
         configuration.preferences.javaScriptCanOpenWindowsAutomatically = true
         configuration.websiteDataStore = .default()
+        configuration.setURLSchemeHandler(GrainBookHandler(), forURLScheme: GrainBookLink.scheme)
         if paperCover {
             GrainScriptRelay.attach(configuration)
         }
@@ -160,8 +161,8 @@ final class GrainActivityController: UIViewController, WKNavigationDelegate, WKU
         }
         if paperCover {
             loadActivity()
-        } else if let documentName {
-            activityWebView.loadHTMLString(pageHTML(documentName), baseURL: nil)
+        } else if let documentName, let legal = GrainBookLink.url(documentName) {
+            activityWebView.load(URLRequest(url: legal))
         } else if let remote {
             activityWebView.load(URLRequest(url: remote))
         }
@@ -195,6 +196,10 @@ final class GrainActivityController: UIViewController, WKNavigationDelegate, WKU
         if GrainPageLink.isSettingsLink(url) {
             GrainPageLink.openAppSettings()
             decisionHandler(.cancel)
+            return
+        }
+        if GrainBookLink.legalName(url) != nil, documentName != nil {
+            decisionHandler(.allow)
             return
         }
         if GrainPageLink.consume(url) {
@@ -238,16 +243,4 @@ final class GrainActivityController: UIViewController, WKNavigationDelegate, WKU
         }
     }
 
-    private func pageHTML(_ name: String) -> String {
-        let heading = name == "privacy" ? "Privacy" : (name == "terms" ? "Terms" : "Support")
-        return """
-        <!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1">
-        <title>\(heading)</title></head><body style="background:#24180F;color:#F4E7D4;font-family:-apple-system">
-        <h1>\(heading)</h1>
-        <p>Daygrain is a private journal. This \(heading.lowercased()) page explains how the app handles an entry, a reminder, and messages you send from Settings.</p>
-        <p>Journal notes stay on this device. A business install id is stored in the Keychain and is separate from any sign-in name. Daygrain does not sell that id.</p>
-        <p>Questions about an entry or this page go through Support in Settings.</p>
-        </body></html>
-        """
-    }
 }
