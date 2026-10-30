@@ -6,6 +6,7 @@ struct EntryDetailView: View {
     @Environment(\.dismiss) private var dismiss
     let entryID: UUID
     @State private var showEditor = false
+    @State private var saveNotice: MomentCardSaver.Outcome?
     @State private var showDelete = false
     @State private var gallery: GallerySelection?
     @State private var error: String?
@@ -48,6 +49,7 @@ struct EntryDetailView: View {
                             }.surface()
                         }
                         if !entry.photoIDs.isEmpty { photos(entry) }
+                        VoiceAttachmentsList(entryID: entry.id)
                         connections(entry)
                         HStack(spacing: 6) {
                             Image(systemName: "lock.shield")
@@ -65,6 +67,7 @@ struct EntryDetailView: View {
                 if let note = entry {
                     Menu {
                         Button { showEditor = true } label: { Label("Edit note", systemImage: "pencil") }
+                        Button { Task { @MainActor in saveNotice = await MomentCardSaver.save(note, store: store) } } label: { Label("Save to Photos", systemImage: "square.and.arrow.down") }
                         Button { companion = .companion(to: note) } label: { Label(note.kind == .sensory ? "Add an emotion companion" : "Add a sensory companion", systemImage: "link") }
                         Button { showLinks = true } label: { Label("Manage connected notes", systemImage: "link") }
                         Button { showRevisit = true } label: { Label("Plan a revisit", systemImage: "arrow.triangle.2.circlepath") }
@@ -76,6 +79,10 @@ struct EntryDetailView: View {
         .sheet(isPresented: $showEditor) {
             if let entry = entry { EntryEditorView(kind: entry.kind, existing: entry) }
         }
+        .alert(saveNotice == .saved ? "Saved" : "Save to Photos", isPresented: Binding(get: { saveNotice != nil }, set: { if !$0 { saveNotice = nil } })) {
+            if saveNotice == .denied { Button("Open Settings") { MediaAccess.openSettings() } }
+            Button("OK", role: .cancel) { saveNotice = nil }
+        } message: { Text(saveNotice.map(MomentCardSaver.message) ?? "") }
         .sheet(item: $companion) { ComposerSheet(request: $0) }
         .sheet(isPresented: $showRevisit) { RevisitEditor(sourceID: entryID) }
         .sheet(isPresented: $showLinks) { ConnectedNotesEditor(entryID: entryID) }

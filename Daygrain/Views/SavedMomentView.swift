@@ -8,6 +8,7 @@ struct SavedMomentView: View {
     @State private var companion: ComposerRequest?
     @State private var planning = false
     @State private var organizing = false
+    @State private var saveNotice: MomentCardSaver.Outcome?
     private var entry: JournalEntry? { store.entries.first { $0.id == entryID } }
 
     var body: some View {
@@ -17,6 +18,11 @@ struct SavedMomentView: View {
                     receipt(entry)
                     SectionHeading(title: "Keep the thread going", subtitle: "Choose a next step, or simply leave this moment here.")
                     nextSteps(entry)
+                    Button { Task { @MainActor in saveNotice = await MomentCardSaver.save(entry, store: store) } } label: {
+                        SettingsRow(symbol: "square.and.arrow.down", title: "Save to Photos", subtitle: "Keep a card of this moment in your photo library", color: Palette.accent)
+                    }.buttonStyle(.plain).surface(padding: 14, tint: Palette.accent)
+                    if saveNotice == .denied { PermissionDeniedNote(message: MomentCardSaver.message(.denied)) }
+                    else if let notice = saveNotice { Text(MomentCardSaver.message(notice)).font(.caption).foregroundColor(Palette.secondary) }
                 } else {
                     EmptyState(symbol: "book.closed", title: "Your journal is up to date", message: "This moment may have been moved or restored from a backup.")
                 }

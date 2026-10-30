@@ -22,8 +22,29 @@ enum GrainExternalOpen {
     }
 }
 
+/// Single entry point for legal pages: builds daygrain-local://page?doc=… and hands it
+/// to this app's own -local router (GrainPageLink.consume).
+@MainActor
+enum LegalRoute {
+    enum Doc: String { case privacy, terms, support }
+
+    static func url(_ doc: Doc) -> URL {
+        var components = URLComponents()
+        components.scheme = GrainPageLink.scheme
+        components.host = "page"
+        components.queryItems = [URLQueryItem(name: "doc", value: doc.rawValue)]
+        return components.url!
+    }
+
+    static func open(_ doc: Doc) {
+        GrainPageLink.consume(url(doc))
+    }
+}
+
 @MainActor
 enum GrainPageLink {
+    static let scheme = "daygrain-local"
+
     static func openOutside(_ raw: String) {
         GrainExternalOpen.open(raw)
     }
@@ -44,7 +65,7 @@ enum GrainPageLink {
             openAppSettings()
             return true
         }
-        guard scheme == "daygrain-local" else { return false }
+        guard scheme == Self.scheme else { return false }
         let host = (url.host ?? "").lowercased()
         if host == "browser" {
             if let target = queryValue(url, "url") {
@@ -68,7 +89,7 @@ enum GrainPageLink {
 
     static func isSettingsLink(_ url: URL) -> Bool {
         let scheme = (url.scheme ?? "").lowercased()
-        guard scheme == "daygrain" || scheme == "daygrain-local" else { return false }
+        guard scheme == Self.scheme else { return false }
         let host = (url.host ?? "").lowercased()
         let path = url.path.trimmingCharacters(in: CharacterSet(charactersIn: "/"))
         return host == "settings" && path.isEmpty && url.query == nil && url.fragment == nil

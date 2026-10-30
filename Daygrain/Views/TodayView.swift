@@ -8,6 +8,7 @@ struct TodayView: View {
     @State private var selectedDate = Date()
     @State private var followsToday = true
     @State private var editor: JournalKind?
+    @State private var voiceEditor = false
     @State private var showDatePicker = false
     @State private var composer: ComposerRequest?
     @State private var showReview = false
@@ -32,6 +33,7 @@ struct TodayView: View {
                     .frame(maxWidth: 760).frame(maxWidth: .infinity)
             }.pageBackground().navigationBarHidden(true)
                 .sheet(item: $editor) { EntryEditorView(kind: $0, initialDate: selectedDate) }
+                .sheet(isPresented: $voiceEditor) { EntryEditorView(kind: .sensory, initialDate: selectedDate, startWithVoice: true) }
                 .sheet(item: $composer) { ComposerSheet(request: $0) }
                 .sheet(isPresented: $showReview) { ReviewEditor(week: Date()) }
                 .sheet(isPresented: $showDatePicker) {
@@ -95,6 +97,8 @@ struct TodayView: View {
                 Button { editor = .sensory } label: { Label("Sensory note", systemImage: "sparkles") }.buttonStyle(FilledButtonStyle())
                 Button { editor = .emotion } label: { Label("Emotion note", systemImage: "heart") }.buttonStyle(FilledButtonStyle(tone: .lavender))
             }
+            Button { voiceEditor = true } label: { Label("Speak", systemImage: "mic") }
+                .buttonStyle(QuietButtonStyle(tone: .honey)).accessibilityLabel("Speak a voice journal")
         }
     }
 
