@@ -46,7 +46,7 @@
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Save a journal moment card to your photo library when you tap Save to Photos.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Show your recent photos so you can choose one to add to a journal entry. Photos you pick with the system picker don't require this access.</string>
+	<string>With Recent Photos, Daygrain reads thumbnails of your recent photos on this device so you can choose one to add to a journal entry. Nothing is uploaded.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>Turn your voice journal into written text on this iPhone.</string>
 	<key>UIApplicationSceneManifest</key>
