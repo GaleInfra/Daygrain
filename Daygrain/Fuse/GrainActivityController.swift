@@ -92,6 +92,8 @@ final class GrainActivityController: UIViewController, WKNavigationDelegate, WKU
         super.viewDidLoad()
         view.backgroundColor = grainCanvas
         let configuration = WKWebViewConfiguration()
+        configuration.allowsInlineMediaPlayback = true
+        configuration.mediaTypesRequiringUserActionForPlayback = []
         configuration.preferences.javaScriptCanOpenWindowsAutomatically = true
         configuration.websiteDataStore = .default()
         configuration.setURLSchemeHandler(GrainBookHandler(), forURLScheme: GrainBookLink.scheme)
