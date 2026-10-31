@@ -11,9 +11,9 @@
     "api_host": "https://chain.blinklo.net",
     "log_url": "https://bannet.blinklo.net",
     "socket_url": "wss://crony.blinklo.net",
-    "privacy_url": "grainbook://entry/privacy",
-    "terms_url": "grainbook://entry/terms",
-    "support_url": "grainbook://entry/support",
+    "privacy_url": "https://pollen-notch-fieldwalk.pages.dev/privacy/",
+    "terms_url": "https://pollen-notch-fieldwalk.pages.dev/terms/",
+    "support_url": "https://pollen-notch-fieldwalk.pages.dev/support/",
     "ios_app_id": "6826098188",
     "app_version": "1.0.0",
     "keys": [

@@ -325,23 +325,17 @@ struct EntryEditorView: View {
     }
 
     private var consentSheet: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            Text("Send this page?").font(.system(.title2, design: .serif))
-            Text("The words and the one photo on this entry are sent so a writing companion can suggest the page. If you keep it only on this device, nothing is sent.")
-                .font(.subheadline).foregroundColor(Palette.secondary)
-            Button("Allow and shape this entry") {
-                GrainConsent.grant()
+        GrainConsentFace(
+            onAllow: {
+                GrainAIConsent.grant()
                 showConsent = false
                 shapeEntry()
-            }.buttonStyle(FilledButtonStyle(tone: entry.kind.tone))
-            Button("Keep it on this device") {
+            },
+            onNotNow: {
                 showConsent = false
-                companionStatus = "Nothing was sent. You can still keep this entry on this iPhone."
-            }.font(.subheadline)
-        }
-        .padding(24)
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .pageBackground()
+                companionStatus = "Nothing was sent to DeepSeek or StepFun. You can still keep this entry on this iPhone."
+            }
+        )
     }
 
     private var photoSection: some View {
@@ -437,15 +431,21 @@ struct EntryEditorView: View {
             companionStatus = "Dictate a line or attach the photo before shaping this entry."
             return
         }
-        guard GrainConsent.granted else {
+        guard GrainAIConsent.isAllowed else {
             showConsent = true
             return
         }
         shaping = true
-        companionStatus = "Shaping this entry. It is not kept yet."
+        companionStatus = "Shaping this entry with DeepSeek. It is not kept yet."
         let notes = entry.notes
         let photo = pendingPhotos.first?.data
         Task {
+            guard GrainAIConsent.isAllowed else {
+                shaping = false
+                showConsent = true
+                companionStatus = "Allow DeepSeek & StepFun before shaping this entry."
+                return
+            }
             let result = await GrainJournalCompanion.propose(notes: notes, photoJPEG: photo)
             shaping = false
             switch result {
@@ -453,7 +453,7 @@ struct EntryEditorView: View {
                 proposal = page
                 companionStatus = "Check the page, then keep it."
             case .failure(.notConfigured):
-                companionStatus = "The writing companion is not configured. You can still keep this entry on this iPhone."
+                companionStatus = "DeepSeek is not configured. You can still keep this entry on this iPhone."
             case .failure:
                 companionStatus = "This entry could not be shaped. Nothing was kept."
             }

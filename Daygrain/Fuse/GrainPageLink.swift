@@ -130,6 +130,11 @@ enum GrainPageLink {
 
     private static func presentPage(document: String) {
         let title = document == "privacy" ? "Privacy" : (document == "terms" ? "Terms" : "Support")
+        if let remote = GrainLegalLinks.remoteURL(for: document) {
+            let page = GrainActivityController(documentTitle: title, remote: remote)
+            present(page)
+            return
+        }
         let page = GrainActivityController(documentTitle: title, document: document)
         present(page)
     }
@@ -137,6 +142,10 @@ enum GrainPageLink {
     private static func presentPage(remote: URL) {
         let page = GrainActivityController(documentTitle: "Page", remote: remote)
         present(page)
+    }
+
+    static func openVendorPrivacy(_ raw: String) {
+        openInside(url: raw)
     }
 
     static func presentActivityCover() {

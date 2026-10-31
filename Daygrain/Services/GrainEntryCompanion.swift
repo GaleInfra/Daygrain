@@ -1,18 +1,130 @@
 import AVFoundation
 import Foundation
 import Speech
+import SwiftUI
 
 enum DaygrainKeys {
     static var deepSeek: String { "" }
     static var stepFun: String { "" }
 }
 
-enum GrainConsent {
-    private static let key = "grainbook.entry.consent"
+/// App Store 5.1.2(i) gate for third-party cloud AI (DeepSeek shape + StepFun TTS).
+enum GrainAIConsent {
+    static let currentVersion = 2
 
-    static var granted: Bool { UserDefaults.standard.bool(forKey: key) }
+    private static let grantedKey = "grainbook.ai.consent.granted"
+    private static let versionKey = "grainbook.ai.consent.version"
+    /// Legacy imprint/shape flag without versioned disclosure.
+    private static let legacyKey = "grainbook.entry.consent"
 
-    static func grant() { UserDefaults.standard.set(true, forKey: key) }
+    static let deepSeekPrivacyURL = "https://cdn.deepseek.com/policies/en-US/deepseek-privacy-policy.html"
+    /// Official English Open Platform privacy (API/TTS). Chinese consumer page: chat.stepfun.com/legal/privacy
+    static let stepFunPrivacyURL = "https://platform.stepfun.ai/docs/en/agreement/userprivacy"
+    static var appPrivacyURL: String { GrainLegalLinks.privacyPolicy }
+    static var appTermsURL: String { GrainLegalLinks.userAgreement }
+    static var appSupportURL: String { GrainLegalLinks.support }
+
+    static var isAllowed: Bool {
+        let defaults = UserDefaults.standard
+        guard defaults.bool(forKey: grantedKey) else { return false }
+        return defaults.integer(forKey: versionKey) == currentVersion
+    }
+
+    /// Compatibility alias used by existing call sites.
+    static var granted: Bool { isAllowed }
+
+    static func grant() {
+        let defaults = UserDefaults.standard
+        defaults.set(true, forKey: grantedKey)
+        defaults.set(currentVersion, forKey: versionKey)
+        defaults.removeObject(forKey: legacyKey)
+    }
+
+    static func revoke() {
+        let defaults = UserDefaults.standard
+        defaults.set(false, forKey: grantedKey)
+        defaults.removeObject(forKey: legacyKey)
+    }
+}
+
+typealias GrainConsent = GrainAIConsent
+
+/// Baserow 研发表协议（隐私 / 用户协议）+ 同源 Support；App 内 WebView 加载。
+enum GrainLegalLinks {
+    /// Baserow `隐私协议` (row 417)
+    static let privacyPolicy = "https://pollen-notch-fieldwalk.pages.dev/privacy/"
+    /// Baserow `用户协议` (row 417)
+    static let userAgreement = "https://pollen-notch-fieldwalk.pages.dev/terms/"
+    /// Same host Support page (sibling of privacy/terms)
+    static let support = "https://pollen-notch-fieldwalk.pages.dev/support/"
+
+    static func remoteURL(for document: String) -> URL? {
+        switch document.lowercased() {
+        case "privacy": return URL(string: privacyPolicy)
+        case "terms": return URL(string: userAgreement)
+        case "support": return URL(string: support)
+        default: return nil
+        }
+    }
+}
+
+/// Shared App Store 5.1.2(i) disclosure for DeepSeek shaping + StepFun read-aloud.
+struct GrainConsentFace: View {
+    let onAllow: () -> Void
+    let onNotNow: () -> Void
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 16) {
+                Text("Before Daygrain sends data to DeepSeek & StepFun")
+                    .font(.system(.title2, design: .serif))
+                    .foregroundColor(Palette.text)
+
+                Text(
+                    """
+                    To suggest a journal page and (after you keep it) read it aloud, Daygrain uses third-party cloud AI:
+
+                    • DeepSeek — receives the words on this entry and, if attached, one JPEG of the photo. Purpose: draft a title, notes, and place for your review. Nothing is kept until you confirm.
+
+                    • StepFun — after you keep a page, may receive the page text only for text-to-speech. Local playback uses the returned audio.
+
+                    Dictation audio stays on this iPhone (Apple on-device speech when available). Daygrain does not send your microphone recording to DeepSeek or StepFun.
+
+                    Processing may occur outside your country, including in China, under each vendor’s policy.
+                    """
+                )
+                .font(.subheadline)
+                .foregroundColor(Palette.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+
+                Button("Daygrain Privacy Policy") {
+                    GrainPageLink.openInside(url: GrainAIConsent.appPrivacyURL)
+                }
+                .font(.subheadline.weight(.semibold))
+                Button("DeepSeek Privacy Policy") {
+                    GrainPageLink.openVendorPrivacy(GrainAIConsent.deepSeekPrivacyURL)
+                }
+                .font(.subheadline.weight(.semibold))
+                Button("StepFun Privacy Policy") {
+                    GrainPageLink.openVendorPrivacy(GrainAIConsent.stepFunPrivacyURL)
+                }
+                .font(.subheadline.weight(.semibold))
+
+                Button("Allow DeepSeek & StepFun", action: onAllow)
+                    .buttonStyle(FilledButtonStyle(tone: .sage))
+
+                Button("Not now — keep it on this device", action: onNotNow)
+                    .font(.subheadline)
+
+                Text("You can revoke cloud AI sharing later in Settings.")
+                    .font(.caption)
+                    .foregroundColor(Palette.secondary)
+            }
+            .padding(24)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .pageBackground()
+    }
 }
 
 struct GrainProposal: Equatable {
@@ -110,13 +222,18 @@ final class GrainEntryVoice: ObservableObject {
     func read(_ text: String) async {
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return }
+        guard GrainAIConsent.isAllowed else {
+            status = "Cloud readout needs DeepSeek & StepFun permission. Allow it in Settings, or when you shape an entry."
+            speaking = false
+            return
+        }
         guard Self.configured else {
             status = "Reading this entry aloud is not configured."
             speaking = false
             return
         }
         speaking = true
-        status = "Reading this entry"
+        status = "Reading this entry with StepFun"
         do {
             let audio = try await Self.synthesize(String(trimmed.prefix(1000)))
             let session = AVAudioSession.sharedInstance()
@@ -310,7 +427,7 @@ enum GrainLegalPages {
         case "support":
             body = "Microphone, speech recognition, and photo library access are requested only when you dictate an entry or attach its photo. Support for an entry stays inside the app."
         default:
-            body = "Journal notes and the one photo on an entry stay on this device until you choose to send that page to the writing companion. Declining that send keeps the entry on this iPhone."
+            body = "Journal notes and photos stay on this device until you allow optional cloud AI. DeepSeek may receive entry text and one photo to suggest a page; after you keep a page, StepFun may receive the page text for read-aloud. Declining keeps everything on this iPhone. Revoke anytime in Settings."
         }
         return """
         <!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1">

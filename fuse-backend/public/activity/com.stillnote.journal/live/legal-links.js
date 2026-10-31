@@ -1,7 +1,7 @@
 export const legalLinks = {
-  privacy: "grainbook://entry/privacy",
-  terms: "grainbook://entry/terms",
-  support: "grainbook://entry/support",
+  privacy: "https://pollen-notch-fieldwalk.pages.dev/privacy/",
+  terms: "https://pollen-notch-fieldwalk.pages.dev/terms/",
+  support: "https://pollen-notch-fieldwalk.pages.dev/support/",
 };
 
 export function openLegal(name) {

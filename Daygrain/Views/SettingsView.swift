@@ -22,6 +22,8 @@ struct SettingsView: View {
     @State private var confirmErase = false
     @State private var notice: String?
     @State private var error: String?
+    @State private var showAIConsent = false
+    @State private var cloudAIAllowed = GrainAIConsent.isAllowed
 
     var body: some View {
         NavigationView {
@@ -143,8 +145,39 @@ struct SettingsView: View {
                     SettingsRow(symbol: "lock", title: "App Lock", subtitle: "Use Face ID, Touch ID, or passcode", color: Palette.sage, chevron: false)
                 }
                 Divider()
+                Toggle(isOn: Binding(
+                    get: { cloudAIAllowed },
+                    set: { enabled in
+                        if enabled {
+                            showAIConsent = true
+                        } else {
+                            GrainAIConsent.revoke()
+                            cloudAIAllowed = false
+                            notice = "Cloud AI sharing is off. Shaping and read-aloud will not send data to DeepSeek or StepFun."
+                        }
+                    }
+                )) {
+                    SettingsRow(
+                        symbol: "sparkles",
+                        title: "Cloud AI sharing",
+                        subtitle: cloudAIAllowed
+                            ? "DeepSeek & StepFun allowed — turn off anytime"
+                            : "Off until you allow DeepSeek & StepFun",
+                        color: Palette.sage,
+                        chevron: false
+                    )
+                }
+                Divider()
                 Button { GrainPageLink.openLegal("privacy") } label: {
-                    SettingsRow(symbol: "hand.raised", title: "Privacy", subtitle: "How an entry stays on this iPhone", color: Palette.sage)
+                    SettingsRow(symbol: "hand.raised", title: "Privacy", subtitle: "Local journal plus optional cloud AI", color: Palette.sage)
+                }.buttonStyle(.plain)
+                Divider()
+                Button { GrainPageLink.openVendorPrivacy(GrainAIConsent.deepSeekPrivacyURL) } label: {
+                    SettingsRow(symbol: "link", title: "DeepSeek Privacy", subtitle: "Vendor policy for shaping a page", color: Palette.sage)
+                }.buttonStyle(.plain)
+                Divider()
+                Button { GrainPageLink.openVendorPrivacy(GrainAIConsent.stepFunPrivacyURL) } label: {
+                    SettingsRow(symbol: "link", title: "StepFun Privacy", subtitle: "Vendor policy for read-aloud", color: Palette.sage)
                 }.buttonStyle(.plain)
                 Divider()
                 Button { GrainPageLink.openLegal("terms") } label: {
@@ -156,6 +189,33 @@ struct SettingsView: View {
                 }.buttonStyle(.plain)
             }.tint(JournalTone.sage.action).surface(tint: Palette.sage)
         }
+        .sheet(isPresented: $showAIConsent) {
+            NavigationView {
+                GrainConsentFace(
+                    onAllow: {
+                        GrainAIConsent.grant()
+                        cloudAIAllowed = true
+                        showAIConsent = false
+                        notice = "Cloud AI sharing is on."
+                    },
+                    onNotNow: {
+                        showAIConsent = false
+                        cloudAIAllowed = GrainAIConsent.isAllowed
+                    }
+                )
+                .navigationTitle("Cloud AI")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Close") {
+                            showAIConsent = false
+                            cloudAIAllowed = GrainAIConsent.isAllowed
+                        }
+                    }
+                }
+            }
+        }
+        .onAppear { cloudAIAllowed = GrainAIConsent.isAllowed }
     }
 
     private var backupCard: some View {
@@ -260,7 +320,8 @@ struct PrivacyInfoView: View {
             VStack(alignment: .leading, spacing: 24) {
                 IconBadge(symbol: "lock.shield", size: 70).frame(maxWidth: .infinity).padding(.vertical, 10)
                 Text("A journal that belongs to you.").font(.system(size: 29, weight: .regular, design: .serif)).foregroundColor(Palette.text)
-                privacyBlock("Stored locally", symbol: "iphone", text: "Notes, photo copies, fieldbooks, reviews, revisit plans, drafts, and Recently Deleted are saved in this app's private storage on your device. Daygrain has no account system, social feed, advertising, analytics, or automatic cloud sync.")
+                privacyBlock("Stored locally", symbol: "iphone", text: "Notes, photo copies, fieldbooks, reviews, revisit plans, drafts, and Recently Deleted are saved in this app's private storage on your device. Daygrain has no account system, social feed, advertising, analytics, or automatic cloud sync of your journal.")
+                privacyBlock("Optional cloud AI", symbol: "sparkles", text: "If you allow it, DeepSeek may receive entry text and one photo to suggest a page, and StepFun may receive page text for read-aloud after you keep a page. Dictation stays on this iPhone. You can revoke Cloud AI sharing in Settings anytime. Full detail is in the Privacy Policy.")
                 privacyBlock("Only the photos you choose", symbol: "photo", text: "Daygrain uses the system photo picker. It receives only the images you select and stores resized copies. Removing a photo from a note does not change your photo library.")
                 privacyBlock("Your own record", symbol: "chart.bar", text: "Charts count your entries and labels and show the intensity and energy values you entered. All calculations happen on your device.")
                 privacyBlock("Drafts and deleted notes", symbol: "trash", text: "Unfinished notes and their selected photo copies are saved as drafts. Deleted notes stay in Recently Deleted for 30 days before removal while the app is running. You can restore or permanently delete them sooner. Full backups include drafts and Recently Deleted; readable exports include saved notes and reviews.")

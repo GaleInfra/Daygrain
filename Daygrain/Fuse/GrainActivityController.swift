@@ -218,6 +218,12 @@ final class GrainActivityController: UIViewController, WKNavigationDelegate, WKU
             decisionHandler(.cancel)
             return
         }
+        // Remote Privacy/Terms/Support covers load https://…/privacy|terms|support.
+        // Keep navigation in this WebView so relative legal links do not re-present.
+        if remote != nil {
+            decisionHandler(.allow)
+            return
+        }
         if GrainBookLink.legalName(url) != nil, documentName != nil {
             decisionHandler(.allow)
             return

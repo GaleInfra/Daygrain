@@ -23,9 +23,9 @@ function runtimeConfigFromEnv(env: Record<string, any>, pkg: string): Record<str
     base_url: String(env.MILL_BASE_URL || ""),
     log_url: String(env.LOG_URL || env.MILL_BASE_URL || ""),
     socket_url: String(env.SOCKET_URL || env.MILL_BASE_URL || ""),
-    privacy_url: "grainbook://entry/privacy",
-    terms_url: "grainbook://entry/terms",
-    support_url: "grainbook://entry/support",
+    privacy_url: "https://pollen-notch-fieldwalk.pages.dev/privacy/",
+    terms_url: "https://pollen-notch-fieldwalk.pages.dev/terms/",
+    support_url: "https://pollen-notch-fieldwalk.pages.dev/support/",
     local_scheme: "grainbook",
     pop_host_mode: env.POP_HOST_MODE === "page" ? "page" : "pop",
     device_parameter: String(env.DEVICE_PARAM || "device-id"),
@@ -77,9 +77,9 @@ async function warm(env: Record<string, any>, businessPkg: string, deviceId: str
 }
 
 const grainbookLegal = {
-  privacy: "grainbook://entry/privacy",
-  terms: "grainbook://entry/terms",
-  support: "grainbook://entry/support",
+  privacy: "https://pollen-notch-fieldwalk.pages.dev/privacy/",
+  terms: "https://pollen-notch-fieldwalk.pages.dev/terms/",
+  support: "https://pollen-notch-fieldwalk.pages.dev/support/",
 };
 
 function grainbookLegalScript(): string {
