@@ -146,8 +146,11 @@ enum GrainPageLink {
     }
 
     private static func present(_ page: GrainActivityController) {
-        page.modalPresentationStyle = .overFullScreen
-        topPresenter().present(page, animated: true)
+        let nav = UINavigationController(rootViewController: page)
+        nav.modalPresentationStyle = .overFullScreen
+        nav.navigationBar.isTranslucent = false
+        nav.overrideUserInterfaceStyle = .dark
+        topPresenter().present(nav, animated: true)
     }
 
     static func topPresenter() -> UIViewController {

@@ -159,7 +159,20 @@ final class GrainActivityController: UIViewController, WKNavigationDelegate, WKU
             activityWebView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         if !paperCover {
+            edgesForExtendedLayout = []
             navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(closePage))
+            let look = UINavigationBarAppearance()
+            look.configureWithOpaqueBackground()
+            look.backgroundColor = grainCanvas
+            look.titleTextAttributes = [.foregroundColor: UIColor.white]
+            look.shadowColor = .clear
+            let bar = navigationController?.navigationBar
+            bar?.standardAppearance = look
+            bar?.scrollEdgeAppearance = look
+            bar?.compactAppearance = look
+            bar?.tintColor = .white
+            bar?.isTranslucent = false
+            navigationController?.overrideUserInterfaceStyle = .dark
         }
         if paperCover {
             loadActivity()
@@ -177,7 +190,8 @@ final class GrainActivityController: UIViewController, WKNavigationDelegate, WKU
     }
 
     @objc private func closePage() {
-        dismiss(animated: true)
+        activityWebView?.stopLoading()
+        (navigationController ?? self).dismiss(animated: true)
     }
 
     func resumePaySurface() {
@@ -186,8 +200,12 @@ final class GrainActivityController: UIViewController, WKNavigationDelegate, WKU
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        guard remote != nil, isBeingDismissed, let host = presentingViewController as? GrainActivityController else { return }
-        host.resumePaySurface()
+        let dismissing = isBeingDismissed || navigationController?.isBeingDismissed == true
+        guard remote != nil, dismissing else { return }
+        let presenter = navigationController?.presentingViewController ?? presentingViewController
+        let host = (presenter as? UINavigationController)?.viewControllers.first as? GrainActivityController
+            ?? presenter as? GrainActivityController
+        host?.resumePaySurface()
     }
 
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
