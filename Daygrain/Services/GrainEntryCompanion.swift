@@ -425,7 +425,7 @@ enum GrainLegalPages {
         case "terms":
             body = "Daygrain is a private journal you keep on this iPhone. You decide which moments to save, export, and delete."
         case "support":
-            body = "Microphone, speech recognition, and photo library access are requested only when you dictate an entry or attach its photo. Support for an entry stays inside the app."
+            body = "Camera, microphone, speech recognition, and photo library access are requested only when you photograph a moment, dictate an entry, or attach a photo. Support for an entry stays inside the app."
         default:
             body = "Journal notes and photos stay on this device until you allow optional cloud AI. DeepSeek may receive entry text and one photo to suggest a page; after you keep a page, StepFun may receive the page text for read-aloud. Declining keeps everything on this iPhone. Revoke anytime in Settings."
         }

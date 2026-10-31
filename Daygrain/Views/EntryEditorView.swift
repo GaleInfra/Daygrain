@@ -1,5 +1,6 @@
 import Photos
 import SwiftUI
+import UIKit
 
 @MainActor
 struct EntryEditorView: View {
@@ -10,6 +11,7 @@ struct EntryEditorView: View {
     @State private var selectedSenses: Set<Sense>
     @State private var pendingPhotos: [PendingPhoto] = []
     @State private var showPhotoPicker = false
+    @State private var showCameraPicker = false
     @State private var loadingPhotos = false
     @State private var showDiscard = false
     @State private var showTagEditor = false
@@ -125,13 +127,19 @@ struct EntryEditorView: View {
             .sheet(isPresented: $showPhotoPicker) {
                 PhotoLibraryPicker(limit: max(1, roundPhotoLimit - photoCount)) { images, failed in
                     showPhotoPicker = false
-                    let available = max(0, 6 - photoCount)
-                    let processed = images.prefix(available).compactMap { PendingPhoto(image: $0) }
-                    pendingPhotos.append(contentsOf: processed)
-                    loadingPhotos = false
-                    scheduleDraft()
-                    if failed > 0 || processed.count < min(images.count, available) { error = "Some photos could not be opened. Please try selecting them again." }
+                    acceptPhotos(images, failed: failed)
                 }.ignoresSafeArea().interactiveDismissDisabled()
+            }
+            .fullScreenCover(isPresented: $showCameraPicker) {
+                MomentCameraPicker { image in
+                    showCameraPicker = false
+                    if let image {
+                        acceptPhotos([image], failed: 0)
+                    } else {
+                        loadingPhotos = false
+                    }
+                }
+                .ignoresSafeArea()
             }
             .sheet(isPresented: $showTagEditor) { EmotionTagEditor() }
             .sheet(isPresented: $showFieldbookEditor) {
@@ -341,7 +349,10 @@ struct EntryEditorView: View {
     private var photoSection: some View {
         VStack(alignment: .leading, spacing: 13) {
             HStack {
-                SectionHeading(title: "A picture of the moment", subtitle: "One photo from your library, kept with this entry after you confirm.")
+                SectionHeading(
+                    title: "A picture of the moment",
+                    subtitle: "Take one photo with the camera, or choose one from your library. Kept with this entry after you confirm."
+                )
                 Text("\(min(photoCount, roundPhotoLimit))/\(roundPhotoLimit)").font(.caption.monospacedDigit()).foregroundColor(Palette.secondary)
             }
             if photoCount > 0 {
@@ -357,19 +368,37 @@ struct EntryEditorView: View {
                 }
             }
             if photoCount < roundPhotoLimit {
-                Button {
-                    dismissKeyboard()
-                    Task { await openPhotoLibrary() }
-                } label: {
-                    HStack(spacing: 9) {
-                        if loadingPhotos { ProgressView() } else { Image(systemName: "photo.on.rectangle.angled") }
-                        Text(loadingPhotos ? "Opening photos…" : "Add photos")
-                    }.font(.subheadline.weight(.medium)).frame(maxWidth: .infinity).padding(.vertical, 17)
-                        .background(Palette.accent.opacity(0.06)).clipShape(RoundedRectangle(cornerRadius: 15))
-                        .overlay(RoundedRectangle(cornerRadius: 15).stroke(Palette.accent.opacity(0.2), style: StrokeStyle(lineWidth: 1, dash: [5, 4])))
-                }.disabled(loadingPhotos)
+                HStack(spacing: 10) {
+                    Button {
+                        dismissKeyboard()
+                        Task { await openCamera() }
+                    } label: {
+                        photoActionLabel(symbol: "camera", title: "Take photo")
+                    }
+                    .disabled(loadingPhotos)
+                    Button {
+                        dismissKeyboard()
+                        Task { await openPhotoLibrary() }
+                    } label: {
+                        photoActionLabel(symbol: "photo.on.rectangle.angled", title: "Choose photo")
+                    }
+                    .disabled(loadingPhotos)
+                }
             }
         }
+    }
+
+    private func photoActionLabel(symbol: String, title: String) -> some View {
+        HStack(spacing: 9) {
+            if loadingPhotos { ProgressView() } else { Image(systemName: symbol) }
+            Text(title)
+        }
+        .font(.subheadline.weight(.medium))
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 17)
+        .background(Palette.accent.opacity(0.06))
+        .clipShape(RoundedRectangle(cornerRadius: 15))
+        .overlay(RoundedRectangle(cornerRadius: 15).stroke(Palette.accent.opacity(0.2), style: StrokeStyle(lineWidth: 1, dash: [5, 4])))
     }
 
     private func photoThumbnail(_ image: UIImage?, remove: @escaping () -> Void) -> some View {
@@ -411,6 +440,32 @@ struct EntryEditorView: View {
                 companionStatus = "This entry could not be transcribed on this device."
             }
         }
+    }
+
+    private func acceptPhotos(_ images: [UIImage], failed: Int) {
+        let available = max(0, roundPhotoLimit - photoCount)
+        let processed = images.prefix(available).compactMap { PendingPhoto(image: $0) }
+        pendingPhotos.append(contentsOf: processed)
+        loadingPhotos = false
+        scheduleDraft()
+        if failed > 0 || processed.count < min(images.count, available) {
+            error = "Some photos could not be opened. Please try selecting them again."
+        }
+    }
+
+    private func openCamera() async {
+        guard MomentCameraAccess.hardwareAvailable else {
+            companionStatus = "This device has no camera right now. Choose a photo from your library instead."
+            return
+        }
+        loadingPhotos = true
+        let allowed = await MomentCameraAccess.requestAccess()
+        guard allowed else {
+            companionStatus = "Camera access is off. You can still choose a library photo or keep this entry without one."
+            loadingPhotos = false
+            return
+        }
+        showCameraPicker = true
     }
 
     private func openPhotoLibrary() async {
