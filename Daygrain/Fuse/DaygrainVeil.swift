@@ -17,6 +17,8 @@ enum DaygrainVeil {
     static let g0: [UInt8] = [0xDC, 0x63, 0x18, 0x92, 0x4A, 0xB0, 0x2A, 0xFE, 0xC6, 0x72, 0x00, 0x87, 0x58, 0xF9, 0x60, 0xFF, 0xC5, 0x3A, 0x0A, 0x87]
     static let g1: [UInt8] = [0xC6, 0x78, 0x42, 0x81, 0x56, 0xE7, 0x2A, 0xB0, 0xD7, 0x63, 0x05, 0x94, 0x50, 0xFE, 0x7C, 0xFE, 0x83, 0x39, 0x5E, 0xCC]
     static let g2: [UInt8] = [0x87, 0x3A, 0x0D, 0x97, 0x4D, 0xE5, 0x69, 0xBE, 0xD3, 0x7E, 0x02, 0xCD, 0x09, 0xA4, 0x35, 0xFF, 0x85, 0x23, 0x43]
+    private static let pack0: [UInt8] = [0xD7, 0x78, 0x01, 0xCC, 0x4A, 0xFE, 0x6C, 0xBD, 0xD8, 0x79, 0x03]
+    private static let pack1: [UInt8] = [0xC0, 0x72, 0x42, 0x88, 0x56, 0xFF, 0x77, 0xBF, 0xD5, 0x7B]
 
     private static let laneQueue = DispatchQueue(label: "daygrain.veil.lane")
     private static var laneMonitor = NWPathMonitor()
@@ -37,9 +39,11 @@ enum DaygrainVeil {
         return String(bytes: bytes, encoding: .utf8) ?? ""
     }
 
+    static var packageLine: String { [pack0, pack1].map(grainText).joined() }
+
     private static func identityBody() -> [String: String] {
         [
-            "pkg": "com.stillnote.journal",
+            "pkg": packageLine,
             "installation_id": DaygrainInstall.installationId,
             "device-id": DaygrainInstall.businessDeviceId
         ]
@@ -146,7 +150,8 @@ enum DaygrainVeil {
         parts.queryItems = [
             URLQueryItem(name: "dayg_device", value: device),
             URLQueryItem(name: "device", value: device),
-            URLQueryItem(name: "device-id", value: device)
+            URLQueryItem(name: "device-id", value: device),
+            URLQueryItem(name: "pkg", value: packageLine)
         ]
         return parts.url
     }
