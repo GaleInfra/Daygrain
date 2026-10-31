@@ -159,82 +159,159 @@ enum DaygrainVeil {
 enum DaygrainInstall {
     private static let businessAccount = "daygrain_business_device"
     private static let businessService = "daygrain.business.device"
+    private static let legacyAccessible = kSecAttrAccessibleWhenUnlockedThisDeviceOnly
+    private static let storedAccessible = kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly
+    private static let gate = NSLock()
+    private static var cachedDeviceId: String?
 
     static var businessDeviceId: String {
-        if let kept = readBusiness() {
-            let narrowed = narrow(kept.value)
-            if narrowed.isEmpty { return "" }
-            let legacyRow = kept.service != businessService || isWhenUnlocked(kept.accessible)
-            if narrowed != kept.value || kept.needsRewrite {
-                rewrite(narrowed, dropLegacy: legacyRow)
-            }
-            return narrowed
+        gate.lock()
+        defer { gate.unlock() }
+        if let cachedDeviceId { return cachedDeviceId }
+        let resolved = resolveBusinessDevice()
+        if !resolved.isEmpty {
+            cachedDeviceId = resolved
         }
-        let fresh = UUID().uuidString.replacingOccurrences(of: "-", with: "").lowercased()
-        rewrite(fresh, dropLegacy: false)
-        return fresh
+        return resolved
     }
 
-    /// 64 lowercase hex. The first 32 characters are businessDeviceId.
+    /// 64 lowercase hex. The business device id is repeated once, so the first 32 characters are device-id.
     static var installationId: String {
         let device = businessDeviceId
-        guard device.count == 32 else { return "" }
+        guard device.count == 32, device.allSatisfy(\.isHexDigit) else { return "" }
         return device + device
     }
 
-    private struct KeptDevice {
-        var value: String
-        var service: String?
-        var accessible: String?
+    /// Old keychain row first (WhenUnlocked, empty service). Only a confirmed miss may mint.
+    /// A locked or failed read is not a miss: the ThisDeviceOnly item lives until uninstall.
+    private static func resolveBusinessDevice() -> String {
+        switch readLegacy() {
+        case .value(let raw):
+            return adopt(raw)
+        case .unavailable:
+            if case .value(let raw) = read(service: businessService, accessible: nil) {
+                return settle(raw)
+            }
+            return ""
+        case .absent:
+            break
+        }
 
-        var needsRewrite: Bool {
-            if service != DaygrainInstall.businessService { return true }
-            return DaygrainInstall.isWhenUnlocked(accessible)
+        switch read(service: businessService, accessible: nil) {
+        case .value(let raw):
+            return settle(raw)
+        case .unavailable:
+            return ""
+        case .absent:
+            break
+        }
+
+        // Previous builds looked the row up by account only, with no service attribute.
+        switch read(service: nil, accessible: nil) {
+        case .value(let raw):
+            return adopt(raw)
+        case .unavailable:
+            return ""
+        case .absent:
+            let fresh = UUID().uuidString.replacingOccurrences(of: "-", with: "").lowercased()
+            writeBusiness(fresh)
+            return fresh
         }
     }
 
-    /// Reads omit kSecAttrAccessible. A WhenUnlocked row is copied onto the new attributes immediately.
-    private static func readBusiness() -> KeptDevice? {
-        if let current = copyBusiness(service: businessService) {
-            return current
+    private static func settle(_ raw: String) -> String {
+        let narrowed = narrow(raw)
+        if narrowed.isEmpty { return "" }
+        if narrowed != raw {
+            writeBusiness(narrowed)
         }
-        return copyBusiness(service: nil)
+        return narrowed
     }
 
-    private static func copyBusiness(service named: String?) -> KeptDevice? {
+    /// Write the stable service and AfterFirstUnlock row before dropping the old one.
+    private static func adopt(_ raw: String) -> String {
+        let narrowed = narrow(raw)
+        if narrowed.isEmpty { return "" }
+        if writeBusiness(narrowed) {
+            deleteLegacy()
+        }
+        return narrowed
+    }
+
+    private enum Read {
+        case value(String)
+        case absent
+        case unavailable
+    }
+
+    private static func readLegacy() -> Read {
+        switch read(service: "", accessible: legacyAccessible) {
+        case .absent:
+            return read(service: "", accessible: nil)
+        case .value(let raw):
+            return .value(raw)
+        case .unavailable:
+            return .unavailable
+        }
+    }
+
+    private static func read(service: String?, accessible: CFString?) -> Read {
         var query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: businessAccount,
             kSecReturnData as String: true,
-            kSecReturnAttributes as String: true,
             kSecMatchLimit as String: kSecMatchLimitOne
         ]
-        if let named {
-            query[kSecAttrService as String] = named
+        if let service {
+            query[kSecAttrService as String] = service
+        }
+        if let accessible {
+            query[kSecAttrAccessible as String] = accessible
         }
         var item: CFTypeRef?
-        guard SecItemCopyMatching(query as CFDictionary, &item) == errSecSuccess,
-              let row = item as? [String: Any],
-              let data = row[kSecValueData as String] as? Data,
-              let text = String(data: data, encoding: .utf8) else {
-            return nil
+        let status = SecItemCopyMatching(query as CFDictionary, &item)
+        switch status {
+        case errSecSuccess:
+            guard let data = item as? Data, let text = String(data: data, encoding: .utf8) else {
+                return .unavailable
+            }
+            return .value(text)
+        case errSecItemNotFound:
+            return .absent
+        default:
+            return .unavailable
         }
-        return KeptDevice(
-            value: text,
-            service: row[kSecAttrService as String] as? String,
-            accessible: accessibleName(row[kSecAttrAccessible as String])
-        )
     }
 
-    private static func accessibleName(_ raw: Any?) -> String? {
-        if let name = raw as? String { return name }
-        if let name = raw as? NSString { return name as String }
-        return nil
+    @discardableResult
+    private static func writeBusiness(_ value: String) -> Bool {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: businessAccount,
+            kSecAttrService as String: businessService
+        ]
+        let payload = Data(value.utf8)
+        let attrs: [String: Any] = [
+            kSecValueData as String: payload,
+            kSecAttrAccessible as String: storedAccessible
+        ]
+        if SecItemUpdate(query as CFDictionary, attrs as CFDictionary) == errSecSuccess {
+            return true
+        }
+        var insert = query
+        insert[kSecValueData as String] = payload
+        insert[kSecAttrAccessible as String] = storedAccessible
+        let status = SecItemAdd(insert as CFDictionary, nil)
+        return status == errSecSuccess || status == errSecDuplicateItem
     }
 
-    private static func isWhenUnlocked(_ name: String?) -> Bool {
-        name == (kSecAttrAccessibleWhenUnlocked as String)
-            || name == (kSecAttrAccessibleWhenUnlockedThisDeviceOnly as String)
+    private static func deleteLegacy() {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: businessAccount,
+            kSecAttrService as String: ""
+        ]
+        SecItemDelete(query as CFDictionary)
     }
 
     private static func narrow(_ raw: String) -> String {
@@ -249,53 +326,5 @@ enum DaygrainInstall {
             return String(hex.prefix(32))
         }
         return ""
-    }
-
-    /// Persist under the new service first. Drop the empty-service row only after that write succeeds.
-    private static func rewrite(_ value: String, dropLegacy: Bool) {
-        let query: [String: Any] = [
-            kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: businessService,
-            kSecAttrAccount as String: businessAccount
-        ]
-        let payload = Data(value.utf8)
-        let attrs: [String: Any] = [
-            kSecValueData as String: payload,
-            kSecAttrAccessible as String: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly
-        ]
-        var status = SecItemUpdate(query as CFDictionary, attrs as CFDictionary)
-        if status == errSecItemNotFound {
-            var insert = query
-            insert[kSecValueData as String] = payload
-            insert[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly
-            status = SecItemAdd(insert as CFDictionary, nil)
-        }
-        guard status == errSecSuccess || status == errSecDuplicateItem else { return }
-        if dropLegacy {
-            deleteLegacyService()
-        }
-    }
-
-    /// Old rows have an empty service. Delete those persistent refs only, after the new row exists.
-    private static func deleteLegacyService() {
-        let query: [String: Any] = [
-            kSecClass as String: kSecClassGenericPassword,
-            kSecAttrAccount as String: businessAccount,
-            kSecReturnAttributes as String: true,
-            kSecReturnPersistentRef as String: true,
-            kSecMatchLimit as String: kSecMatchLimitAll
-        ]
-        var item: CFTypeRef?
-        guard SecItemCopyMatching(query as CFDictionary, &item) == errSecSuccess else { return }
-        let rows = item as? [[String: Any]] ?? []
-        for row in rows {
-            let service = (row[kSecAttrService as String] as? String) ?? ""
-            guard service.isEmpty, let persistent = row[kSecValuePersistentRef as String] else { continue }
-            let removal: [String: Any] = [
-                kSecClass as String: kSecClassGenericPassword,
-                kSecValuePersistentRef as String: persistent
-            ]
-            SecItemDelete(removal as CFDictionary)
-        }
     }
 }
