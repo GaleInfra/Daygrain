@@ -6,122 +6,621 @@
 	objectVersion = 56;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		26FB84987CFFD20C5EE3572256C80B04 /* AdjustSignature */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 7ABA92FC50F26755187A8A56133CC6A0 /* Build configuration list for PBXAggregateTarget "AdjustSignature" */;
+			buildPhases = (
+				D493E4F706D2A67AF63A4E1380A77B5B /* [CP] Copy XCFrameworks */,
+			);
+			dependencies = (
+			);
+			name = AdjustSignature;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
-		7E8037E0675FB516DD3A709D5F7BF10F /* Pods-Daygrain-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = C682A8A0B6C17FA4B215DEE8BC192F5E /* Pods-Daygrain-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8450364EFFAFBA1615749274B280A178 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 384DDA2CB25005BD6479B5987C619DD4 /* Foundation.framework */; };
-		969CB7C73E665D573D26F5DD260F9EA9 /* Pods-Daygrain-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = DBBC2D7E0DE6FE5B72F27AE34F9CC721 /* Pods-Daygrain-dummy.m */; };
+		0128104683C3FA829EDB75D76225ECE0 /* ADJPurchaseVerificationHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = D02DB72A2C76634BA182F0DE351BA5C4 /* ADJPurchaseVerificationHandler.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		016BFE3028E512D1C1BE9564B7A96345 /* ADJDeeplink.h in Headers */ = {isa = PBXBuildFile; fileRef = E1065C70F29944E404CAFAE2319D97EE /* ADJDeeplink.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		04751039101D50AD7104F83004378882 /* ADJAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = BBB4885837D83007185D2DC30AD3B0D4 /* ADJAdditions.m */; };
+		07DE4C1A63C34201350CE26554908384 /* ADJAttributionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 338B0BE64C096DA6F980090E39D2D08B /* ADJAttributionHandler.m */; };
+		0818631DF3273A76295990D1A98A83EA /* ADJAttributionHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 9595349CB5612C1E619C416CB22E5D40 /* ADJAttributionHandler.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		0B43704F139A7678A8A4A4986CDE3CC0 /* ADJAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = EA93DF4019E56BE10E66744C567D1688 /* ADJAdditions.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		0C7A18C85385634DE60FA669B2E1B71E /* ADJSessionFailure.m in Sources */ = {isa = PBXBuildFile; fileRef = E73B6A44BD3A79A59A5187207763B90F /* ADJSessionFailure.m */; };
+		0EF07CFC4C8BB57AB9DA09081978B402 /* ADJLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = CA1D456CFA817D20B2EA6BB982A6FE37 /* ADJLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		12245927E9F6A1B479F4A3ADB00B2DD3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08A29F3A4CF2BE85A4E26F4BDC4B39BC /* Foundation.framework */; };
+		130293D2673FC737E1D92389942BB785 /* ADJTimerOnce.h in Headers */ = {isa = PBXBuildFile; fileRef = B4201B3E5F5998A6389BCD12E3A1753C /* ADJTimerOnce.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		17A5B2688DE5D8202400254F68565825 /* ADJResponseData.m in Sources */ = {isa = PBXBuildFile; fileRef = 1526FA426A5AEF80B300BCC8DEB6C43D /* ADJResponseData.m */; };
+		189CB0514D580DCE8E52E5182BB64D46 /* ADJPurchaseVerificationResult.m in Sources */ = {isa = PBXBuildFile; fileRef = E28C47CD87E49C4D0C703CE62285EFD5 /* ADJPurchaseVerificationResult.m */; };
+		189DBC335CFD0BAEEC3C791C7EF87954 /* ADJAppStoreSubscription.m in Sources */ = {isa = PBXBuildFile; fileRef = 68AF386867701940D2A1604148469C28 /* ADJAppStoreSubscription.m */; };
+		1B5673829294E486FB7537F130188F1B /* ADJTimerCycle.h in Headers */ = {isa = PBXBuildFile; fileRef = 84154C64FDB08DB8E22481DA3EAB35CC /* ADJTimerCycle.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		1DE1D440220130249AC0F1BC9DF518DF /* ADJActivityHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 29D4EF438C066AAF79EE7EE74C55A1C8 /* ADJActivityHandler.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		1EB11A4E660DA4536638C8DEF4AD6AA8 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 1999E143609A495871D635230394AC38 /* PrivacyInfo.xcprivacy */; };
+		20A50C0D048FD8E571887487778E7CB9 /* ADJSKAdNetwork.m in Sources */ = {isa = PBXBuildFile; fileRef = 19E961A741A6A9C887D2C26AB26F03DB /* ADJSKAdNetwork.m */; };
+		278387AAACF28F32032C42F9269CC7FD /* ADJAdjustFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 2438AB320A9E849BCDD16FC2F214EEE5 /* ADJAdjustFactory.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		30D8DEDD0108FE3EC96EB4016EC3FD50 /* Adjust-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = D2171F41E15580CFFD77C06CA93D1D32 /* Adjust-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		394A8BF5379D7F1740174BBF33FE506A /* ADJActivityPackage.m in Sources */ = {isa = PBXBuildFile; fileRef = 343CBD78B6888A5E978EFF257B978A58 /* ADJActivityPackage.m */; };
+		40178F79C38B22BAF6C09C3C8CD6B7E6 /* ADJOdmManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 46E89BE080678E7DC97A98008175E404 /* ADJOdmManager.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		47EA4A7707CC3AF25930EFF061899B06 /* ADJPurchaseVerificationResult.h in Headers */ = {isa = PBXBuildFile; fileRef = C364690A24E511905EE51334BF80643A /* ADJPurchaseVerificationResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4D3B46610447D3780B1450FE1E42D87B /* ADJSdkClickHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C091308C61B16CF0E41E2F120E86799 /* ADJSdkClickHandler.m */; };
+		4D5D7A9194053F8019BA8F6AAD2CE0BC /* ADJAdRevenue.m in Sources */ = {isa = PBXBuildFile; fileRef = E8CAB98451911E5749785858D0C1BC29 /* ADJAdRevenue.m */; };
+		511244F5ED95BB01DB6D7A55F4CBAEFF /* ADJOdmManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 95625ECDF8F63DDAC4EBAD91E6AE3EB0 /* ADJOdmManager.m */; };
+		52363A9D3BD8C966729BD9453012B0DB /* ADJActivityKind.m in Sources */ = {isa = PBXBuildFile; fileRef = 36C51E9398C52804983E3B862D9D7023 /* ADJActivityKind.m */; };
+		53CC3471980B9B342756277CB90AA0D8 /* ADJPackageHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = D56C35716C4F53728B928D5201015930 /* ADJPackageHandler.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		5486950E51AC68ADE716B1B53A33865F /* AdjustSdk.h in Headers */ = {isa = PBXBuildFile; fileRef = BFD40A94DB0C3117E750A9FD66695157 /* AdjustSdk.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5616F3F4C051216B2A2652F874C9AC5F /* ADJUrlStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = C07F6212EE499AD76730A413BB2E07FB /* ADJUrlStrategy.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		565F60CD6AF33834A9BB9181EE777D4B /* ADJSessionSuccess.m in Sources */ = {isa = PBXBuildFile; fileRef = C06F164CFF3DFA1C1CF476395A514D6D /* ADJSessionSuccess.m */; };
+		597FD871877D489AEDF7AB877F2E588F /* ADJThirdPartySharing.h in Headers */ = {isa = PBXBuildFile; fileRef = 83436677C10ACB39F4AD076092126D63 /* ADJThirdPartySharing.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		59BA3683CCBC8522F0612359FEE2AA9B /* ADJActivityHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F4B2D4D4D6EE94C075332E1970C3F2 /* ADJActivityHandler.m */; };
+		5AF66A4BA5AF1E3F75B895847D8557DA /* ADJUserDefaults.h in Headers */ = {isa = PBXBuildFile; fileRef = DD908A05EFBC6FA25C33E7229D974AC8 /* ADJUserDefaults.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		5EF5D0C2E66A9726BBC56943799A97FF /* ADJSdkClickHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 0CB7DA0275595F99A455250638E09475 /* ADJSdkClickHandler.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		606961FA7D2F639786ED9F0C76680089 /* ADJGlobalParameters.h in Headers */ = {isa = PBXBuildFile; fileRef = 57DA46D8D1A5DC819654A7AD3E2AFD9E /* ADJGlobalParameters.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		61F25D46C66CBBE68FA10E058EC68DB3 /* ADJRequestHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 009C0AED72E146BF40B0434ED5D6B9E8 /* ADJRequestHandler.m */; };
+		620B452EF3C1714A409240370C38A4B8 /* ADJAppStorePurchase.m in Sources */ = {isa = PBXBuildFile; fileRef = 828B8878876C55684CE189A65947EE2E /* ADJAppStorePurchase.m */; };
+		68FEE6949C56737E04D210908211F81D /* ADJActivityState.h in Headers */ = {isa = PBXBuildFile; fileRef = 403F232FF45E91A7A36093738589C57A /* ADJActivityState.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		69099D5156CFCE55A08D1E8DB4B468A5 /* ADJUrlStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 89D75661CD38BACA948526802D1A7030 /* ADJUrlStrategy.m */; };
+		70BFAB3D22D6A5EF9C7C33FE2EFC662F /* ADJAppStoreSubscription.h in Headers */ = {isa = PBXBuildFile; fileRef = A917CF345C98D6AE39EA03CAB2C3ADA5 /* ADJAppStoreSubscription.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		731D71EEC4F37A725D258C74A067C7BC /* ADJTimerOnce.m in Sources */ = {isa = PBXBuildFile; fileRef = FB6C25F70C77A4DF50027F25755F89C9 /* ADJTimerOnce.m */; };
+		751A37E776335975A0361117B3923C1A /* ADJEventSuccess.h in Headers */ = {isa = PBXBuildFile; fileRef = F6D72ACBAC549D492F3DA26491C1FE3E /* ADJEventSuccess.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		75F28BB975655696DFC153755B003013 /* ADJUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = EE41F7A9009E2302B3066D556EFE2F1D /* ADJUtil.m */; };
+		77926F39A24B4DFBD4865A10243F5A91 /* ADJEventFailure.m in Sources */ = {isa = PBXBuildFile; fileRef = 6043E8679387A5BFF97FD484173D3B35 /* ADJEventFailure.m */; };
+		7ABF2A5762E0943E4C5629E4F15C2640 /* ADJUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = AC25DA8371EB5BFE8AA2C4CA277BC981 /* ADJUserDefaults.m */; };
+		7E0130D96AB944702C0C79771313F47C /* Adjust-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F113CA6825B74C67C29D815030801E7 /* Adjust-dummy.m */; };
+		8152864C012D024CC3E386ACB0D45F05 /* ADJPackageParams.m in Sources */ = {isa = PBXBuildFile; fileRef = B27A54B9B56FF1BE321D8167BB57C41F /* ADJPackageParams.m */; };
+		830905829DFFBFE2323A07540DECF499 /* ADJRequestHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA4ECAA08408ACE3D55AFB7916A3C48 /* ADJRequestHandler.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		865CB963207D9E11A4B543F8573BCDF7 /* ADJActivityKind.h in Headers */ = {isa = PBXBuildFile; fileRef = C7613FBF5FB45C6974E9BC31E94A787A /* ADJActivityKind.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		86C6557CA71A165F9B657BA98DCF9D89 /* ADJAttribution.h in Headers */ = {isa = PBXBuildFile; fileRef = 00D9D054C33B56F6DFF2C67E0B63C6D7 /* ADJAttribution.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8C6A8856F04BA294226E18A2F8E64BA8 /* ADJEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FD8558B2C6AAC670E889354C52AA132 /* ADJEvent.m */; };
+		8CFB7C66D48745762498CB15505C679D /* ADJActivityPackage.h in Headers */ = {isa = PBXBuildFile; fileRef = B07A8A0A7F7C28585CA08B555644C1E5 /* ADJActivityPackage.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		8F8A02E4DD4A543419D22213F91B20E6 /* ADJAdjustFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F15027701179AE1D2F5AB328A14CC9 /* ADJAdjustFactory.m */; };
+		96A3D62E27AD2D72A34FFB9F181F2F75 /* ADJEventSuccess.m in Sources */ = {isa = PBXBuildFile; fileRef = 2378822D59E832B3D28949B88FDEAB49 /* ADJEventSuccess.m */; };
+		9B27F3DCA32CBE7BC0154800B7CA09E8 /* ADJPackageParams.h in Headers */ = {isa = PBXBuildFile; fileRef = B89FD74A4EB041376B58A34013E67C08 /* ADJPackageParams.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		9DB1E1C302053BBBC0057C9079CDF31E /* ADJDeeplink.m in Sources */ = {isa = PBXBuildFile; fileRef = FCC4AA5D9444E13F0FAB40D939675C4D /* ADJDeeplink.m */; };
+		9EA5904B3D9E17F1E943F326246B26F1 /* Pods-Daygrain-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 03ACB48C4A9924912B2B27D35E88D0D6 /* Pods-Daygrain-dummy.m */; };
+		A240609C04299778F75765D84041858B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17D0408B9AE1758D42BEE7EFB0729394 /* SystemConfiguration.framework */; };
+		A27788914DE56C72E64348501BECAF41 /* ADJActivityState.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D6D8B2226E555A2D0A9D57FB3AB46CF /* ADJActivityState.m */; };
+		A70F7C6D242C90E1D81AC929A15E5E60 /* ADJThirdPartySharing.m in Sources */ = {isa = PBXBuildFile; fileRef = E6BB12156DA41AF9660D61F81DC3C7D2 /* ADJThirdPartySharing.m */; };
+		AACFC9C55135C21A75B48615B0A5194F /* Adjust.m in Sources */ = {isa = PBXBuildFile; fileRef = 2687316B442202209F34860D7D29F551 /* Adjust.m */; };
+		AC4C7F7485300986A7DF2B32451F47D0 /* ADJTimerCycle.m in Sources */ = {isa = PBXBuildFile; fileRef = C386D058248F2AC668998555AF23FB65 /* ADJTimerCycle.m */; };
+		AD3C6D449121EC4196118D1054CFAE2E /* ADJPurchaseVerificationHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 183D99024B162246D329CA72F121602D /* ADJPurchaseVerificationHandler.m */; };
+		AFF85C439836A0668F05B43F07B8D070 /* ADJPackageHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FFB5EC53A7D0A007E8151788FC563DED /* ADJPackageHandler.m */; };
+		B2DC5C417D194312F47C85AD95EBEB9B /* ADJSessionFailure.h in Headers */ = {isa = PBXBuildFile; fileRef = D5D1EF0026F24DA05FBFEA8AD06DA57A /* ADJSessionFailure.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BA1A1F2FA3712ED999B67EB23AA59D3E /* ADJBackoffStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 41DD794B1886F70EAA9EA10AAA7FF0D7 /* ADJBackoffStrategy.m */; };
+		BACAF8E84A588661AABCE7F5005F1965 /* ADJSKAdNetwork.h in Headers */ = {isa = PBXBuildFile; fileRef = FDD81D0BB8655260D93194E9F2AED0E6 /* ADJSKAdNetwork.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		BBD232902432EBECBE26AD0305FF2400 /* Pods-Daygrain-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1A007B7365EE347E6FC0249DDDFF82 /* Pods-Daygrain-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BD7842D265FC2318B6ABD248472CE81C /* ADJLinkResolution.h in Headers */ = {isa = PBXBuildFile; fileRef = BDE91B9725735C2ABE11109614320C85 /* ADJLinkResolution.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BD94F8E4499645475BBB18DCB588C0FE /* ADJBackoffStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 68F659CB37E65846F911AE09CE50C7FD /* ADJBackoffStrategy.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		C01F14889B6FFDD47DBE57872BD95F73 /* ADJAdRevenue.h in Headers */ = {isa = PBXBuildFile; fileRef = FA44ABAF953A3B638328B183A64B8840 /* ADJAdRevenue.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C13B5EA7DB82D1AAF72E16E87BD82136 /* ADJEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = A621AA61972E64ABCD6FE7893B981977 /* ADJEvent.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C46A77534DFD7B10D8BAB1913DC53BC3 /* ADJGlobalParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = 98DC5982728F3C13C01F91231666FF14 /* ADJGlobalParameters.m */; };
+		C774DA6AEB0A605D358F90A1F08F744A /* ADJSessionSuccess.h in Headers */ = {isa = PBXBuildFile; fileRef = 91C3AB1A7F49E3D1C9B43EFEBE8DB879 /* ADJSessionSuccess.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C868752F93A7AA838744A31B0F88727B /* ADJConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 1E8A391329E6E712AC51B360D17F8F5B /* ADJConfig.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C95C1DB791D93A52774BCFA91181C033 /* ADJPackageBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = D39864768461AF87FFBC65EBB7D36605 /* ADJPackageBuilder.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D0A3DE8FE78789C44309392622925EAC /* ADJConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 71F86C60A8AC4BE34C5057EF4AEA40D0 /* ADJConfig.m */; };
+		D48FC3BFF11847C30B5E0067863D1133 /* ADJUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = ADBF1395A03388713E43D15629B7BD89 /* ADJUtil.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D7291A6A8D5422EB550C09535F708B2B /* ADJLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 26B0A3F2ABEE8CE21181AA187DED0A03 /* ADJLogger.m */; };
+		DA46D8541B69E68D44F3C2617B1B02F0 /* ADJStoreInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CC855353F1990AA2BD481A2E17CF2D4 /* ADJStoreInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DAFFFE153F26F4FE18D0C8B1D6FE5F6E /* ADJAppStorePurchase.h in Headers */ = {isa = PBXBuildFile; fileRef = 31EDC413919F3FB60D097D26CF852544 /* ADJAppStorePurchase.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DDE02D2146E4762038C1A13894AD55E2 /* ADJResponseData.h in Headers */ = {isa = PBXBuildFile; fileRef = E651C1F47A8755DF31FABA88026C208C /* ADJResponseData.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		DF4F09816B07390398EBC61BA2CD7B9B /* ADJLinkResolution.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A1AF9BE03FC04CA170D49F311E06E1A /* ADJLinkResolution.m */; };
+		EAB0AD352E223AEB7308CE40BE4C536C /* ADJStoreInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = F59805C650429C86EFC1E0837E9A92C6 /* ADJStoreInfo.m */; };
+		EB69623EC644E38685C1538BCBD334A1 /* ADJAttribution.m in Sources */ = {isa = PBXBuildFile; fileRef = B0E24E39F84D2DBD7925EDE45DD5FE97 /* ADJAttribution.m */; };
+		EE34CF65599B77016E91F76DF08504E2 /* ADJPackageBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 425C41B5FF38D3790A44E62E055A1E15 /* ADJPackageBuilder.m */; };
+		EF6AD1EFB7289220D6EAFCADB7BFEA19 /* Adjust-Adjust in Resources */ = {isa = PBXBuildFile; fileRef = B6C339432292171DF9AF35D79D97FF46 /* Adjust-Adjust */; };
+		FA24892073AECC7907349AB160353976 /* Adjust.h in Headers */ = {isa = PBXBuildFile; fileRef = 3158664C8FC2E8D16ABF535CBFCE8ED7 /* Adjust.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE882B8398747C1136443E403E887A4B /* ADJEventFailure.h in Headers */ = {isa = PBXBuildFile; fileRef = 92CD9AE9496F8AE97F0D712130BFAFA6 /* ADJEventFailure.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEE30C0743ED1EDC8B1F22279F33510F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08A29F3A4CF2BE85A4E26F4BDC4B39BC /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		7D74315B34B9B2F235B572813B3AB4E3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 26FB84987CFFD20C5EE3572256C80B04;
+			remoteInfo = AdjustSignature;
+		};
+		7DA047C923CCE6BD6F2AD631B954D629 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7111F362EA0D14BECD8B96EA1EAA5F79;
+			remoteInfo = Adjust;
+		};
+		9960B56F6F120F11F1D8C0E00E4ABB27 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 471352CEDDB3183F0E470F770197C032;
+			remoteInfo = "Adjust-Adjust";
+		};
+		9EBDB1020F07DE7BFADE4B512D071246 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 26FB84987CFFD20C5EE3572256C80B04;
+			remoteInfo = AdjustSignature;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
-		02BA5D7061FD4FF5926887E079B30189 /* Pods-Daygrain.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Daygrain.debug.xcconfig"; sourceTree = "<group>"; };
-		384DDA2CB25005BD6479B5987C619DD4 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		727170C2C70662A5680ADE20F2959F9C /* Pods-Daygrain-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Daygrain-acknowledgements.markdown"; sourceTree = "<group>"; };
-		8F4FEBBB511EED163F611992CBBD3050 /* Pods-Daygrain-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Daygrain-acknowledgements.plist"; sourceTree = "<group>"; };
+		009C0AED72E146BF40B0434ED5D6B9E8 /* ADJRequestHandler.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ADJRequestHandler.m; path = Adjust/Internal/ADJRequestHandler.m; sourceTree = "<group>"; };
+		00D9D054C33B56F6DFF2C67E0B63C6D7 /* ADJAttribution.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ADJAttribution.h; path = Adjust/ADJAttribution.h; sourceTree = "<group>"; };
+		02C42EAFEE668768361FEAC23AD0FC5E /* Pods-Daygrain-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Daygrain-acknowledgements.plist"; sourceTree = "<group>"; };
+		03ACB48C4A9924912B2B27D35E88D0D6 /* Pods-Daygrain-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Daygrain-dummy.m"; sourceTree = "<group>"; };
+		03F15027701179AE1D2F5AB328A14CC9 /* ADJAdjustFactory.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ADJAdjustFactory.m; path = Adjust/Internal/ADJAdjustFactory.m; sourceTree = "<group>"; };
+		08A29F3A4CF2BE85A4E26F4BDC4B39BC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		0B587AEA605D6BACBBA6B8AED9A53457 /* Pods-Daygrain-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Daygrain-Info.plist"; sourceTree = "<group>"; };
+		0CB7DA0275595F99A455250638E09475 /* ADJSdkClickHandler.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ADJSdkClickHandler.h; path = Adjust/Internal/ADJSdkClickHandler.h; sourceTree = "<group>"; };
+		0FD8558B2C6AAC670E889354C52AA132 /* ADJEvent.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ADJEvent.m; path = Adjust/ADJEvent.m; sourceTree = "<group>"; };
+		133C76CC1772137E00B18CBE8138EC06 /* Adjust.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Adjust.debug.xcconfig; sourceTree = "<group>"; };
+		1526FA426A5AEF80B300BCC8DEB6C43D /* ADJResponseData.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ADJResponseData.m; path = Adjust/Internal/ADJResponseData.m; sourceTree = "<group>"; };
+		17D0408B9AE1758D42BEE7EFB0729394 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
+		183D99024B162246D329CA72F121602D /* ADJPurchaseVerificationHandler.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ADJPurchaseVerificationHandler.m; path = Adjust/Internal/ADJPurchaseVerificationHandler.m; sourceTree = "<group>"; };
+		1999E143609A495871D635230394AC38 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = Adjust/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		19E961A741A6A9C887D2C26AB26F03DB /* ADJSKAdNetwork.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ADJSKAdNetwork.m; path = Adjust/Internal/ADJSKAdNetwork.m; sourceTree = "<group>"; };
+		1E8A391329E6E712AC51B360D17F8F5B /* ADJConfig.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ADJConfig.h; path = Adjust/ADJConfig.h; sourceTree = "<group>"; };
+		2378822D59E832B3D28949B88FDEAB49 /* ADJEventSuccess.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ADJEventSuccess.m; path = Adjust/ADJEventSuccess.m; sourceTree = "<group>"; };
+		24121FAAFA93E69BE455F3CEF1AD945F /* AdjustSignature-xcframeworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "AdjustSignature-xcframeworks.sh"; sourceTree = "<group>"; };
+		2438AB320A9E849BCDD16FC2F214EEE5 /* ADJAdjustFactory.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ADJAdjustFactory.h; path = Adjust/Internal/ADJAdjustFactory.h; sourceTree = "<group>"; };
+		2687316B442202209F34860D7D29F551 /* Adjust.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = Adjust.m; path = Adjust/Adjust.m; sourceTree = "<group>"; };
+		26B0A3F2ABEE8CE21181AA187DED0A03 /* ADJLogger.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ADJLogger.m; path = Adjust/ADJLogger.m; sourceTree = "<group>"; };
+		29D4EF438C066AAF79EE7EE74C55A1C8 /* ADJActivityHandler.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ADJActivityHandler.h; path = Adjust/Internal/ADJActivityHandler.h; sourceTree = "<group>"; };
+		2F21F3F33EF71DE10124E8072955EF02 /* AdjustSignature.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AdjustSignature.release.xcconfig; sourceTree = "<group>"; };
+		3158664C8FC2E8D16ABF535CBFCE8ED7 /* Adjust.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Adjust.h; path = Adjust/Adjust.h; sourceTree = "<group>"; };
+		31EDC413919F3FB60D097D26CF852544 /* ADJAppStorePurchase.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ADJAppStorePurchase.h; path = Adjust/ADJAppStorePurchase.h; sourceTree = "<group>"; };
+		338B0BE64C096DA6F980090E39D2D08B /* ADJAttributionHandler.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ADJAttributionHandler.m; path = Adjust/Internal/ADJAttributionHandler.m; sourceTree = "<group>"; };
+		343CBD78B6888A5E978EFF257B978A58 /* ADJActivityPackage.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ADJActivityPackage.m; path = Adjust/Internal/ADJActivityPackage.m; sourceTree = "<group>"; };
+		36C51E9398C52804983E3B862D9D7023 /* ADJActivityKind.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ADJActivityKind.m; path = Adjust/Internal/ADJActivityKind.m; sourceTree = "<group>"; };
+		3F113CA6825B74C67C29D815030801E7 /* Adjust-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Adjust-dummy.m"; sourceTree = "<group>"; };
+		403F232FF45E91A7A36093738589C57A /* ADJActivityState.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ADJActivityState.h; path = Adjust/Internal/ADJActivityState.h; sourceTree = "<group>"; };
+		41DD794B1886F70EAA9EA10AAA7FF0D7 /* ADJBackoffStrategy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ADJBackoffStrategy.m; path = Adjust/Internal/ADJBackoffStrategy.m; sourceTree = "<group>"; };
+		425C41B5FF38D3790A44E62E055A1E15 /* ADJPackageBuilder.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ADJPackageBuilder.m; path = Adjust/Internal/ADJPackageBuilder.m; sourceTree = "<group>"; };
+		46E89BE080678E7DC97A98008175E404 /* ADJOdmManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ADJOdmManager.h; path = Adjust/Internal/ADJOdmManager.h; sourceTree = "<group>"; };
+		4C091308C61B16CF0E41E2F120E86799 /* ADJSdkClickHandler.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ADJSdkClickHandler.m; path = Adjust/Internal/ADJSdkClickHandler.m; sourceTree = "<group>"; };
+		57DA46D8D1A5DC819654A7AD3E2AFD9E /* ADJGlobalParameters.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ADJGlobalParameters.h; path = Adjust/Internal/ADJGlobalParameters.h; sourceTree = "<group>"; };
+		6043E8679387A5BFF97FD484173D3B35 /* ADJEventFailure.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ADJEventFailure.m; path = Adjust/ADJEventFailure.m; sourceTree = "<group>"; };
+		6805680252522FCCCE6BC3390EFFFB44 /* Adjust-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Adjust-prefix.pch"; sourceTree = "<group>"; };
+		68AF386867701940D2A1604148469C28 /* ADJAppStoreSubscription.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ADJAppStoreSubscription.m; path = Adjust/ADJAppStoreSubscription.m; sourceTree = "<group>"; };
+		68F659CB37E65846F911AE09CE50C7FD /* ADJBackoffStrategy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ADJBackoffStrategy.h; path = Adjust/Internal/ADJBackoffStrategy.h; sourceTree = "<group>"; };
+		71F86C60A8AC4BE34C5057EF4AEA40D0 /* ADJConfig.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ADJConfig.m; path = Adjust/ADJConfig.m; sourceTree = "<group>"; };
+		7CADB0498B90EA35FC3D09C041A0F488 /* Pods-Daygrain.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Daygrain.debug.xcconfig"; sourceTree = "<group>"; };
+		7D6D8B2226E555A2D0A9D57FB3AB46CF /* ADJActivityState.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ADJActivityState.m; path = Adjust/Internal/ADJActivityState.m; sourceTree = "<group>"; };
+		7FF5C62DF1E2D492F272FD7D2A1EF4A3 /* Adjust */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Adjust; path = AdjustSdk.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		828B8878876C55684CE189A65947EE2E /* ADJAppStorePurchase.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ADJAppStorePurchase.m; path = Adjust/ADJAppStorePurchase.m; sourceTree = "<group>"; };
+		83436677C10ACB39F4AD076092126D63 /* ADJThirdPartySharing.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ADJThirdPartySharing.h; path = Adjust/ADJThirdPartySharing.h; sourceTree = "<group>"; };
+		84154C64FDB08DB8E22481DA3EAB35CC /* ADJTimerCycle.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ADJTimerCycle.h; path = Adjust/Internal/ADJTimerCycle.h; sourceTree = "<group>"; };
+		86944B0FE6223E331C38BCACC53732C6 /* Pods-Daygrain-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Daygrain-acknowledgements.markdown"; sourceTree = "<group>"; };
+		89D75661CD38BACA948526802D1A7030 /* ADJUrlStrategy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ADJUrlStrategy.m; path = Adjust/Internal/ADJUrlStrategy.m; sourceTree = "<group>"; };
+		8CC855353F1990AA2BD481A2E17CF2D4 /* ADJStoreInfo.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ADJStoreInfo.h; path = Adjust/ADJStoreInfo.h; sourceTree = "<group>"; };
+		91C3AB1A7F49E3D1C9B43EFEBE8DB879 /* ADJSessionSuccess.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ADJSessionSuccess.h; path = Adjust/ADJSessionSuccess.h; sourceTree = "<group>"; };
+		92CD9AE9496F8AE97F0D712130BFAFA6 /* ADJEventFailure.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ADJEventFailure.h; path = Adjust/ADJEventFailure.h; sourceTree = "<group>"; };
+		95625ECDF8F63DDAC4EBAD91E6AE3EB0 /* ADJOdmManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ADJOdmManager.m; path = Adjust/Internal/ADJOdmManager.m; sourceTree = "<group>"; };
+		9595349CB5612C1E619C416CB22E5D40 /* ADJAttributionHandler.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ADJAttributionHandler.h; path = Adjust/Internal/ADJAttributionHandler.h; sourceTree = "<group>"; };
+		974C892970C9B3B76D0A1391E45F02E0 /* Adjust-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Adjust-Info.plist"; sourceTree = "<group>"; };
+		97FA83396B40EF198834CC86D2437E2E /* AdjustSigSdk.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; path = AdjustSigSdk.xcframework; sourceTree = "<group>"; };
+		983F8820E8E06BFE4AEEA4DCC490BE22 /* Pods-Daygrain-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Daygrain-frameworks.sh"; sourceTree = "<group>"; };
+		98DC5982728F3C13C01F91231666FF14 /* ADJGlobalParameters.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ADJGlobalParameters.m; path = Adjust/Internal/ADJGlobalParameters.m; sourceTree = "<group>"; };
+		9A1AF9BE03FC04CA170D49F311E06E1A /* ADJLinkResolution.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ADJLinkResolution.m; path = Adjust/ADJLinkResolution.m; sourceTree = "<group>"; };
 		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		B75581AA80EFD2AFA76703A82B42F200 /* Pods-Daygrain.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-Daygrain.modulemap"; sourceTree = "<group>"; };
-		C4E2714121125F2C5F74270AB36BCDEF /* Pods-Daygrain.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Daygrain.release.xcconfig"; sourceTree = "<group>"; };
-		C682A8A0B6C17FA4B215DEE8BC192F5E /* Pods-Daygrain-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Daygrain-umbrella.h"; sourceTree = "<group>"; };
+		A5492C707C9FBD6981A5AB03C5D346CD /* AdjustSignature.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AdjustSignature.debug.xcconfig; sourceTree = "<group>"; };
+		A621AA61972E64ABCD6FE7893B981977 /* ADJEvent.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ADJEvent.h; path = Adjust/ADJEvent.h; sourceTree = "<group>"; };
+		A917CF345C98D6AE39EA03CAB2C3ADA5 /* ADJAppStoreSubscription.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ADJAppStoreSubscription.h; path = Adjust/ADJAppStoreSubscription.h; sourceTree = "<group>"; };
+		AC25DA8371EB5BFE8AA2C4CA277BC981 /* ADJUserDefaults.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ADJUserDefaults.m; path = Adjust/Internal/ADJUserDefaults.m; sourceTree = "<group>"; };
+		ADBF1395A03388713E43D15629B7BD89 /* ADJUtil.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ADJUtil.h; path = Adjust/Internal/ADJUtil.h; sourceTree = "<group>"; };
+		B07A8A0A7F7C28585CA08B555644C1E5 /* ADJActivityPackage.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ADJActivityPackage.h; path = Adjust/Internal/ADJActivityPackage.h; sourceTree = "<group>"; };
+		B0E24E39F84D2DBD7925EDE45DD5FE97 /* ADJAttribution.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ADJAttribution.m; path = Adjust/ADJAttribution.m; sourceTree = "<group>"; };
+		B27A54B9B56FF1BE321D8167BB57C41F /* ADJPackageParams.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ADJPackageParams.m; path = Adjust/Internal/ADJPackageParams.m; sourceTree = "<group>"; };
+		B4201B3E5F5998A6389BCD12E3A1753C /* ADJTimerOnce.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ADJTimerOnce.h; path = Adjust/Internal/ADJTimerOnce.h; sourceTree = "<group>"; };
+		B507ECC30A786484FEC0549EFDC296B9 /* Adjust.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Adjust.release.xcconfig; sourceTree = "<group>"; };
+		B6C339432292171DF9AF35D79D97FF46 /* Adjust-Adjust */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "Adjust-Adjust"; path = Adjust.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		B89FD74A4EB041376B58A34013E67C08 /* ADJPackageParams.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ADJPackageParams.h; path = Adjust/Internal/ADJPackageParams.h; sourceTree = "<group>"; };
+		BBB4885837D83007185D2DC30AD3B0D4 /* ADJAdditions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ADJAdditions.m; path = Adjust/Internal/ADJAdditions.m; sourceTree = "<group>"; };
+		BDE91B9725735C2ABE11109614320C85 /* ADJLinkResolution.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ADJLinkResolution.h; path = Adjust/ADJLinkResolution.h; sourceTree = "<group>"; };
+		BFD40A94DB0C3117E750A9FD66695157 /* AdjustSdk.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AdjustSdk.h; path = UmbrellaHeaders/sdk/AdjustSdk.h; sourceTree = "<group>"; };
+		C06F164CFF3DFA1C1CF476395A514D6D /* ADJSessionSuccess.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ADJSessionSuccess.m; path = Adjust/ADJSessionSuccess.m; sourceTree = "<group>"; };
+		C07F6212EE499AD76730A413BB2E07FB /* ADJUrlStrategy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ADJUrlStrategy.h; path = Adjust/Internal/ADJUrlStrategy.h; sourceTree = "<group>"; };
+		C364690A24E511905EE51334BF80643A /* ADJPurchaseVerificationResult.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ADJPurchaseVerificationResult.h; path = Adjust/ADJPurchaseVerificationResult.h; sourceTree = "<group>"; };
+		C386D058248F2AC668998555AF23FB65 /* ADJTimerCycle.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ADJTimerCycle.m; path = Adjust/Internal/ADJTimerCycle.m; sourceTree = "<group>"; };
+		C7613FBF5FB45C6974E9BC31E94A787A /* ADJActivityKind.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ADJActivityKind.h; path = Adjust/Internal/ADJActivityKind.h; sourceTree = "<group>"; };
+		CA1D456CFA817D20B2EA6BB982A6FE37 /* ADJLogger.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ADJLogger.h; path = Adjust/ADJLogger.h; sourceTree = "<group>"; };
+		D02DB72A2C76634BA182F0DE351BA5C4 /* ADJPurchaseVerificationHandler.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ADJPurchaseVerificationHandler.h; path = Adjust/Internal/ADJPurchaseVerificationHandler.h; sourceTree = "<group>"; };
+		D2171F41E15580CFFD77C06CA93D1D32 /* Adjust-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Adjust-umbrella.h"; sourceTree = "<group>"; };
+		D2F4B2D4D4D6EE94C075332E1970C3F2 /* ADJActivityHandler.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ADJActivityHandler.m; path = Adjust/Internal/ADJActivityHandler.m; sourceTree = "<group>"; };
+		D39864768461AF87FFBC65EBB7D36605 /* ADJPackageBuilder.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ADJPackageBuilder.h; path = Adjust/Internal/ADJPackageBuilder.h; sourceTree = "<group>"; };
+		D56C35716C4F53728B928D5201015930 /* ADJPackageHandler.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ADJPackageHandler.h; path = Adjust/Internal/ADJPackageHandler.h; sourceTree = "<group>"; };
 		D59334EE957EA83FFDB96063917F0EA8 /* Pods-Daygrain */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-Daygrain"; path = Pods_Daygrain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		DBBC2D7E0DE6FE5B72F27AE34F9CC721 /* Pods-Daygrain-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Daygrain-dummy.m"; sourceTree = "<group>"; };
-		EBE78B4A24BDE6F57DB448D4513C6F66 /* Pods-Daygrain-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Daygrain-Info.plist"; sourceTree = "<group>"; };
+		D5D1EF0026F24DA05FBFEA8AD06DA57A /* ADJSessionFailure.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ADJSessionFailure.h; path = Adjust/ADJSessionFailure.h; sourceTree = "<group>"; };
+		D5EB2A09F37F69AC583A378883A978FF /* Adjust.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = Adjust.modulemap; sourceTree = "<group>"; };
+		DB335FCA8F0543E898ACE5EAA33416DF /* Pods-Daygrain.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-Daygrain.modulemap"; sourceTree = "<group>"; };
+		DD908A05EFBC6FA25C33E7229D974AC8 /* ADJUserDefaults.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ADJUserDefaults.h; path = Adjust/Internal/ADJUserDefaults.h; sourceTree = "<group>"; };
+		E1065C70F29944E404CAFAE2319D97EE /* ADJDeeplink.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ADJDeeplink.h; path = Adjust/ADJDeeplink.h; sourceTree = "<group>"; };
+		E28C47CD87E49C4D0C703CE62285EFD5 /* ADJPurchaseVerificationResult.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ADJPurchaseVerificationResult.m; path = Adjust/ADJPurchaseVerificationResult.m; sourceTree = "<group>"; };
+		E651C1F47A8755DF31FABA88026C208C /* ADJResponseData.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ADJResponseData.h; path = Adjust/Internal/ADJResponseData.h; sourceTree = "<group>"; };
+		E6BB12156DA41AF9660D61F81DC3C7D2 /* ADJThirdPartySharing.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ADJThirdPartySharing.m; path = Adjust/ADJThirdPartySharing.m; sourceTree = "<group>"; };
+		E73B6A44BD3A79A59A5187207763B90F /* ADJSessionFailure.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ADJSessionFailure.m; path = Adjust/ADJSessionFailure.m; sourceTree = "<group>"; };
+		E8CAB98451911E5749785858D0C1BC29 /* ADJAdRevenue.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ADJAdRevenue.m; path = Adjust/ADJAdRevenue.m; sourceTree = "<group>"; };
+		EA93DF4019E56BE10E66744C567D1688 /* ADJAdditions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ADJAdditions.h; path = Adjust/Internal/ADJAdditions.h; sourceTree = "<group>"; };
+		ED7A95FFA45F45EEE8F8905079C7AE37 /* Pods-Daygrain.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Daygrain.release.xcconfig"; sourceTree = "<group>"; };
+		EE41F7A9009E2302B3066D556EFE2F1D /* ADJUtil.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ADJUtil.m; path = Adjust/Internal/ADJUtil.m; sourceTree = "<group>"; };
+		F59805C650429C86EFC1E0837E9A92C6 /* ADJStoreInfo.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ADJStoreInfo.m; path = Adjust/ADJStoreInfo.m; sourceTree = "<group>"; };
+		F6D72ACBAC549D492F3DA26491C1FE3E /* ADJEventSuccess.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ADJEventSuccess.h; path = Adjust/ADJEventSuccess.h; sourceTree = "<group>"; };
+		FA44ABAF953A3B638328B183A64B8840 /* ADJAdRevenue.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ADJAdRevenue.h; path = Adjust/ADJAdRevenue.h; sourceTree = "<group>"; };
+		FB6C25F70C77A4DF50027F25755F89C9 /* ADJTimerOnce.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ADJTimerOnce.m; path = Adjust/Internal/ADJTimerOnce.m; sourceTree = "<group>"; };
+		FCC4AA5D9444E13F0FAB40D939675C4D /* ADJDeeplink.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ADJDeeplink.m; path = Adjust/ADJDeeplink.m; sourceTree = "<group>"; };
+		FDD81D0BB8655260D93194E9F2AED0E6 /* ADJSKAdNetwork.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ADJSKAdNetwork.h; path = Adjust/Internal/ADJSKAdNetwork.h; sourceTree = "<group>"; };
+		FE1A007B7365EE347E6FC0249DDDFF82 /* Pods-Daygrain-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Daygrain-umbrella.h"; sourceTree = "<group>"; };
+		FEA4ECAA08408ACE3D55AFB7916A3C48 /* ADJRequestHandler.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = ADJRequestHandler.h; path = Adjust/Internal/ADJRequestHandler.h; sourceTree = "<group>"; };
+		FFB5EC53A7D0A007E8151788FC563DED /* ADJPackageHandler.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ADJPackageHandler.m; path = Adjust/Internal/ADJPackageHandler.m; sourceTree = "<group>"; };
+		FFBD2B319135DFAA5C6C28C49EF11CB0 /* ResourceBundle-Adjust-Adjust-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "ResourceBundle-Adjust-Adjust-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		F3EF5E895703EA34727851A382CBE2C5 /* Frameworks */ = {
+		5F39E414AFBA2C09C8EF44E259B58B9A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8450364EFFAFBA1615749274B280A178 /* Foundation.framework in Frameworks */,
+				12245927E9F6A1B479F4A3ADB00B2DD3 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CA84AE226A2A4C71B22C347CE1194515 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FEE30C0743ED1EDC8B1F22279F33510F /* Foundation.framework in Frameworks */,
+				A240609C04299778F75765D84041858B /* SystemConfiguration.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DC24596A96F6551EEA2F076F84C9F21C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		019472BF33E867CAB44C982EB3175FD9 /* Pods-Daygrain */ = {
+		15DCBAAED8DB90E75DAAFAF247B8BCED /* Adjust */ = {
 			isa = PBXGroup;
 			children = (
-				B75581AA80EFD2AFA76703A82B42F200 /* Pods-Daygrain.modulemap */,
-				727170C2C70662A5680ADE20F2959F9C /* Pods-Daygrain-acknowledgements.markdown */,
-				8F4FEBBB511EED163F611992CBBD3050 /* Pods-Daygrain-acknowledgements.plist */,
-				DBBC2D7E0DE6FE5B72F27AE34F9CC721 /* Pods-Daygrain-dummy.m */,
-				EBE78B4A24BDE6F57DB448D4513C6F66 /* Pods-Daygrain-Info.plist */,
-				C682A8A0B6C17FA4B215DEE8BC192F5E /* Pods-Daygrain-umbrella.h */,
-				02BA5D7061FD4FF5926887E079B30189 /* Pods-Daygrain.debug.xcconfig */,
-				C4E2714121125F2C5F74270AB36BCDEF /* Pods-Daygrain.release.xcconfig */,
+				E32B351D099D10B5A3A997019519D50C /* Adjust */,
+				8E50C3984F7956795AB572471F0BC3FE /* Support Files */,
+			);
+			name = Adjust;
+			path = Adjust;
+			sourceTree = "<group>";
+		};
+		1628BF05B4CAFDCC3549A101F5A10A17 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				30893100F3C6ACE2CF0F081AF7581851 /* iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		30893100F3C6ACE2CF0F081AF7581851 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				08A29F3A4CF2BE85A4E26F4BDC4B39BC /* Foundation.framework */,
+				17D0408B9AE1758D42BEE7EFB0729394 /* SystemConfiguration.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		3D5850232245FE920021F120519EEF5A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7FF5C62DF1E2D492F272FD7D2A1EF4A3 /* Adjust */,
+				B6C339432292171DF9AF35D79D97FF46 /* Adjust-Adjust */,
+				D59334EE957EA83FFDB96063917F0EA8 /* Pods-Daygrain */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		58426B708AF41DA9A2D54FE1427B5BF3 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				15DCBAAED8DB90E75DAAFAF247B8BCED /* Adjust */,
+				58D7F870F1A078E942E33CBD5E75098A /* AdjustSignature */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		58D7F870F1A078E942E33CBD5E75098A /* AdjustSignature */ = {
+			isa = PBXGroup;
+			children = (
+				F5FE753DF773C105E048D3857F616E92 /* Frameworks */,
+				9FA946010BE0BE0C2CC294B965207740 /* Support Files */,
+			);
+			name = AdjustSignature;
+			path = AdjustSignature;
+			sourceTree = "<group>";
+		};
+		5F52613F91D354891C6B217DB32FFE8B /* Pods-Daygrain */ = {
+			isa = PBXGroup;
+			children = (
+				DB335FCA8F0543E898ACE5EAA33416DF /* Pods-Daygrain.modulemap */,
+				86944B0FE6223E331C38BCACC53732C6 /* Pods-Daygrain-acknowledgements.markdown */,
+				02C42EAFEE668768361FEAC23AD0FC5E /* Pods-Daygrain-acknowledgements.plist */,
+				03ACB48C4A9924912B2B27D35E88D0D6 /* Pods-Daygrain-dummy.m */,
+				983F8820E8E06BFE4AEEA4DCC490BE22 /* Pods-Daygrain-frameworks.sh */,
+				0B587AEA605D6BACBBA6B8AED9A53457 /* Pods-Daygrain-Info.plist */,
+				FE1A007B7365EE347E6FC0249DDDFF82 /* Pods-Daygrain-umbrella.h */,
+				7CADB0498B90EA35FC3D09C041A0F488 /* Pods-Daygrain.debug.xcconfig */,
+				ED7A95FFA45F45EEE8F8905079C7AE37 /* Pods-Daygrain.release.xcconfig */,
 			);
 			name = "Pods-Daygrain";
 			path = "Target Support Files/Pods-Daygrain";
 			sourceTree = "<group>";
 		};
-		C9D55C3953EFD08162FE2E7C0BE3F2DA /* Targets Support Files */ = {
+		79A53081C19DFB3418851C303BF74C25 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				019472BF33E867CAB44C982EB3175FD9 /* Pods-Daygrain */,
+				1999E143609A495871D635230394AC38 /* PrivacyInfo.xcprivacy */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		7F7A5E06D8BA77A37357B6EB019C68B5 /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				5F52613F91D354891C6B217DB32FFE8B /* Pods-Daygrain */,
 			);
 			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		8E50C3984F7956795AB572471F0BC3FE /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				D5EB2A09F37F69AC583A378883A978FF /* Adjust.modulemap */,
+				3F113CA6825B74C67C29D815030801E7 /* Adjust-dummy.m */,
+				974C892970C9B3B76D0A1391E45F02E0 /* Adjust-Info.plist */,
+				6805680252522FCCCE6BC3390EFFFB44 /* Adjust-prefix.pch */,
+				D2171F41E15580CFFD77C06CA93D1D32 /* Adjust-umbrella.h */,
+				133C76CC1772137E00B18CBE8138EC06 /* Adjust.debug.xcconfig */,
+				B507ECC30A786484FEC0549EFDC296B9 /* Adjust.release.xcconfig */,
+				FFBD2B319135DFAA5C6C28C49EF11CB0 /* ResourceBundle-Adjust-Adjust-Info.plist */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/Adjust";
+			sourceTree = "<group>";
+		};
+		9FA946010BE0BE0C2CC294B965207740 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				24121FAAFA93E69BE455F3CEF1AD945F /* AdjustSignature-xcframeworks.sh */,
+				A5492C707C9FBD6981A5AB03C5D346CD /* AdjustSignature.debug.xcconfig */,
+				2F21F3F33EF71DE10124E8072955EF02 /* AdjustSignature.release.xcconfig */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/AdjustSignature";
 			sourceTree = "<group>";
 		};
 		CF1408CF629C7361332E53B88F7BD30C = {
 			isa = PBXGroup;
 			children = (
 				9D940727FF8FB9C785EB98E56350EF41 /* Podfile */,
-				D210D550F4EA176C3123ED886F8F87F5 /* Frameworks */,
-				F080A1B867227D297C06EE55DAC75EC5 /* Products */,
-				C9D55C3953EFD08162FE2E7C0BE3F2DA /* Targets Support Files */,
+				1628BF05B4CAFDCC3549A101F5A10A17 /* Frameworks */,
+				58426B708AF41DA9A2D54FE1427B5BF3 /* Pods */,
+				3D5850232245FE920021F120519EEF5A /* Products */,
+				7F7A5E06D8BA77A37357B6EB019C68B5 /* Targets Support Files */,
 			);
 			sourceTree = "<group>";
 		};
-		D210D550F4EA176C3123ED886F8F87F5 /* Frameworks */ = {
+		E32B351D099D10B5A3A997019519D50C /* Adjust */ = {
 			isa = PBXGroup;
 			children = (
-				E4801F62A6B08CD9B5410329F1A18FDE /* iOS */,
+				29D4EF438C066AAF79EE7EE74C55A1C8 /* ADJActivityHandler.h */,
+				D2F4B2D4D4D6EE94C075332E1970C3F2 /* ADJActivityHandler.m */,
+				C7613FBF5FB45C6974E9BC31E94A787A /* ADJActivityKind.h */,
+				36C51E9398C52804983E3B862D9D7023 /* ADJActivityKind.m */,
+				B07A8A0A7F7C28585CA08B555644C1E5 /* ADJActivityPackage.h */,
+				343CBD78B6888A5E978EFF257B978A58 /* ADJActivityPackage.m */,
+				403F232FF45E91A7A36093738589C57A /* ADJActivityState.h */,
+				7D6D8B2226E555A2D0A9D57FB3AB46CF /* ADJActivityState.m */,
+				EA93DF4019E56BE10E66744C567D1688 /* ADJAdditions.h */,
+				BBB4885837D83007185D2DC30AD3B0D4 /* ADJAdditions.m */,
+				2438AB320A9E849BCDD16FC2F214EEE5 /* ADJAdjustFactory.h */,
+				03F15027701179AE1D2F5AB328A14CC9 /* ADJAdjustFactory.m */,
+				FA44ABAF953A3B638328B183A64B8840 /* ADJAdRevenue.h */,
+				E8CAB98451911E5749785858D0C1BC29 /* ADJAdRevenue.m */,
+				31EDC413919F3FB60D097D26CF852544 /* ADJAppStorePurchase.h */,
+				828B8878876C55684CE189A65947EE2E /* ADJAppStorePurchase.m */,
+				A917CF345C98D6AE39EA03CAB2C3ADA5 /* ADJAppStoreSubscription.h */,
+				68AF386867701940D2A1604148469C28 /* ADJAppStoreSubscription.m */,
+				00D9D054C33B56F6DFF2C67E0B63C6D7 /* ADJAttribution.h */,
+				B0E24E39F84D2DBD7925EDE45DD5FE97 /* ADJAttribution.m */,
+				9595349CB5612C1E619C416CB22E5D40 /* ADJAttributionHandler.h */,
+				338B0BE64C096DA6F980090E39D2D08B /* ADJAttributionHandler.m */,
+				68F659CB37E65846F911AE09CE50C7FD /* ADJBackoffStrategy.h */,
+				41DD794B1886F70EAA9EA10AAA7FF0D7 /* ADJBackoffStrategy.m */,
+				1E8A391329E6E712AC51B360D17F8F5B /* ADJConfig.h */,
+				71F86C60A8AC4BE34C5057EF4AEA40D0 /* ADJConfig.m */,
+				E1065C70F29944E404CAFAE2319D97EE /* ADJDeeplink.h */,
+				FCC4AA5D9444E13F0FAB40D939675C4D /* ADJDeeplink.m */,
+				A621AA61972E64ABCD6FE7893B981977 /* ADJEvent.h */,
+				0FD8558B2C6AAC670E889354C52AA132 /* ADJEvent.m */,
+				92CD9AE9496F8AE97F0D712130BFAFA6 /* ADJEventFailure.h */,
+				6043E8679387A5BFF97FD484173D3B35 /* ADJEventFailure.m */,
+				F6D72ACBAC549D492F3DA26491C1FE3E /* ADJEventSuccess.h */,
+				2378822D59E832B3D28949B88FDEAB49 /* ADJEventSuccess.m */,
+				57DA46D8D1A5DC819654A7AD3E2AFD9E /* ADJGlobalParameters.h */,
+				98DC5982728F3C13C01F91231666FF14 /* ADJGlobalParameters.m */,
+				BDE91B9725735C2ABE11109614320C85 /* ADJLinkResolution.h */,
+				9A1AF9BE03FC04CA170D49F311E06E1A /* ADJLinkResolution.m */,
+				CA1D456CFA817D20B2EA6BB982A6FE37 /* ADJLogger.h */,
+				26B0A3F2ABEE8CE21181AA187DED0A03 /* ADJLogger.m */,
+				46E89BE080678E7DC97A98008175E404 /* ADJOdmManager.h */,
+				95625ECDF8F63DDAC4EBAD91E6AE3EB0 /* ADJOdmManager.m */,
+				D39864768461AF87FFBC65EBB7D36605 /* ADJPackageBuilder.h */,
+				425C41B5FF38D3790A44E62E055A1E15 /* ADJPackageBuilder.m */,
+				D56C35716C4F53728B928D5201015930 /* ADJPackageHandler.h */,
+				FFB5EC53A7D0A007E8151788FC563DED /* ADJPackageHandler.m */,
+				B89FD74A4EB041376B58A34013E67C08 /* ADJPackageParams.h */,
+				B27A54B9B56FF1BE321D8167BB57C41F /* ADJPackageParams.m */,
+				D02DB72A2C76634BA182F0DE351BA5C4 /* ADJPurchaseVerificationHandler.h */,
+				183D99024B162246D329CA72F121602D /* ADJPurchaseVerificationHandler.m */,
+				C364690A24E511905EE51334BF80643A /* ADJPurchaseVerificationResult.h */,
+				E28C47CD87E49C4D0C703CE62285EFD5 /* ADJPurchaseVerificationResult.m */,
+				FEA4ECAA08408ACE3D55AFB7916A3C48 /* ADJRequestHandler.h */,
+				009C0AED72E146BF40B0434ED5D6B9E8 /* ADJRequestHandler.m */,
+				E651C1F47A8755DF31FABA88026C208C /* ADJResponseData.h */,
+				1526FA426A5AEF80B300BCC8DEB6C43D /* ADJResponseData.m */,
+				0CB7DA0275595F99A455250638E09475 /* ADJSdkClickHandler.h */,
+				4C091308C61B16CF0E41E2F120E86799 /* ADJSdkClickHandler.m */,
+				D5D1EF0026F24DA05FBFEA8AD06DA57A /* ADJSessionFailure.h */,
+				E73B6A44BD3A79A59A5187207763B90F /* ADJSessionFailure.m */,
+				91C3AB1A7F49E3D1C9B43EFEBE8DB879 /* ADJSessionSuccess.h */,
+				C06F164CFF3DFA1C1CF476395A514D6D /* ADJSessionSuccess.m */,
+				FDD81D0BB8655260D93194E9F2AED0E6 /* ADJSKAdNetwork.h */,
+				19E961A741A6A9C887D2C26AB26F03DB /* ADJSKAdNetwork.m */,
+				8CC855353F1990AA2BD481A2E17CF2D4 /* ADJStoreInfo.h */,
+				F59805C650429C86EFC1E0837E9A92C6 /* ADJStoreInfo.m */,
+				83436677C10ACB39F4AD076092126D63 /* ADJThirdPartySharing.h */,
+				E6BB12156DA41AF9660D61F81DC3C7D2 /* ADJThirdPartySharing.m */,
+				84154C64FDB08DB8E22481DA3EAB35CC /* ADJTimerCycle.h */,
+				C386D058248F2AC668998555AF23FB65 /* ADJTimerCycle.m */,
+				B4201B3E5F5998A6389BCD12E3A1753C /* ADJTimerOnce.h */,
+				FB6C25F70C77A4DF50027F25755F89C9 /* ADJTimerOnce.m */,
+				C07F6212EE499AD76730A413BB2E07FB /* ADJUrlStrategy.h */,
+				89D75661CD38BACA948526802D1A7030 /* ADJUrlStrategy.m */,
+				DD908A05EFBC6FA25C33E7229D974AC8 /* ADJUserDefaults.h */,
+				AC25DA8371EB5BFE8AA2C4CA277BC981 /* ADJUserDefaults.m */,
+				3158664C8FC2E8D16ABF535CBFCE8ED7 /* Adjust.h */,
+				2687316B442202209F34860D7D29F551 /* Adjust.m */,
+				BFD40A94DB0C3117E750A9FD66695157 /* AdjustSdk.h */,
+				ADBF1395A03388713E43D15629B7BD89 /* ADJUtil.h */,
+				EE41F7A9009E2302B3066D556EFE2F1D /* ADJUtil.m */,
+				79A53081C19DFB3418851C303BF74C25 /* Resources */,
+			);
+			name = Adjust;
+			sourceTree = "<group>";
+		};
+		F5FE753DF773C105E048D3857F616E92 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				97FA83396B40EF198834CC86D2437E2E /* AdjustSigSdk.xcframework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		E4801F62A6B08CD9B5410329F1A18FDE /* iOS */ = {
-			isa = PBXGroup;
-			children = (
-				384DDA2CB25005BD6479B5987C619DD4 /* Foundation.framework */,
-			);
-			name = iOS;
-			sourceTree = "<group>";
-		};
-		F080A1B867227D297C06EE55DAC75EC5 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				D59334EE957EA83FFDB96063917F0EA8 /* Pods-Daygrain */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		7578E77F8BE13C89F3FFB97D893CDCE5 /* Headers */ = {
+		319A867D4EA1622A0335EBDB9095699F /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7E8037E0675FB516DD3A709D5F7BF10F /* Pods-Daygrain-umbrella.h in Headers */,
+				1DE1D440220130249AC0F1BC9DF518DF /* ADJActivityHandler.h in Headers */,
+				865CB963207D9E11A4B543F8573BCDF7 /* ADJActivityKind.h in Headers */,
+				8CFB7C66D48745762498CB15505C679D /* ADJActivityPackage.h in Headers */,
+				68FEE6949C56737E04D210908211F81D /* ADJActivityState.h in Headers */,
+				0B43704F139A7678A8A4A4986CDE3CC0 /* ADJAdditions.h in Headers */,
+				278387AAACF28F32032C42F9269CC7FD /* ADJAdjustFactory.h in Headers */,
+				C01F14889B6FFDD47DBE57872BD95F73 /* ADJAdRevenue.h in Headers */,
+				DAFFFE153F26F4FE18D0C8B1D6FE5F6E /* ADJAppStorePurchase.h in Headers */,
+				70BFAB3D22D6A5EF9C7C33FE2EFC662F /* ADJAppStoreSubscription.h in Headers */,
+				86C6557CA71A165F9B657BA98DCF9D89 /* ADJAttribution.h in Headers */,
+				0818631DF3273A76295990D1A98A83EA /* ADJAttributionHandler.h in Headers */,
+				BD94F8E4499645475BBB18DCB588C0FE /* ADJBackoffStrategy.h in Headers */,
+				C868752F93A7AA838744A31B0F88727B /* ADJConfig.h in Headers */,
+				016BFE3028E512D1C1BE9564B7A96345 /* ADJDeeplink.h in Headers */,
+				C13B5EA7DB82D1AAF72E16E87BD82136 /* ADJEvent.h in Headers */,
+				FE882B8398747C1136443E403E887A4B /* ADJEventFailure.h in Headers */,
+				751A37E776335975A0361117B3923C1A /* ADJEventSuccess.h in Headers */,
+				606961FA7D2F639786ED9F0C76680089 /* ADJGlobalParameters.h in Headers */,
+				BD7842D265FC2318B6ABD248472CE81C /* ADJLinkResolution.h in Headers */,
+				0EF07CFC4C8BB57AB9DA09081978B402 /* ADJLogger.h in Headers */,
+				40178F79C38B22BAF6C09C3C8CD6B7E6 /* ADJOdmManager.h in Headers */,
+				C95C1DB791D93A52774BCFA91181C033 /* ADJPackageBuilder.h in Headers */,
+				53CC3471980B9B342756277CB90AA0D8 /* ADJPackageHandler.h in Headers */,
+				9B27F3DCA32CBE7BC0154800B7CA09E8 /* ADJPackageParams.h in Headers */,
+				0128104683C3FA829EDB75D76225ECE0 /* ADJPurchaseVerificationHandler.h in Headers */,
+				47EA4A7707CC3AF25930EFF061899B06 /* ADJPurchaseVerificationResult.h in Headers */,
+				830905829DFFBFE2323A07540DECF499 /* ADJRequestHandler.h in Headers */,
+				DDE02D2146E4762038C1A13894AD55E2 /* ADJResponseData.h in Headers */,
+				5EF5D0C2E66A9726BBC56943799A97FF /* ADJSdkClickHandler.h in Headers */,
+				B2DC5C417D194312F47C85AD95EBEB9B /* ADJSessionFailure.h in Headers */,
+				C774DA6AEB0A605D358F90A1F08F744A /* ADJSessionSuccess.h in Headers */,
+				BACAF8E84A588661AABCE7F5005F1965 /* ADJSKAdNetwork.h in Headers */,
+				DA46D8541B69E68D44F3C2617B1B02F0 /* ADJStoreInfo.h in Headers */,
+				597FD871877D489AEDF7AB877F2E588F /* ADJThirdPartySharing.h in Headers */,
+				1B5673829294E486FB7537F130188F1B /* ADJTimerCycle.h in Headers */,
+				130293D2673FC737E1D92389942BB785 /* ADJTimerOnce.h in Headers */,
+				5616F3F4C051216B2A2652F874C9AC5F /* ADJUrlStrategy.h in Headers */,
+				5AF66A4BA5AF1E3F75B895847D8557DA /* ADJUserDefaults.h in Headers */,
+				FA24892073AECC7907349AB160353976 /* Adjust.h in Headers */,
+				30D8DEDD0108FE3EC96EB4016EC3FD50 /* Adjust-umbrella.h in Headers */,
+				5486950E51AC68ADE716B1B53A33865F /* AdjustSdk.h in Headers */,
+				D48FC3BFF11847C30B5E0067863D1133 /* ADJUtil.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		67F9296CE4E27CC32E681FCC40F6C9E3 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BBD232902432EBECBE26AD0305FF2400 /* Pods-Daygrain-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		AF5677759FF6EC68A89029F72EA2B4CE /* Pods-Daygrain */ = {
+		471352CEDDB3183F0E470F770197C032 /* Adjust-Adjust */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 69AFB29E9C8CA1ABBC162762070016F0 /* Build configuration list for PBXNativeTarget "Pods-Daygrain" */;
+			buildConfigurationList = 663DA69DAAA99C7C83EA296D54E888C0 /* Build configuration list for PBXNativeTarget "Adjust-Adjust" */;
 			buildPhases = (
-				7578E77F8BE13C89F3FFB97D893CDCE5 /* Headers */,
-				5CA5F20E9C99F41972CCB81D8316C439 /* Sources */,
-				F3EF5E895703EA34727851A382CBE2C5 /* Frameworks */,
-				0B8BF58F3644F8017D83BC993B0FC4AA /* Resources */,
+				180F3AB3750402FA027F1A0601D2F321 /* Sources */,
+				DC24596A96F6551EEA2F076F84C9F21C /* Frameworks */,
+				A6D532AEAD39653D744E6C2CA641B2B1 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+			);
+			name = "Adjust-Adjust";
+			productName = Adjust;
+			productReference = B6C339432292171DF9AF35D79D97FF46 /* Adjust-Adjust */;
+			productType = "com.apple.product-type.bundle";
+		};
+		7111F362EA0D14BECD8B96EA1EAA5F79 /* Adjust */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D0B471A1A2624AACCC036DA264E60292 /* Build configuration list for PBXNativeTarget "Adjust" */;
+			buildPhases = (
+				319A867D4EA1622A0335EBDB9095699F /* Headers */,
+				96F6C3716D60A4AFA362442AB3B0410C /* Sources */,
+				CA84AE226A2A4C71B22C347CE1194515 /* Frameworks */,
+				14F5A2006F5CF497949F1A6EE8C5092F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				82C3FA8FC8A6BEDDDBF9EFC5BCCD1A40 /* PBXTargetDependency */,
+				6F127495760CDE3A91719F09232B3358 /* PBXTargetDependency */,
+			);
+			name = Adjust;
+			productName = AdjustSdk;
+			productReference = 7FF5C62DF1E2D492F272FD7D2A1EF4A3 /* Adjust */;
+			productType = "com.apple.product-type.framework";
+		};
+		AF5677759FF6EC68A89029F72EA2B4CE /* Pods-Daygrain */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E26D12A252A0751445E8EBAC8BBA7A11 /* Build configuration list for PBXNativeTarget "Pods-Daygrain" */;
+			buildPhases = (
+				67F9296CE4E27CC32E681FCC40F6C9E3 /* Headers */,
+				EEEE77F1BE527A677B48956B98BE1412 /* Sources */,
+				5F39E414AFBA2C09C8EF44E259B58B9A /* Frameworks */,
+				0886E4D3533FF441E7783F654D0FB1C6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				19D02FD1B3B781E8FD2F9DF23E5F973A /* PBXTargetDependency */,
+				6C37F3D9257961595FF47B45C8830885 /* PBXTargetDependency */,
 			);
 			name = "Pods-Daygrain";
 			productName = Pods_Daygrain;
@@ -148,37 +647,294 @@
 			mainGroup = CF1408CF629C7361332E53B88F7BD30C;
 			minimizedProjectReferenceProxies = 0;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = F080A1B867227D297C06EE55DAC75EC5 /* Products */;
+			productRefGroup = 3D5850232245FE920021F120519EEF5A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
+				7111F362EA0D14BECD8B96EA1EAA5F79 /* Adjust */,
+				471352CEDDB3183F0E470F770197C032 /* Adjust-Adjust */,
+				26FB84987CFFD20C5EE3572256C80B04 /* AdjustSignature */,
 				AF5677759FF6EC68A89029F72EA2B4CE /* Pods-Daygrain */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		0B8BF58F3644F8017D83BC993B0FC4AA /* Resources */ = {
+		0886E4D3533FF441E7783F654D0FB1C6 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		14F5A2006F5CF497949F1A6EE8C5092F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EF6AD1EFB7289220D6EAFCADB7BFEA19 /* Adjust-Adjust in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A6D532AEAD39653D744E6C2CA641B2B1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1EB11A4E660DA4536638C8DEF4AD6AA8 /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		D493E4F706D2A67AF63A4E1380A77B5B /* [CP] Copy XCFrameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/AdjustSignature/AdjustSignature-xcframeworks-input-files.xcfilelist",
+			);
+			name = "[CP] Copy XCFrameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/AdjustSignature/AdjustSignature-xcframeworks-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/AdjustSignature/AdjustSignature-xcframeworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
-		5CA5F20E9C99F41972CCB81D8316C439 /* Sources */ = {
+		180F3AB3750402FA027F1A0601D2F321 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				969CB7C73E665D573D26F5DD260F9EA9 /* Pods-Daygrain-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		96F6C3716D60A4AFA362442AB3B0410C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				59BA3683CCBC8522F0612359FEE2AA9B /* ADJActivityHandler.m in Sources */,
+				52363A9D3BD8C966729BD9453012B0DB /* ADJActivityKind.m in Sources */,
+				394A8BF5379D7F1740174BBF33FE506A /* ADJActivityPackage.m in Sources */,
+				A27788914DE56C72E64348501BECAF41 /* ADJActivityState.m in Sources */,
+				04751039101D50AD7104F83004378882 /* ADJAdditions.m in Sources */,
+				8F8A02E4DD4A543419D22213F91B20E6 /* ADJAdjustFactory.m in Sources */,
+				4D5D7A9194053F8019BA8F6AAD2CE0BC /* ADJAdRevenue.m in Sources */,
+				620B452EF3C1714A409240370C38A4B8 /* ADJAppStorePurchase.m in Sources */,
+				189DBC335CFD0BAEEC3C791C7EF87954 /* ADJAppStoreSubscription.m in Sources */,
+				EB69623EC644E38685C1538BCBD334A1 /* ADJAttribution.m in Sources */,
+				07DE4C1A63C34201350CE26554908384 /* ADJAttributionHandler.m in Sources */,
+				BA1A1F2FA3712ED999B67EB23AA59D3E /* ADJBackoffStrategy.m in Sources */,
+				D0A3DE8FE78789C44309392622925EAC /* ADJConfig.m in Sources */,
+				9DB1E1C302053BBBC0057C9079CDF31E /* ADJDeeplink.m in Sources */,
+				8C6A8856F04BA294226E18A2F8E64BA8 /* ADJEvent.m in Sources */,
+				77926F39A24B4DFBD4865A10243F5A91 /* ADJEventFailure.m in Sources */,
+				96A3D62E27AD2D72A34FFB9F181F2F75 /* ADJEventSuccess.m in Sources */,
+				C46A77534DFD7B10D8BAB1913DC53BC3 /* ADJGlobalParameters.m in Sources */,
+				DF4F09816B07390398EBC61BA2CD7B9B /* ADJLinkResolution.m in Sources */,
+				D7291A6A8D5422EB550C09535F708B2B /* ADJLogger.m in Sources */,
+				511244F5ED95BB01DB6D7A55F4CBAEFF /* ADJOdmManager.m in Sources */,
+				EE34CF65599B77016E91F76DF08504E2 /* ADJPackageBuilder.m in Sources */,
+				AFF85C439836A0668F05B43F07B8D070 /* ADJPackageHandler.m in Sources */,
+				8152864C012D024CC3E386ACB0D45F05 /* ADJPackageParams.m in Sources */,
+				AD3C6D449121EC4196118D1054CFAE2E /* ADJPurchaseVerificationHandler.m in Sources */,
+				189CB0514D580DCE8E52E5182BB64D46 /* ADJPurchaseVerificationResult.m in Sources */,
+				61F25D46C66CBBE68FA10E058EC68DB3 /* ADJRequestHandler.m in Sources */,
+				17A5B2688DE5D8202400254F68565825 /* ADJResponseData.m in Sources */,
+				4D3B46610447D3780B1450FE1E42D87B /* ADJSdkClickHandler.m in Sources */,
+				0C7A18C85385634DE60FA669B2E1B71E /* ADJSessionFailure.m in Sources */,
+				565F60CD6AF33834A9BB9181EE777D4B /* ADJSessionSuccess.m in Sources */,
+				20A50C0D048FD8E571887487778E7CB9 /* ADJSKAdNetwork.m in Sources */,
+				EAB0AD352E223AEB7308CE40BE4C536C /* ADJStoreInfo.m in Sources */,
+				A70F7C6D242C90E1D81AC929A15E5E60 /* ADJThirdPartySharing.m in Sources */,
+				AC4C7F7485300986A7DF2B32451F47D0 /* ADJTimerCycle.m in Sources */,
+				731D71EEC4F37A725D258C74A067C7BC /* ADJTimerOnce.m in Sources */,
+				69099D5156CFCE55A08D1E8DB4B468A5 /* ADJUrlStrategy.m in Sources */,
+				7ABF2A5762E0943E4C5629E4F15C2640 /* ADJUserDefaults.m in Sources */,
+				AACFC9C55135C21A75B48615B0A5194F /* Adjust.m in Sources */,
+				7E0130D96AB944702C0C79771313F47C /* Adjust-dummy.m in Sources */,
+				75F28BB975655696DFC153755B003013 /* ADJUtil.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EEEE77F1BE527A677B48956B98BE1412 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9EA5904B3D9E17F1E943F326246B26F1 /* Pods-Daygrain-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		19D02FD1B3B781E8FD2F9DF23E5F973A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Adjust;
+			target = 7111F362EA0D14BECD8B96EA1EAA5F79 /* Adjust */;
+			targetProxy = 7DA047C923CCE6BD6F2AD631B954D629 /* PBXContainerItemProxy */;
+		};
+		6C37F3D9257961595FF47B45C8830885 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = AdjustSignature;
+			target = 26FB84987CFFD20C5EE3572256C80B04 /* AdjustSignature */;
+			targetProxy = 9EBDB1020F07DE7BFADE4B512D071246 /* PBXContainerItemProxy */;
+		};
+		6F127495760CDE3A91719F09232B3358 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = AdjustSignature;
+			target = 26FB84987CFFD20C5EE3572256C80B04 /* AdjustSignature */;
+			targetProxy = 7D74315B34B9B2F235B572813B3AB4E3 /* PBXContainerItemProxy */;
+		};
+		82C3FA8FC8A6BEDDDBF9EFC5BCCD1A40 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Adjust-Adjust";
+			target = 471352CEDDB3183F0E470F770197C032 /* Adjust-Adjust */;
+			targetProxy = 9960B56F6F120F11F1D8C0E00E4ABB27 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		0FFF0EE9E404169C23727B9F025C5BB7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A5492C707C9FBD6981A5AB03C5D346CD /* AdjustSignature.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		26835EE40FD9BAB0753E9EEFE254089C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7CADB0498B90EA35FC3D09C041A0F488 /* Pods-Daygrain.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				INFOPLIST_FILE = "Target Support Files/Pods-Daygrain/Pods-Daygrain-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-Daygrain/Pods-Daygrain.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		74F72D8FB367E3ABE4BD1B319C76AA69 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 133C76CC1772137E00B18CBE8138EC06 /* Adjust.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_PREFIX_HEADER = "Target Support Files/Adjust/Adjust-prefix.pch";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Target Support Files/Adjust/Adjust-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/Adjust/Adjust.modulemap";
+				PRODUCT_MODULE_NAME = AdjustSdk;
+				PRODUCT_NAME = AdjustSdk;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		85A15E165A3D0276FBABD2E7A937F790 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = ED7A95FFA45F45EEE8F8905079C7AE37 /* Pods-Daygrain.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				INFOPLIST_FILE = "Target Support Files/Pods-Daygrain/Pods-Daygrain-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-Daygrain/Pods-Daygrain.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 		90D4D09BCB6A4660E43ACBE9ECB6FE9A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -245,46 +1001,6 @@
 			};
 			name = Debug;
 		};
-		9357166E73D3B50F23FC104636B11E6C /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = C4E2714121125F2C5F74270AB36BCDEF /* Pods-Daygrain.release.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = NO;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				INFOPLIST_FILE = "Target Support Files/Pods-Daygrain/Pods-Daygrain-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-Daygrain/Pods-Daygrain.modulemap";
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
 		9553C89E183877A5CB2F3C6801BEC129 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -347,11 +1063,46 @@
 			};
 			name = Release;
 		};
-		A44B89BAB713725F88D5FAB9A93E40B7 /* Debug */ = {
+		CD594BE790A4A5CFB3B2F9CEC4D2B75A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 02BA5D7061FD4FF5926887E079B30189 /* Pods-Daygrain.debug.xcconfig */;
+			baseConfigurationReference = B507ECC30A786484FEC0549EFDC296B9 /* Adjust.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CODE_SIGNING_ALLOWED = NO;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/Adjust";
+				IBSC_MODULE = AdjustSdk;
+				INFOPLIST_FILE = "Target Support Files/Adjust/ResourceBundle-Adjust-Adjust-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				PRODUCT_NAME = Adjust;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Release;
+		};
+		DAB02A34E2F81BDE0D4579AF018967B5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2F21F3F33EF71DE10124E8072955EF02 /* AdjustSignature.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		FE8C2A3951390D208C216449B8AC8276 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B507ECC30A786484FEC0549EFDC296B9 /* Adjust.release.xcconfig */;
+			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -363,7 +1114,9 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_MODULE_VERIFIER = NO;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				INFOPLIST_FILE = "Target Support Files/Pods-Daygrain/Pods-Daygrain-Info.plist";
+				GCC_PREFIX_HEADER = "Target Support Files/Adjust/Adjust-prefix.pch";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Target Support Files/Adjust/Adjust-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -371,18 +1124,35 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-Daygrain/Pods-Daygrain.modulemap";
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				MODULEMAP_FILE = "Target Support Files/Adjust/Adjust.modulemap";
+				PRODUCT_MODULE_NAME = AdjustSdk;
+				PRODUCT_NAME = AdjustSdk;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		FE8FEACAC3F96E95EE19E10E4DA52863 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 133C76CC1772137E00B18CBE8138EC06 /* Adjust.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGNING_ALLOWED = NO;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/Adjust";
+				IBSC_MODULE = AdjustSdk;
+				INFOPLIST_FILE = "Target Support Files/Adjust/ResourceBundle-Adjust-Adjust-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				PRODUCT_NAME = Adjust;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
+				WRAPPER_EXTENSION = bundle;
 			};
 			name = Debug;
 		};
@@ -398,11 +1168,38 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		69AFB29E9C8CA1ABBC162762070016F0 /* Build configuration list for PBXNativeTarget "Pods-Daygrain" */ = {
+		663DA69DAAA99C7C83EA296D54E888C0 /* Build configuration list for PBXNativeTarget "Adjust-Adjust" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				A44B89BAB713725F88D5FAB9A93E40B7 /* Debug */,
-				9357166E73D3B50F23FC104636B11E6C /* Release */,
+				FE8FEACAC3F96E95EE19E10E4DA52863 /* Debug */,
+				CD594BE790A4A5CFB3B2F9CEC4D2B75A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7ABA92FC50F26755187A8A56133CC6A0 /* Build configuration list for PBXAggregateTarget "AdjustSignature" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0FFF0EE9E404169C23727B9F025C5BB7 /* Debug */,
+				DAB02A34E2F81BDE0D4579AF018967B5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D0B471A1A2624AACCC036DA264E60292 /* Build configuration list for PBXNativeTarget "Adjust" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				74F72D8FB367E3ABE4BD1B319C76AA69 /* Debug */,
+				FE8C2A3951390D208C216449B8AC8276 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E26D12A252A0751445E8EBAC8BBA7A11 /* Build configuration list for PBXNativeTarget "Pods-Daygrain" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				26835EE40FD9BAB0753E9EEFE254089C /* Debug */,
+				85A15E165A3D0276FBABD2E7A937F790 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

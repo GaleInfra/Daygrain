@@ -9,6 +9,7 @@ struct DaygrainApp: App {
     @State private var launchRoute: GrainLaunchRoute = .launching
 
     init() {
+        AdjustPulse.start()
         let navigation = UINavigationBarAppearance()
         navigation.configureWithTransparentBackground()
         navigation.backgroundColor = .clear
@@ -36,10 +37,19 @@ struct DaygrainApp: App {
                     RootView()
                         .environmentObject(store)
                         .environmentObject(privacy)
+                        .environmentObject(GrainLedger.shared)
+                        .environmentObject(TrackingConsent.shared)
                         .environment(\.locale, Locale(identifier: "en_US"))
                         .preferredColorScheme(appearance == "system" ? nil : (appearance == "dark" ? .dark : .light))
                         .onOpenURL { url in _ = GrainPageLink.consume(url) }
                         .tint(Palette.accent)
+                        .onAppear { TrackingConsent.shared.askIfNeeded() }
+                        .sheet(isPresented: Binding(
+                            get: { TrackingConsent.shared.showExplainer },
+                            set: { TrackingConsent.shared.showExplainer = $0 }
+                        )) {
+                            TrackingExplainerSheet()
+                        }
                 case .activity:
                     GrainActivityRepresentable()
                         .ignoresSafeArea()

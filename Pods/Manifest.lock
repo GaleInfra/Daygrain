@@ -1,3 +1,22 @@
-PODFILE CHECKSUM: cd4d73add7a283a41c261135469b200c01ec658b
+PODS:
+  - Adjust (5.4.6):
+    - Adjust/Adjust (= 5.4.6)
+  - Adjust/Adjust (5.4.6):
+    - AdjustSignature (= 3.61.0)
+  - AdjustSignature (3.61.0)
+
+DEPENDENCIES:
+  - Adjust (= 5.4.6)
+
+SPEC REPOS:
+  trunk:
+    - Adjust
+    - AdjustSignature
+
+SPEC CHECKSUMS:
+  Adjust: 293c828a88a2c280471797edb3e895c80652a786
+  AdjustSignature: 94b6b7f7150edbbebc4320eeaddaac881f6e8e2d
+
+PODFILE CHECKSUM: 3273da38fb09b3590c22f33566fb98e1213fb269
 
 COCOAPODS: 1.16.2

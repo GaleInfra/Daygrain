@@ -29,6 +29,9 @@ struct EntryEditorView: View {
     @State private var showConsent = false
     @State private var proposal: GrainProposal?
     @State private var shaping = false
+    @State private var showSpendNotice = false
+    @State private var showGrainShop = false
+    @ObservedObject private var ledger = GrainLedger.shared
     private let roundPhotoLimit = 1
     private let isEditing: Bool
 
@@ -124,6 +127,24 @@ struct EntryEditorView: View {
                 Button("Keep writing", role: .cancel) {}
             }
             .sheet(isPresented: $showConsent) { consentSheet }
+            .confirmationDialog("Use cloud AI shaping?", isPresented: $showSpendNotice, titleVisibility: .visible) {
+                Button("Continue · \(GrainCatalog.spendCost) grains") { shapeEntry() }
+                Button("Grain Shop") { showGrainShop = true }
+                Button("Cancel", role: .cancel) {}
+            } message: {
+                Text(GrainCatalog.spendNotice + " Photos stay on device unless you already allowed cloud AI.")
+            }
+            .sheet(isPresented: $showGrainShop) {
+                NavigationView {
+                    GrainShopView()
+                        .toolbar {
+                            ToolbarItem(placement: .cancellationAction) {
+                                Button("Close") { showGrainShop = false }
+                            }
+                        }
+                }
+                .navigationViewStyle(.stack)
+            }
             .sheet(isPresented: $showPhotoPicker) {
                 PhotoLibraryPicker(limit: max(1, roundPhotoLimit - photoCount)) { images, failed in
                     showPhotoPicker = false
@@ -302,7 +323,7 @@ struct EntryEditorView: View {
             HStack(spacing: 12) {
                 Button(speech.recording ? "Stop" : "Dictate") { dictate() }
                     .buttonStyle(FilledButtonStyle(tone: entry.kind.tone))
-                Button(shaping ? "Writing…" : "Shape this entry") { shapeEntry() }
+                Button(shaping ? "Writing…" : "Shape this entry") { showSpendNotice = true }
                     .buttonStyle(FilledButtonStyle(tone: .sage))
                     .disabled(shaping || speech.recording)
             }
@@ -490,6 +511,11 @@ struct EntryEditorView: View {
             showConsent = true
             return
         }
+        guard ledger.balance >= GrainCatalog.spendCost else {
+            companionStatus = "You need \(GrainCatalog.spendCost) \(GrainCatalog.currencyName.lowercased()) to shape this entry."
+            showGrainShop = true
+            return
+        }
         shaping = true
         companionStatus = "Shaping this entry with DeepSeek. It is not kept yet."
         let notes = entry.notes
@@ -505,12 +531,18 @@ struct EntryEditorView: View {
             shaping = false
             switch result {
             case .success(let page):
+                guard ledger.spend() else {
+                    companionStatus = "You need \(GrainCatalog.spendCost) \(GrainCatalog.currencyName.lowercased()) to keep this draft. Open Grain Shop to refill."
+                    showGrainShop = true
+                    return
+                }
                 proposal = page
-                companionStatus = "Check the page, then keep it."
+                companionStatus = "Check the page, then keep it. Used \(GrainCatalog.spendCost) \(GrainCatalog.currencyName.lowercased())."
+                AdjustPulse.trackFirstOpenIfNeeded()
             case .failure(.notConfigured):
-                companionStatus = "DeepSeek is not configured. You can still keep this entry on this iPhone."
+                companionStatus = "DeepSeek is not configured. You can still keep this entry on this iPhone. No grains were spent."
             case .failure:
-                companionStatus = "This entry could not be shaped. Nothing was kept."
+                companionStatus = "This entry could not be shaped. Nothing was kept. No grains were spent."
             }
         }
     }

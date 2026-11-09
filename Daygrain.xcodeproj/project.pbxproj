@@ -28,8 +28,13 @@
 		A42A690B72CA136CE915489C /* SensoryCompass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB6DA1CC80D011F61E7ACD2 /* SensoryCompass.swift */; };
 		A9B2C14A78B642759D3C14B5 /* GrainLaunchGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85FE00F87AB446A5819712F8 /* GrainLaunchGate.swift */; };
 		B82BEDC36D3BF4DE8C70150E /* DraftsAndTrashViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D39924CB279D934878918D3 /* DraftsAndTrashViews.swift */; };
+		C1A7A1000000000000000001 /* GrainCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1A7A2000000000000000001 /* GrainCatalog.swift */; };
+		C1A7A1000000000000000002 /* GrainLedger.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1A7A2000000000000000002 /* GrainLedger.swift */; };
+		C1A7A1000000000000000003 /* GrainShop.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1A7A2000000000000000003 /* GrainShop.swift */; };
+		C1A7A1000000000000000004 /* AdjustPulse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1A7A2000000000000000004 /* AdjustPulse.swift */; };
+		C1A7A1000000000000000005 /* TrackingConsent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1A7A2000000000000000005 /* TrackingConsent.swift */; };
+		C1A7A1000000000000000006 /* GrainShopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1A7A2000000000000000006 /* GrainShopView.swift */; };
 		C29D59E0D9A022EF612D5859 /* PhotoLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE96EA8BD303B82E4A86FA39 /* PhotoLibrary.swift */; };
-		F5B28D3C01E76A29B4D5C8F2 /* GrainEntryCompanion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A17C2B90D65F18A3C4B7E1 /* GrainEntryCompanion.swift */; };
 		CAF63E89F3BB11CDD7D5E76B /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC8F9B50E0CA5CACE16BB40 /* RootView.swift */; };
 		CD2FBCAB00464A209384156B /* DaygrainVeil.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F31D12D9FE46F09CA81F19 /* DaygrainVeil.swift */; };
 		CDFC4EC8175F491CBD543833 /* GrainPageLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A3D26EAD524876A5C11F15 /* GrainPageLink.swift */; };
@@ -38,6 +43,7 @@
 		D8DA8ED7C3215F3F16C30064 /* SavedMomentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18FF833FBF9C1BC63909548B /* SavedMomentView.swift */; };
 		E8CEDBDB41CCDAD800DFFE3C /* InsightsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3D302197291C87B1B6545F /* InsightsView.swift */; };
 		ECEEA0346EA710E5EAA22643 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 28DDF1AF7DBB75E111EE13BE /* PrivacyInfo.xcprivacy */; };
+		F5B28D3C01E76A29B4D5C8F2 /* GrainEntryCompanion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A17C2B90D65F18A3C4B7E1 /* GrainEntryCompanion.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -66,13 +72,19 @@
 		A572C99D8C8CFDF4DE95B247 /* JournalStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalStore.swift; sourceTree = "<group>"; };
 		AA67C53FED405A3F376AAE7B /* TodayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayView.swift; sourceTree = "<group>"; };
 		AE96EA8BD303B82E4A86FA39 /* PhotoLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibrary.swift; sourceTree = "<group>"; };
-		E4A17C2B90D65F18A3C4B7E1 /* GrainEntryCompanion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrainEntryCompanion.swift; sourceTree = "<group>"; };
 		B0D7CD73383E167FCCBAF496 /* WorkflowModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowModels.swift; sourceTree = "<group>"; };
 		B4D1FC7E20CAFB535E6B1E9F /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		C1A7A2000000000000000001 /* GrainCatalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrainCatalog.swift; sourceTree = "<group>"; };
+		C1A7A2000000000000000002 /* GrainLedger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrainLedger.swift; sourceTree = "<group>"; };
+		C1A7A2000000000000000003 /* GrainShop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrainShop.swift; sourceTree = "<group>"; };
+		C1A7A2000000000000000004 /* AdjustPulse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdjustPulse.swift; sourceTree = "<group>"; };
+		C1A7A2000000000000000005 /* TrackingConsent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackingConsent.swift; sourceTree = "<group>"; };
+		C1A7A2000000000000000006 /* GrainShopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrainShopView.swift; sourceTree = "<group>"; };
 		D7F31D12D9FE46F09CA81F19 /* DaygrainVeil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaygrainVeil.swift; sourceTree = "<group>"; };
 		DB474F0BCC551A9A1E00ADF1 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		DDE9767E9060341A8FA4FC48 /* Pods-Daygrain.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Daygrain.debug.xcconfig"; path = "Target Support Files/Pods-Daygrain/Pods-Daygrain.debug.xcconfig"; sourceTree = "<group>"; };
 		DE9260DCF6483D3912E65D6A /* EmotionTagsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmotionTagsView.swift; sourceTree = "<group>"; };
+		E4A17C2B90D65F18A3C4B7E1 /* GrainEntryCompanion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrainEntryCompanion.swift; sourceTree = "<group>"; };
 		E8AFE846D2BEEE66D2BA8876 /* EntryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryDetailView.swift; sourceTree = "<group>"; };
 		F076EB272487E1DCA3E36BA6 /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
 		F1171A1C9F6C1A3708275E5D /* JournalModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalModels.swift; sourceTree = "<group>"; };
@@ -133,6 +145,7 @@
 				9CC8F9B50E0CA5CACE16BB40 /* RootView.swift */,
 				B4D1FC7E20CAFB535E6B1E9F /* SettingsView.swift */,
 				AA67C53FED405A3F376AAE7B /* TodayView.swift */,
+				C1A7A2000000000000000006 /* GrainShopView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -145,6 +158,10 @@
 				AE96EA8BD303B82E4A86FA39 /* PhotoLibrary.swift */,
 				E4A17C2B90D65F18A3C4B7E1 /* GrainEntryCompanion.swift */,
 				563F1757DF4751DE63A32B42 /* ReminderManager.swift */,
+				C1A7A2000000000000000002 /* GrainLedger.swift */,
+				C1A7A2000000000000000003 /* GrainShop.swift */,
+				C1A7A2000000000000000004 /* AdjustPulse.swift */,
+				C1A7A2000000000000000005 /* TrackingConsent.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -173,6 +190,7 @@
 			children = (
 				B0D7CD73383E167FCCBAF496 /* WorkflowModels.swift */,
 				F1171A1C9F6C1A3708275E5D /* JournalModels.swift */,
+				C1A7A2000000000000000001 /* GrainCatalog.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -216,6 +234,7 @@
 				BCE16DD0260827ECF338C787 /* Sources */,
 				7561BFB015D8F536760CB671 /* Frameworks */,
 				0189424A5A60FED329FA868E /* Resources */,
+				C1FBFA5EDE8E7AB256F76E10 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -273,6 +292,27 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		C1FBFA5EDE8E7AB256F76E10 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Daygrain/Pods-Daygrain-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Daygrain/Pods-Daygrain-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Daygrain/Pods-Daygrain-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		C3F87C400960FD167444ADD7 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -329,6 +369,12 @@
 				CAF63E89F3BB11CDD7D5E76B /* RootView.swift in Sources */,
 				5A048A5962D239BE0A1D024E /* SettingsView.swift in Sources */,
 				65A60F841A7E9762789F5ACC /* TodayView.swift in Sources */,
+				C1A7A1000000000000000001 /* GrainCatalog.swift in Sources */,
+				C1A7A1000000000000000002 /* GrainLedger.swift in Sources */,
+				C1A7A1000000000000000003 /* GrainShop.swift in Sources */,
+				C1A7A1000000000000000004 /* AdjustPulse.swift in Sources */,
+				C1A7A1000000000000000005 /* TrackingConsent.swift in Sources */,
+				C1A7A1000000000000000006 /* GrainShopView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -368,11 +414,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 8M69TZZ38Y;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Daygrain/Info.plist;
@@ -384,10 +428,10 @@
 				PRODUCT_BUNDLE_IDENTIFIER = xycoins.2027.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = dev;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -433,11 +477,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 8M69TZZ38Y;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Daygrain/Info.plist;
@@ -449,10 +491,10 @@
 				PRODUCT_BUNDLE_IDENTIFIER = xycoins.2027.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = dev;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;

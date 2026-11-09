@@ -1,10 +1,17 @@
 # Daygrain — review notes draft
 
-Daygrain is a native, offline sensory field journal. It is designed around repeated observation: collect sensory details and self-chosen emotion labels, organize observations into a fieldbook, revisit a specific detail, compare original records, and write a personal weekly review. It has no login, paid unlock, backend, community, AI analysis, diagnosis, or counseling feature.
+Daygrain is a native sensory field journal. It is designed around repeated observation: collect sensory details and self-chosen emotion labels, organize observations into a fieldbook, revisit a specific detail, compare original records, and write a personal weekly review. Optional cloud AI shaping (DeepSeek) spends consumable Grains via Apple In-App Purchase and requires an explicit Allow. Adjust is used only for install/purchase measurement. There is no login, diagnosis, or counseling feature.
 
 ## Suggested App Review notes
 
-All core features work with locally entered content. No demo credentials or external service are required. The interface is in English and the deployment target is iOS 15.0.
+Core journaling works with locally entered content. Optional Focus shaping and Grain purchases use Apple In-App Purchase; cloud drafting requires an in-app Allow for DeepSeek & StepFun. The interface is in English and the deployment target is iOS 15.0.
+
+In-app purchase path for review:
+1. Open **Today** (balance chip) or **Settings → Grain Shop**.
+2. Consumable product IDs `407903400`–`407903407` credit local Grains (4 Field Packs + 4 Double Blooms).
+3. In a new/edit note, **Shape · 10 grains** is the spend point; spend notice appears before use.
+4. ATT explainer + system prompt describe purchase/attribution measurement with Adjust only — journal content is not used for ads.
+5. Settings → Cloud AI sharing can revoke AI permission anytime.
 
 To explore the connected workflow:
 
@@ -27,7 +34,7 @@ There are no time gates, hidden reviewer modes, fabricated user records, require
 - This code has not been built or tested on a simulator or device in this delivery. Supply actual device/OS validation results before submission; do not state that testing occurred unless it did.
 - Use the actual release binary for screenshots and preview material. Do not use invented activity or metrics as evidence of real usage.
 - Provide the publisher's real support contact and published privacy-policy/support URLs. Those identities and destinations were not supplied in this workspace and must not be invented.
-- Review final privacy disclosures against the release binary. The current source has no network upload or analytics service; system backups and user-chosen export destinations are distinct from an app-operated sync service.
+- Review final privacy disclosures against the release binary. Core journaling stays on-device. Optional cloud AI may call DeepSeek/StepFun after Allow; Adjust receives only install/purchase measurement signals (no journal text). Replace `REPLACE_ADJUST_APP_TOKEN` / event tokens before shipping. System backups and user-chosen exports are distinct from app-operated sync.
 - Full JSON backups currently have a 150 MB limit. There is no automatic cloud synchronization. App Lock uses local device authentication; exported backup files are not password encrypted by this app.
 - Use original and properly cleared branding and assets. The name's market availability and trademark status were not established by this implementation.
 - Evaluate this app alongside the publisher's other submissions. The work here does not establish whether a similar binary, concept, or metadata has already been submitted elsewhere.

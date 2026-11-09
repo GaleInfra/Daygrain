@@ -47,6 +47,8 @@
 	<string>Daygrain turns your spoken journal entry into text on this device.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Daygrain reads your photo library when you attach one photo to a journal entry.</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>Daygrain uses App Tracking Transparency only to measure install attribution and in-app purchase performance with Adjust. Journal notes, photos, and cloud AI text are not used for advertising profiles.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
