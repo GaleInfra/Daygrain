@@ -538,7 +538,6 @@ struct EntryEditorView: View {
                 }
                 proposal = page
                 companionStatus = "Check the page, then keep it. Used \(GrainCatalog.spendCost) \(GrainCatalog.currencyName.lowercased())."
-                AdjustPulse.trackFirstOpenIfNeeded()
             case .failure(.notConfigured):
                 companionStatus = "DeepSeek is not configured. You can still keep this entry on this iPhone. No grains were spent."
             case .failure:

@@ -26,9 +26,10 @@ function runtimeConfigFromEnv(env: Record<string, any>, pkg: string): Record<str
     privacy_url: "https://pollen-notch-fieldwalk.pages.dev/privacy/",
     terms_url: "https://pollen-notch-fieldwalk.pages.dev/terms/",
     support_url: "https://pollen-notch-fieldwalk.pages.dev/support/",
-    local_scheme: "grainbook",
+    local_scheme: String(env.LOCAL_SCHEME || "daygrain-local"),
+    primary_scheme: String(env.LOCAL_SCHEME || "daygrain-local"),
     pop_host_mode: env.POP_HOST_MODE === "page" ? "page" : "pop",
-    device_parameter: String(env.DEVICE_PARAM || "device-id"),
+    device_parameter: String(env.DEVICE_PARAM || "dayg_device"),
     broadcaster_env: env.BROADCASTER_ENV === "test" ? "test" : "prod",
     ...(env.BROADCASTER_ENV === "test"
       ? {
@@ -169,7 +170,10 @@ export default {
                 await warm(env, product.query_pkg, id, query, hints).catch(() => undefined);
                 const pkg = env.PRELOGIN_BUSINESS_PKG || product.query_pkg;
                 const row = recallPrelogin(preloginCacheKey(pkg, id, env.APP_VERSION || ""));
-                if (!row) throw new Error("mill_prelogin_unavailable");
+                if (!row) {
+                  console.error("q_shelf", JSON.stringify({ reason: "mill_prelogin_unavailable", open: false }));
+                  return false;
+                }
                 return row.session.isReviewPkg === false;
               }
             : undefined,

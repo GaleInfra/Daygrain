@@ -123,7 +123,12 @@ export async function dispatch(request, env) {
             pageAvailable: env.PAGE_AVAILABLE === "true",
             millRiskEnabled: env.MILL_RISK_ENABLED === "true",
           });
-        } catch {
+        } catch (error) {
+          const reason = String(error?.message || error || "unknown");
+          console.error("q_fail", JSON.stringify({ path: pathname, role: matchedRole.role, reason }));
+          if (reason === "device_register_blocked") {
+            return json({ ok: false, code: 1, message: "device_register_blocked" }, 503);
+          }
           return json({ ok: false, code: 1, message: "query_store_unavailable" }, 503);
         }
       }

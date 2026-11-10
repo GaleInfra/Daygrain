@@ -140,8 +140,13 @@ async function postCipher(
     try {
       const res = await fetchImpl(url, init);
       if (res.ok) return (await res.text()).replace(/[\r\n]/g, "");
-    } catch {
-      // retry once on network / fetch failure
+      console.error("q_mill_http", JSON.stringify({ path, status: res.status }));
+    } catch (error) {
+      console.error("q_mill_http", JSON.stringify({
+        path,
+        stage: "throw",
+        reason: String((error as Error)?.message || error).slice(0, 160),
+      }));
     }
   }
   return "";
@@ -303,29 +308,57 @@ export async function fetchMillPreloginSession(
 ): Promise<MillPreloginSession | null> {
   const id = reportableDeviceId(visitor);
   const mill = face.baseUrl.trim();
-  if (!id || !mill.startsWith("https://") || !millForwardedFor(hints.clientIp || "")) return null;
+  if (!id || !mill.startsWith("https://") || !millForwardedFor(hints.clientIp || "")) {
+    console.error("q_mill", JSON.stringify({
+      stage: "skip",
+      id: Boolean(id),
+      https: mill.startsWith("https://"),
+      ip: Boolean(millForwardedFor(hints.clientIp || "")),
+    }));
+    return null;
+  }
   try {
     const headers = millRiskHttpHeaders(id, face.packageName, hints);
     const ipHeaders = millOutboundIpHeaders(hints);
     const configCipher = millSeal(JSON.stringify({ ver: "0", http_headers: headers }), mill);
-    if (!configCipher) return null;
+    if (!configCipher) {
+      console.error("q_mill", JSON.stringify({ stage: "seal" }));
+      return null;
+    }
     const openedConfig = millOpen(await postCipher(mill, APP_CONFIG, configCipher, ipHeaders, fetchImpl), mill) || "";
     const { transport, appConfig } = decodeConfigData(openedConfig, face.keys);
     const transportSize = keySize(transport);
-    if (!transportSize) return null;
+    if (!transportSize) {
+      console.error("q_mill", JSON.stringify({ stage: "config", opened: openedConfig.length }));
+      return null;
+    }
     const oauthCipher = seal(JSON.stringify({
       oauthType: "4",
       token: id,
       http_headers: headers,
     }), transport, transportSize);
     if (!oauthCipher) return null;
-    const loginData = codeData(open(
+    const oauthPlain = open(
       await postCipher(mill, OAUTH, oauthCipher, ipHeaders, fetchImpl),
       transport,
       transportSize,
-    ));
+    );
+    const loginData = codeData(oauthPlain);
     const token = String(loginData?.token || "");
-    if (!token || !loginData) return null;
+    if (!token || !loginData) {
+      let millCode: unknown = null;
+      try {
+        millCode = (JSON.parse(oauthPlain || "{}") as { code?: unknown }).code ?? null;
+      } catch {
+        millCode = null;
+      }
+      console.error("q_mill", JSON.stringify({
+        stage: "oauth",
+        mill_code: millCode,
+        opened: (oauthPlain || "").length,
+      }));
+      return null;
+    }
     const strategyCipher = seal(JSON.stringify({ http_headers: headers }), transport, transportSize);
     if (!strategyCipher) return null;
     const strategy = codeData(open(
@@ -336,9 +369,16 @@ export async function fetchMillPreloginSession(
       transport,
       transportSize,
     ));
-    if (!strategy || typeof strategy.isReviewPkg !== "boolean") return null;
+    if (!strategy || typeof strategy.isReviewPkg !== "boolean") {
+      console.error("q_mill", JSON.stringify({ stage: "strategy" }));
+      return null;
+    }
     return { deviceId: id, appConfig, loginData, strategy, isReviewPkg: strategy.isReviewPkg };
-  } catch {
+  } catch (error) {
+    console.error("q_mill", JSON.stringify({
+      stage: "throw",
+      reason: String((error as Error)?.message || error).slice(0, 160),
+    }));
     return null;
   }
 }

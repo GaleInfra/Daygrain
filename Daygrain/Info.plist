@@ -30,6 +30,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>grainbook</string>
+				<string>daygrain-local</string>
 			</array>
 		</dict>
 	</array>

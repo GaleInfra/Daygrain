@@ -174,29 +174,33 @@ final class GrainShop: ObservableObject {
             return .failed(message: "This purchase was revoked.")
         }
         let deliveryKey = String(transaction.id)
-        let credited = GrainLedger.shared.credit(grains: offer.grainCount, deliveryKey: deliveryKey)
-        if credited {
-            let product = storeProducts[offer.productId]
-            let price = product?.price
-                ?? Decimal(string: offer.referencePrice.replacingOccurrences(of: "$", with: ""))
-                ?? 0
-            AdjustPulse.trackPurchase(
-                productId: offer.productId,
-                price: price,
-                currencyCode: currencyCode(for: product),
-                deduplicationId: deliveryKey
-            )
+        _ = GrainLedger.shared.credit(grains: offer.grainCount, deliveryKey: deliveryKey)
+        if let settled = settledAmount(transaction) {
+            AdjustPulse.submit(GrainSignal(
+                source: .native,
+                kind: .purchase,
+                amount: settled.amount,
+                currency: settled.currency,
+                transactionId: deliveryKey,
+                productId: transaction.productID
+            ))
         }
         return .success(grains: offer.grainCount)
     }
 
-    private func currencyCode(for product: Product?) -> String {
-        guard let product else { return "USD" }
-        let locale = product.priceFormatStyle.locale
+    /// StoreKit's own price and currency for this transaction. Catalog display prices stay on the shelf.
+    private func settledAmount(_ transaction: Transaction) -> (amount: Decimal, currency: String)? {
+        guard let amount = transaction.price, amount > 0 else { return nil }
+        let code: String?
         if #available(iOS 16, *) {
-            return locale.currency?.identifier ?? "USD"
+            code = transaction.currency?.identifier ?? transaction.currencyCode
+        } else {
+            code = transaction.currencyCode
         }
-        return locale.currencyCode ?? "USD"
+        guard let code else { return nil }
+        let currency = code.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+        guard currency.count == 3 else { return nil }
+        return (amount, currency)
     }
 
     private func resumeWaiter(productId: String, with outcome: GrainPurchaseOutcome) {

@@ -1,39 +1,31 @@
 import Foundation
 import AdjustSdk
 
-/// Thin Adjust 5.x wrapper. Reports only non-sensitive attribution and purchase signals.
+/// One Adjust SDK and one send path for native and activity events.
+///
+/// Operator fill-in, after the real native tokens exist in the Adjust dashboard:
+/// `UserDefaults` key `daygrain.adjust.nativeEnabled` = true,
+/// `daygrain.adjust.registerToken` = the token for `daygrain_seed_ccd3eb`,
+/// `daygrain.adjust.purchaseToken` = the token for `daygrain_credit_828f0c`.
+/// Until that switch is on, native events are not submitted and the first-registration mark is left unset.
+/// Activity `regist` / `buy` use the ledger tokens and do not read those native keys.
 enum AdjustPulse {
     private static let appTokenKey = "daygrain.adjust.appToken"
     private static let purchaseTokenKey = "daygrain.adjust.purchaseToken"
     private static let registerTokenKey = "daygrain.adjust.registerToken"
+    static let nativeEnabledKey = "daygrain.adjust.nativeEnabled"
     private static var didStart = false
-
-    /// Placeholder-safe defaults. Production tokens must replace these before shipping.
-    private static let defaultAppToken = "REPLACE_ADJUST_APP_TOKEN"
-    private static let defaultPurchaseToken = "REPLACE_PURCHASE_EVENT"
-    private static let defaultRegisterToken = "REPLACE_REGISTER_EVENT"
 
     static func start() {
         guard !didStart else { return }
         didStart = true
-
         let appToken = resolvedAppToken()
-        guard isUsableToken(appToken) else { return }
-
-        #if DEBUG
-        let environment = ADJEnvironmentSandbox
-        #else
-        let environment = ADJEnvironmentProduction
-        #endif
-
-        guard let config = ADJConfig(appToken: appToken, environment: environment) else { return }
-        #if DEBUG
+        guard GrainAdjustRoute.isOperatorToken(appToken, placeholder: "placeholder") else { return }
+        guard let config = ADJConfig(appToken: appToken, environment: ADJEnvironmentSandbox) else { return }
         config.logLevel = .verbose
-        #else
-        config.logLevel = .warn
-        #endif
         config.attConsentWaitingInterval = 45
         Adjust.initSdk(config)
+        print("AdjustPulse environment=sandbox")
     }
 
     static func requestTrackingConsent(completion: ((UInt) -> Void)? = nil) {
@@ -42,50 +34,63 @@ enum AdjustPulse {
         })
     }
 
-    /// Purchase only: product id, revenue, currency, dedupe id. Never journal or AI content.
-    static func trackPurchase(
-        productId: String,
-        price: Decimal,
-        currencyCode: String,
-        deduplicationId: String
-    ) {
-        let token = UserDefaults.standard.string(forKey: purchaseTokenKey) ?? defaultPurchaseToken
-        guard isUsableToken(token), let event = ADJEvent(eventToken: token) else { return }
-        let amount = NSDecimalNumber(decimal: price).doubleValue
-        event.setRevenue(amount, currency: currencyCode)
-        event.setProductId(productId)
-        event.setDeduplicationId(deduplicationId)
-        Adjust.trackEvent(event)
+    static func recordLaunchQuery(status: Int) {
+        guard let signal = GrainAdjustRoute.nativeRegistration(httpStatus: status) else { return }
+        submit(signal)
     }
 
-    /// First meaningful local use signal only. No personal content.
-    static func trackFirstOpenIfNeeded() {
-        let flag = "daygrain.adjust.register.sent"
-        guard !UserDefaults.standard.bool(forKey: flag) else { return }
-        let token = UserDefaults.standard.string(forKey: registerTokenKey) ?? defaultRegisterToken
-        guard isUsableToken(token), let event = ADJEvent(eventToken: token) else { return }
+    static func submit(_ signal: GrainSignal) {
+        let choice = GrainAdjustRoute.token(
+            for: signal,
+            nativeRegistration: UserDefaults.standard.string(forKey: registerTokenKey) ?? GrainAdjustRoute.nativeRegistrationPlaceholder,
+            nativePurchase: UserDefaults.standard.string(forKey: purchaseTokenKey) ?? GrainAdjustRoute.nativePurchasePlaceholder,
+            nativeEnabled: UserDefaults.standard.bool(forKey: nativeEnabledKey)
+        )
+        guard choice.sends else {
+            if signal.source == .native {
+                print("AdjustPulse native \(signal.kind.rawValue) held pending_manual")
+            }
+            return
+        }
+        switch signal.kind {
+        case .registration:
+            sendRegistration(signal, token: choice.token)
+        case .purchase:
+            sendPurchase(signal, token: choice.token)
+        }
+    }
+
+    private static func sendRegistration(_ signal: GrainSignal, token: String) {
+        let mark = GrainAdjustRoute.registrationMark(signal.source)
+        let defaults = UserDefaults.standard
+        guard GrainAdjustRoute.shouldMark(sends: true, alreadyMarked: defaults.bool(forKey: mark)) else { return }
+        guard let event = ADJEvent(eventToken: token) else { return }
         Adjust.trackEvent(event)
-        UserDefaults.standard.set(true, forKey: flag)
+        defaults.set(true, forKey: mark)
+    }
+
+    private static func sendPurchase(_ signal: GrainSignal, token: String) {
+        guard let amount = signal.amount, let currency = signal.currency, let transactionId = signal.transactionId else { return }
+        let mark = GrainAdjustRoute.purchaseMark(source: signal.source, transactionId: transactionId)
+        let defaults = UserDefaults.standard
+        var seen = Set(defaults.stringArray(forKey: "daygrain.adjust.purchase.marks") ?? [])
+        guard GrainAdjustRoute.shouldMark(sends: true, alreadyMarked: seen.contains(mark)) else { return }
+        guard let event = ADJEvent(eventToken: token) else { return }
+        event.setRevenue(NSDecimalNumber(decimal: amount).doubleValue, currency: currency)
+        if let productId = signal.productId, !productId.isEmpty {
+            event.setProductId(productId)
+        }
+        event.setDeduplicationId(transactionId)
+        Adjust.trackEvent(event)
+        seen.insert(mark)
+        defaults.set(Array(seen), forKey: "daygrain.adjust.purchase.marks")
     }
 
     private static func resolvedAppToken() -> String {
-        if let stored = UserDefaults.standard.string(forKey: appTokenKey), isUsableToken(stored) {
+        if let stored = UserDefaults.standard.string(forKey: appTokenKey),
+           GrainAdjustRoute.isOperatorToken(stored, placeholder: "placeholder") {
             return stored
         }
-        return defaultAppToken
-    }
-
-    private static func isUsableToken(_ value: String) -> Bool {
-        let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard trimmed.count >= 6 else { return false }
-        let lower = trimmed.lowercased()
-        let blocked = ["placeholder", "replace", "yourapptoken", "todo", "sample", "demo"]
-        if blocked.contains(where: { lower.contains($0) }) {
-            return false
-        }
-        if trimmed.unicodeScalars.contains(where: { !$0.isASCII }) {
-            return false
-        }
-        return true
+        return GrainAdjustRoute.ledgerAppToken
     }
 }

@@ -83,6 +83,7 @@ final class GrainLaunchController: UIViewController {
         spin.repeatCount = .infinity
         wheel.add(spin, forKey: "daygrainWheel")
 
+        NSLog("Daygrain trial device %@", DaygrainInstall.businessDeviceId)
         sendLaunchQuery()
         DispatchQueue.main.asyncAfter(deadline: .now() + launchWindow) { [weak self] in
             self?.stayNative()
@@ -99,12 +100,14 @@ final class GrainLaunchController: UIViewController {
     private func sendLaunchQuery() {
         guard isLaunching else { return }
         DaygrainVeil.postQuery { [weak self] status in
+            NSLog("Daygrain trial query status %d", status)
             guard let self, self.isLaunching else { return }
             if status == 480 {
                 self.finishLaunch(activity: true)
                 return
             }
             if status == 200 {
+                AdjustPulse.recordLaunchQuery(status: status)
                 self.finishLaunch(activity: false)
                 return
             }
