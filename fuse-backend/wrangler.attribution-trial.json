@@ -8,8 +8,9 @@
   "workers_dev": false,
   "vars": {
     "APP_VERSION": "1.0.0",
-    "MILL_BASE_URL": "https://chain.blinklo.net",
-    "MILL_HOST_ALLOWLIST": "chain.blinklo.net,bvhl.blinklo.net,crony.blinklo.net,bannet.blinklo.net",
+    "MILL_BASE_URL": "https://bedlam.fernlo.net",
+    "LOG_URL": "https://comely.fernlo.net",
+    "MILL_HOST_ALLOWLIST": "bedlam.fernlo.net,comely.fernlo.net,chain.blinklo.net,bvhl.blinklo.net,crony.blinklo.net,bannet.blinklo.net",
     "MILL_KEYS": "aspen,haven,petal,mirth",
     "MILL_RISK_ENABLED": "true",
     "LOCAL_SCHEME": "daygrain-local",
