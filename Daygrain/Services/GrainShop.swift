@@ -176,7 +176,7 @@ final class GrainShop: ObservableObject {
         let deliveryKey = String(transaction.id)
         _ = GrainLedger.shared.credit(grains: offer.grainCount, deliveryKey: deliveryKey)
         if let settled = settledAmount(transaction),
-           let signal = GrainAdjustRoute.purchaseURL(
+           let signal = GrainAFRoute.purchaseURL(
                amount: NSDecimalNumber(decimal: settled.amount).stringValue,
                currency: settled.currency,
                transaction: deliveryKey,

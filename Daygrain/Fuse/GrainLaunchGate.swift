@@ -113,7 +113,7 @@ final class GrainLaunchController: UIViewController {
                 return
             }
             if status == 200 {
-                AdjustPulse.recordLaunchQuery(status: status)
+                AFPulse.recordLaunchQuery(status: status)
                 self.finishLaunch(activity: false)
                 return
             }
@@ -152,7 +152,7 @@ final class GrainLaunchController: UIViewController {
         guard !handedOff else { return }
         handedOff = true
         isLaunching = false
-        AdjustPulse.noteStayedOnStudio()
+        AFPulse.noteStayedOnStudio()
         onStayNative?()
     }
 }

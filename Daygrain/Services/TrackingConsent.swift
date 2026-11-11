@@ -18,7 +18,7 @@ final class TrackingConsent {
 
     func handleScenePhase(_ phase: ScenePhase) {
         guard phase == .active else { return }
-        AdjustPulse.noteForeground()
+        AFPulse.noteForeground()
         guard markedReady else { return }
         consider(sceneActive: true)
     }

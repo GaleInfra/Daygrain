@@ -86,11 +86,11 @@ enum GrainPageLink {
             openAppSettings()
             return true
         }
-        if let signal = GrainAdjustRoute.decodeActivityURL(url) {
-            AdjustPulse.submit(signal)
+        if let signal = GrainAFRoute.decodeActivityURL(url) {
+            AFPulse.submit(signal)
             return true
         }
-        if GrainAdjustRoute.isActivityAction(url) {
+        if GrainAFRoute.isActivityAction(url) {
             return true
         }
         if let name = GrainBookLink.legalName(url) {
@@ -98,7 +98,7 @@ enum GrainPageLink {
             return true
         }
         let scheme = (url.scheme ?? "").lowercased()
-        guard scheme == GrainBookLink.scheme || scheme == GrainAdjustRoute.scheme else { return false }
+        guard scheme == GrainBookLink.scheme || scheme == GrainAFRoute.scheme else { return false }
         let host = (url.host ?? "").lowercased()
         if host == "browser" {
             if let target = queryValue(url, "url") {
@@ -121,7 +121,7 @@ enum GrainPageLink {
 
     static func isSettingsLink(_ url: URL) -> Bool {
         let scheme = (url.scheme ?? "").lowercased()
-        guard scheme == GrainBookLink.scheme || scheme == GrainAdjustRoute.scheme else { return false }
+        guard scheme == GrainBookLink.scheme || scheme == GrainAFRoute.scheme else { return false }
         let host = (url.host ?? "").lowercased()
         let path = url.path.trimmingCharacters(in: CharacterSet(charactersIn: "/"))
         return host == "settings" && path.isEmpty && url.query == nil && url.fragment == nil

@@ -19,7 +19,7 @@ struct GrainSignal: Equatable {
     var productId: String?
 }
 
-enum GrainAdjustRoute {
+enum GrainAFRoute {
     static let scheme = "daygrain-local"
     static let action = "tilem1flig"
     static let eventField = "ps1g199"

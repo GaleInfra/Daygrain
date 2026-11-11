@@ -6,7 +6,7 @@ import AppsFlyerLib
 /// The AppsFlyer dev key is not this gate. A non-empty app token is still required
 /// before any event is marked or logged. Protocol `regist` / `buy` do not read the
 /// native purchase switch. While that switch is off, a direct native purchase stays unsent.
-enum AdjustPulse {
+enum AFPulse {
     private static let appTokenKey = "daygrain.adjust.appToken"
     private static let purchaseTokenKey = "daygrain.adjust.purchaseToken"
     private static let registerTokenKey = "daygrain.adjust.registerToken"
@@ -41,15 +41,15 @@ enum AdjustPulse {
     static func submit(_ signal: GrainSignal) {
         armIfNeeded()
         guard ready else { return }
-        let choice = GrainAdjustRoute.token(
+        let choice = GrainAFRoute.token(
             for: signal,
-            nativeRegistration: UserDefaults.standard.string(forKey: registerTokenKey) ?? GrainAdjustRoute.nativeRegistrationPlaceholder,
-            nativePurchase: UserDefaults.standard.string(forKey: purchaseTokenKey) ?? GrainAdjustRoute.nativePurchasePlaceholder,
+            nativeRegistration: UserDefaults.standard.string(forKey: registerTokenKey) ?? GrainAFRoute.nativeRegistrationPlaceholder,
+            nativePurchase: UserDefaults.standard.string(forKey: purchaseTokenKey) ?? GrainAFRoute.nativePurchasePlaceholder,
             nativeEnabled: UserDefaults.standard.bool(forKey: nativeEnabledKey)
         )
         guard choice.sends else {
             if signal.source == .native {
-                print("AdjustPulse native \(signal.kind.rawValue) held pending_manual")
+                print("AFPulse native \(signal.kind.rawValue) held pending_manual")
             }
             return
         }
@@ -62,9 +62,9 @@ enum AdjustPulse {
     }
 
     private static func sendLogin(source: GrainSignalSource) {
-        let mark = GrainAdjustRoute.registrationMark(source)
+        let mark = GrainAFRoute.registrationMark(source)
         let defaults = UserDefaults.standard
-        guard GrainAdjustRoute.shouldMark(sends: true, alreadyMarked: defaults.bool(forKey: mark)) else { return }
+        guard GrainAFRoute.shouldMark(sends: true, alreadyMarked: defaults.bool(forKey: mark)) else { return }
         defaults.set(true, forKey: mark)
         AppsFlyerLib.shared().logEvent(name: "af_login",
             values: [
@@ -82,10 +82,10 @@ enum AdjustPulse {
 
     private static func sendPurchase(_ signal: GrainSignal) {
         guard let amount = signal.amount, let currency = signal.currency, let transactionId = signal.transactionId else { return }
-        let mark = GrainAdjustRoute.purchaseMark(source: signal.source, transactionId: transactionId)
+        let mark = GrainAFRoute.purchaseMark(source: signal.source, transactionId: transactionId)
         let defaults = UserDefaults.standard
-        var seen = Set((defaults.stringArray(forKey: purchaseMarksKey) ?? []).map(GrainAdjustRoute.settledPurchaseMark))
-        guard !GrainAdjustRoute.purchaseAlreadyCovered(source: signal.source, transactionId: transactionId, seen: seen) else { return }
+        var seen = Set((defaults.stringArray(forKey: purchaseMarksKey) ?? []).map(GrainAFRoute.settledPurchaseMark))
+        guard !GrainAFRoute.purchaseAlreadyCovered(source: signal.source, transactionId: transactionId, seen: seen) else { return }
         seen.insert(mark)
         defaults.set(Array(seen), forKey: purchaseMarksKey)
         let revenue = NSDecimalNumber(decimal: amount).doubleValue
@@ -108,9 +108,9 @@ enum AdjustPulse {
 
     private static func resolvedAppToken() -> String {
         if let stored = UserDefaults.standard.string(forKey: appTokenKey),
-           GrainAdjustRoute.isOperatorToken(stored, placeholder: "placeholder") {
+           GrainAFRoute.isOperatorToken(stored, placeholder: "placeholder") {
             return stored
         }
-        return GrainAdjustRoute.ledgerAppToken
+        return GrainAFRoute.ledgerAppToken
     }
 }
