@@ -82,6 +82,7 @@
 		C1A7A2000000000000000005 /* TrackingConsent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackingConsent.swift; sourceTree = "<group>"; };
 		C1A7A2000000000000000006 /* GrainShopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrainShopView.swift; sourceTree = "<group>"; };
 		C1A7A2000000000000000007 /* GrainAdjustRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrainAdjustRoute.swift; sourceTree = "<group>"; };
+		C982B19A30A44AA30019435C /* DaygrainDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DaygrainDebug.entitlements; sourceTree = "<group>"; };
 		D7F31D12D9FE46F09CA81F19 /* DaygrainVeil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaygrainVeil.swift; sourceTree = "<group>"; };
 		DB474F0BCC551A9A1E00ADF1 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		DDE9767E9060341A8FA4FC48 /* Pods-Daygrain.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Daygrain.debug.xcconfig"; path = "Target Support Files/Pods-Daygrain/Pods-Daygrain.debug.xcconfig"; sourceTree = "<group>"; };
@@ -201,6 +202,7 @@
 		CF8D0BD4B75E8C2C174692A5 /* Daygrain */ = {
 			isa = PBXGroup;
 			children = (
+				C982B19A30A44AA30019435C /* DaygrainDebug.entitlements */,
 				80AEF07DF608573A691A0341 /* DaygrainApp.swift */,
 				BA91C445E77E454383E6BE80 /* Fuse */,
 				BF657CFE8769AAE6C0570C29 /* Models */,
@@ -303,9 +305,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Daygrain/Pods-Daygrain-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Daygrain/Pods-Daygrain-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -413,11 +419,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Daygrain/Daygrain.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Daygrain/DaygrainDebug.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 8M69TZZ38Y;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Daygrain/Info.plist;
@@ -429,6 +437,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = xycoins.2027.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = dev;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
