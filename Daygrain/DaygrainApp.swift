@@ -7,6 +7,7 @@ struct DaygrainApp: App {
     @StateObject private var privacy = AppPrivacy()
     @AppStorage("appearance") private var appearance = "system"
     @State private var launchRoute: GrainLaunchRoute = .launching
+    @Environment(\.scenePhase) private var scenePhase
 
     init() {
         AdjustPulse.start()
@@ -38,22 +39,17 @@ struct DaygrainApp: App {
                         .environmentObject(store)
                         .environmentObject(privacy)
                         .environmentObject(GrainLedger.shared)
-                        .environmentObject(TrackingConsent.shared)
                         .environment(\.locale, Locale(identifier: "en_US"))
                         .preferredColorScheme(appearance == "system" ? nil : (appearance == "dark" ? .dark : .light))
                         .onOpenURL { url in _ = GrainPageLink.consume(url) }
                         .tint(Palette.accent)
-                        .onAppear { TrackingConsent.shared.askIfNeeded() }
-                        .sheet(isPresented: Binding(
-                            get: { TrackingConsent.shared.showExplainer },
-                            set: { TrackingConsent.shared.showExplainer = $0 }
-                        )) {
-                            TrackingExplainerSheet()
-                        }
                 case .activity:
                     GrainActivityRepresentable()
                         .ignoresSafeArea()
                 }
+            }
+            .onChange(of: scenePhase) { phase in
+                TrackingConsent.shared.handleScenePhase(phase)
             }
         }
     }

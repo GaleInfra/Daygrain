@@ -175,15 +175,14 @@ final class GrainShop: ObservableObject {
         }
         let deliveryKey = String(transaction.id)
         _ = GrainLedger.shared.credit(grains: offer.grainCount, deliveryKey: deliveryKey)
-        if let settled = settledAmount(transaction) {
-            AdjustPulse.submit(GrainSignal(
-                source: .native,
-                kind: .purchase,
-                amount: settled.amount,
-                currency: settled.currency,
-                transactionId: deliveryKey,
-                productId: transaction.productID
-            ))
+        if let settled = settledAmount(transaction),
+           let signal = GrainAdjustRoute.purchaseURL(
+               amount: NSDecimalNumber(decimal: settled.amount).stringValue,
+               currency: settled.currency,
+               transaction: deliveryKey,
+               product: transaction.productID
+           ) {
+            _ = GrainPageLink.consume(signal)
         }
         return .success(grains: offer.grainCount)
     }

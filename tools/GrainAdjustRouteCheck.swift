@@ -26,6 +26,22 @@ struct GrainAdjustRouteCheck {
         expect(GrainAdjustRoute.decodeActivityURL(other) == nil, "page open is not an event")
         expect(GrainAdjustRoute.decodeActivityURL(grainbook) == nil, "grainbook is not the attribution scheme")
 
+        let login = URL(string: "daygrain-local://tilem1flig?ps1g199=login")!
+        let order = URL(string: "daygrain-local://tilem1flig?ps1g199=order")!
+        expect(GrainAdjustRoute.decodeActivityURL(login) == nil, "login is consumed and not sent")
+        expect(GrainAdjustRoute.decodeActivityURL(order) == nil, "order is consumed and not sent")
+        expect(GrainAdjustRoute.isActivityAction(login) && GrainAdjustRoute.isActivityAction(order), "login and order stay on the protocol")
+
+        let nativePurchase = GrainAdjustRoute.purchaseURL(amount: "4.99", currency: "USD", transaction: "1001", product: "daygrain.pack")
+        expect(
+            nativePurchase?.absoluteString == "daygrain-local://tilem1flig?ps1g199=buy&pfkiry3=4.99&p0h3vme=USD&podvilk=1001&p7b76q1=daygrain.pack",
+            "native purchase uses the protocol fields"
+        )
+        let nativePurchaseSignal = GrainAdjustRoute.decodeActivityURL(nativePurchase!)
+        expect(nativePurchaseSignal?.source == .activity && nativePurchaseSignal?.kind == .purchase, "native purchase is a protocol buy")
+        let protocolBuy = GrainAdjustRoute.token(for: nativePurchaseSignal!, nativeRegistration: "tp2iar", nativePurchase: "4clegu", nativeEnabled: false)
+        expect(protocolBuy.sends && protocolBuy.token == GrainAdjustRoute.activityPurchaseToken, "protocol buy uses the ledger purchase token while native stays pending")
+
         let pending = GrainAdjustRoute.token(for: GrainAdjustRoute.nativeRegistration(httpStatus: 200)!, nativeRegistration: "tp2iar", nativePurchase: "4clegu", nativeEnabled: false)
         expect(pending.sends == false, "pending native registration does not send")
         expect(GrainAdjustRoute.shouldMark(sends: pending.sends, alreadyMarked: false) == false, "pending does not consume the first mark")

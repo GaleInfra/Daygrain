@@ -40,6 +40,21 @@ enum GrainAdjustRoute {
         (url.scheme ?? "").lowercased() == scheme && (url.host ?? "").lowercased() == action
     }
 
+    /// Purchase address consumed by the same protocol entry the activity page already uses.
+    static func purchaseURL(amount: String, currency: String, transaction: String, product: String) -> URL? {
+        var parts = URLComponents()
+        parts.scheme = scheme
+        parts.host = action
+        parts.queryItems = [
+            URLQueryItem(name: eventField, value: "buy"),
+            URLQueryItem(name: amountField, value: amount),
+            URLQueryItem(name: currencyField, value: currency),
+            URLQueryItem(name: transactionField, value: transaction),
+            URLQueryItem(name: productField, value: product),
+        ]
+        return parts.url
+    }
+
     static func decodeActivityURL(_ url: URL) -> GrainSignal? {
         guard isActivityAction(url) else { return nil }
         let items = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems ?? []

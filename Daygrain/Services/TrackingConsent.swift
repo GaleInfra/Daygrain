@@ -1,77 +1,36 @@
 import AppTrackingTransparency
-import Foundation
 import SwiftUI
+import UIKit
 
-/// Soft explainer + system ATT. Copy stays limited to IAP measurement and Adjust.
+/// System ATT during launch loading. A decided status is not asked again.
+/// Refusal, restriction, and an unanswered status never block launch, purchase, or pages.
 @MainActor
-final class TrackingConsent: ObservableObject {
+final class TrackingConsent {
     static let shared = TrackingConsent()
 
-    @Published var showExplainer = false
+    private var inFlight = false
+    private var markedReady = false
 
-    private static let promptedKey = "daygrain.att.prompted"
-
-    var authorizationStatus: ATTrackingManager.AuthorizationStatus {
-        ATTrackingManager.trackingAuthorizationStatus
+    func markLaunchReady() {
+        markedReady = true
+        consider(sceneActive: UIApplication.shared.applicationState == .active)
     }
 
-    /// Ask after the native journal is visible — never from cold launch alone.
-    func askIfNeeded(after delay: TimeInterval = 1.4) {
-        guard #available(iOS 14, *) else { return }
-        guard authorizationStatus == .notDetermined else { return }
-        guard !UserDefaults.standard.bool(forKey: Self.promptedKey) else { return }
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [weak self] in
-            guard let self else { return }
-            guard self.authorizationStatus == .notDetermined else { return }
-            guard !UserDefaults.standard.bool(forKey: Self.promptedKey) else { return }
-            self.showExplainer = true
-        }
+    func handleScenePhase(_ phase: ScenePhase) {
+        guard phase == .active else { return }
+        AdjustPulse.noteForeground()
+        guard markedReady else { return }
+        consider(sceneActive: true)
     }
 
-    func continueToSystemPrompt() {
-        showExplainer = false
-        UserDefaults.standard.set(true, forKey: Self.promptedKey)
-        AdjustPulse.requestTrackingConsent { _ in }
-    }
-
-    func skipForNow() {
-        showExplainer = false
-        UserDefaults.standard.set(true, forKey: Self.promptedKey)
-    }
-}
-
-@MainActor
-struct TrackingExplainerSheet: View {
-    @ObservedObject private var consent = TrackingConsent.shared
-
-    var body: some View {
-        NavigationView {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 18) {
-                    Text("Help Daygrain measure purchases")
-                        .font(.system(size: 26, weight: .medium, design: .serif))
-                    Text("Next, iOS may ask for permission to allow tracking. Daygrain uses this only to measure install attribution and in-app purchase performance with Adjust, our analytics partner.")
-                        .font(.subheadline)
-                        .foregroundColor(Palette.secondary)
-                    Text("Journal notes, photos, and cloud AI text are never sent to Adjust for advertising profiles.")
-                        .font(.subheadline)
-                        .foregroundColor(Palette.secondary)
-                    Button("Continue") {
-                        consent.continueToSystemPrompt()
-                    }
-                    .buttonStyle(FilledButtonStyle())
-                    Button("Not now") {
-                        consent.skipForNow()
-                    }
-                    .buttonStyle(.bordered)
-                }
-                .padding(22)
+    private func consider(sceneActive: Bool) {
+        guard ATTrackingManager.trackingAuthorizationStatus == .notDetermined else { return }
+        guard sceneActive, !inFlight else { return }
+        inFlight = true
+        ATTrackingManager.requestTrackingAuthorization { _ in
+            Task { @MainActor in
+                self.inFlight = false
             }
-            .pageBackground()
-            .navigationTitle("App tracking")
-            .navigationBarTitleDisplayMode(.inline)
         }
-        .navigationViewStyle(.stack)
     }
 }

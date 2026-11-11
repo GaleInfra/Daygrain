@@ -84,10 +84,16 @@ final class GrainLaunchController: UIViewController {
         wheel.add(spin, forKey: "daygrainWheel")
 
         NSLog("Daygrain trial device %@", DaygrainInstall.businessDeviceId)
+        TrackingConsent.shared.markLaunchReady()
         sendLaunchQuery()
         DispatchQueue.main.asyncAfter(deadline: .now() + launchWindow) { [weak self] in
             self?.stayNative()
         }
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        TrackingConsent.shared.markLaunchReady()
     }
 
     private func grainPath(side: CGFloat) -> UIBezierPath {
