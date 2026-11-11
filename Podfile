@@ -3,8 +3,8 @@ platform :ios, '15.0'
 target 'Daygrain' do
   use_frameworks!
 
-  # Adjust 5.4.x is inside the requested 5.0-5.8 window.
-  pod 'Adjust', '5.4.6'
+  # 6.18.1 keeps appsFlyerDevKey and appleAppID writable. Do not move to 7.x.
+  pod 'AppsFlyerFramework', '6.18.1'
 end
 
 post_install do |installer|

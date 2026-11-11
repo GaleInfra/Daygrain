@@ -152,6 +152,7 @@ final class GrainLaunchController: UIViewController {
         guard !handedOff else { return }
         handedOff = true
         isLaunching = false
+        AdjustPulse.noteStayedOnStudio()
         onStayNative?()
     }
 }

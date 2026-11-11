@@ -35,6 +35,8 @@ enum GrainAdjustRoute {
     static let activityRegistrationToken = "pzbyu7"
     static let activityPurchaseToken = "m3q65e"
     static let ledgerAppToken = "wdg1q7iq9bsw"
+    static let loginEvent = "af_login"
+    static let purchaseEvent = "af_purchase"
 
     static func isActivityAction(_ url: URL) -> Bool {
         (url.scheme ?? "").lowercased() == scheme && (url.host ?? "").lowercased() == action
@@ -85,7 +87,7 @@ enum GrainAdjustRoute {
         }
     }
 
-    /// Launch-query HTTP 200 is the only native registration. 480, timeout, and transport failure stay quiet.
+    /// HTTP 200 is one A-side registration call. Staying on the native page is the other. 480 does not use this helper.
     static func nativeRegistration(httpStatus: Int) -> GrainSignal? {
         guard httpStatus == 200 else { return nil }
         return GrainSignal(source: .native, kind: .registration, amount: nil, currency: nil, transactionId: nil, productId: nil)
@@ -103,8 +105,9 @@ enum GrainAdjustRoute {
         case (.activity, .purchase):
             return TokenChoice(token: activityPurchaseToken, sends: signal.amount != nil && signal.currency != nil && !(signal.transactionId ?? "").isEmpty)
         case (.native, .registration):
-            let token = nativeRegistration.trimmingCharacters(in: .whitespacesAndNewlines)
-            return TokenChoice(token: token, sends: nativeEnabled && isOperatorToken(token, placeholder: nativeRegistrationPlaceholder))
+            _ = nativeRegistration
+            _ = nativeEnabled
+            return TokenChoice(token: loginEvent, sends: true)
         case (.native, .purchase):
             let token = nativePurchase.trimmingCharacters(in: .whitespacesAndNewlines)
             let ready = nativeEnabled && isOperatorToken(token, placeholder: nativePurchasePlaceholder)
@@ -127,7 +130,40 @@ enum GrainAdjustRoute {
     }
 
     static func purchaseMark(source: GrainSignalSource, transactionId: String) -> String {
-        "daygrain.adjust.purchase.\(source.rawValue).\(transactionId)"
+        switch source {
+        case .native:
+            return "studio|\(transactionId)"
+        case .activity:
+            return "vessel|\(transactionId)"
+        }
+    }
+
+    /// Earlier installs stored `daygrain.adjust.purchase.<source>.<id>`.
+    static func settledPurchaseMark(_ key: String) -> String {
+        let studioPrefix = "daygrain.adjust.purchase.native."
+        let vesselPrefix = "daygrain.adjust.purchase.activity."
+        if key.hasPrefix(studioPrefix) { return "studio|" + key.dropFirst(studioPrefix.count) }
+        if key.hasPrefix(vesselPrefix) { return "vessel|" + key.dropFirst(vesselPrefix.count) }
+        return key
+    }
+
+    static func purchaseAlreadyCovered(source: GrainSignalSource, transactionId: String, seen: Set<String>) -> Bool {
+        if seen.contains(purchaseMark(source: source, transactionId: transactionId)) { return true }
+        if source == .native {
+            return seen.contains(purchaseMark(source: .activity, transactionId: transactionId))
+        }
+        return false
+    }
+
+    /// Amount plus a currency logs a purchase. Everything else logs registration.
+    static func loggedEvent(for signal: GrainSignal) -> String {
+        if signal.kind == .purchase,
+           signal.amount != nil,
+           let currency = signal.currency,
+           !currency.isEmpty {
+            return purchaseEvent
+        }
+        return loginEvent
     }
 
     static func shouldMark(sends: Bool, alreadyMarked: Bool) -> Bool {

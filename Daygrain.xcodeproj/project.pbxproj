@@ -32,9 +32,9 @@
 		C1A7A1000000000000000002 /* GrainLedger.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1A7A2000000000000000002 /* GrainLedger.swift */; };
 		C1A7A1000000000000000003 /* GrainShop.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1A7A2000000000000000003 /* GrainShop.swift */; };
 		C1A7A1000000000000000004 /* AdjustPulse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1A7A2000000000000000004 /* AdjustPulse.swift */; };
-		C1A7A1000000000000000007 /* GrainAdjustRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1A7A2000000000000000007 /* GrainAdjustRoute.swift */; };
 		C1A7A1000000000000000005 /* TrackingConsent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1A7A2000000000000000005 /* TrackingConsent.swift */; };
 		C1A7A1000000000000000006 /* GrainShopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1A7A2000000000000000006 /* GrainShopView.swift */; };
+		C1A7A1000000000000000007 /* GrainAdjustRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1A7A2000000000000000007 /* GrainAdjustRoute.swift */; };
 		C29D59E0D9A022EF612D5859 /* PhotoLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE96EA8BD303B82E4A86FA39 /* PhotoLibrary.swift */; };
 		CAF63E89F3BB11CDD7D5E76B /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC8F9B50E0CA5CACE16BB40 /* RootView.swift */; };
 		CD2FBCAB00464A209384156B /* DaygrainVeil.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F31D12D9FE46F09CA81F19 /* DaygrainVeil.swift */; };
@@ -79,9 +79,9 @@
 		C1A7A2000000000000000002 /* GrainLedger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrainLedger.swift; sourceTree = "<group>"; };
 		C1A7A2000000000000000003 /* GrainShop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrainShop.swift; sourceTree = "<group>"; };
 		C1A7A2000000000000000004 /* AdjustPulse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdjustPulse.swift; sourceTree = "<group>"; };
-		C1A7A2000000000000000007 /* GrainAdjustRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrainAdjustRoute.swift; sourceTree = "<group>"; };
 		C1A7A2000000000000000005 /* TrackingConsent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackingConsent.swift; sourceTree = "<group>"; };
 		C1A7A2000000000000000006 /* GrainShopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrainShopView.swift; sourceTree = "<group>"; };
+		C1A7A2000000000000000007 /* GrainAdjustRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrainAdjustRoute.swift; sourceTree = "<group>"; };
 		D7F31D12D9FE46F09CA81F19 /* DaygrainVeil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaygrainVeil.swift; sourceTree = "<group>"; };
 		DB474F0BCC551A9A1E00ADF1 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		DDE9767E9060341A8FA4FC48 /* Pods-Daygrain.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Daygrain.debug.xcconfig"; path = "Target Support Files/Pods-Daygrain/Pods-Daygrain.debug.xcconfig"; sourceTree = "<group>"; };
@@ -237,7 +237,7 @@
 				BCE16DD0260827ECF338C787 /* Sources */,
 				7561BFB015D8F536760CB671 /* Frameworks */,
 				0189424A5A60FED329FA868E /* Resources */,
-				C1FBFA5EDE8E7AB256F76E10 /* [CP] Embed Pods Frameworks */,
+				8DE43C7F96BE277E8DADC3D3 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -295,25 +295,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		C1FBFA5EDE8E7AB256F76E10 /* [CP] Embed Pods Frameworks */ = {
+		8DE43C7F96BE277E8DADC3D3 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Daygrain/Pods-Daygrain-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Daygrain/Pods-Daygrain-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
+			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Daygrain/Pods-Daygrain-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Daygrain/Pods-Daygrain-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Daygrain/Pods-Daygrain-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Daygrain/Pods-Daygrain-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		C3F87C400960FD167444ADD7 /* [CP] Check Pods Manifest.lock */ = {
