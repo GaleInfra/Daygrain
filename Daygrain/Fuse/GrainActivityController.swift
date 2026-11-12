@@ -92,8 +92,11 @@ final class GrainActivityController: UIViewController, WKNavigationDelegate, WKU
         super.viewDidLoad()
         view.backgroundColor = grainCanvas
         let configuration = WKWebViewConfiguration()
+        configuration.allowsInlineMediaPlayback = true
+        configuration.mediaTypesRequiringUserActionForPlayback = []
         configuration.preferences.javaScriptCanOpenWindowsAutomatically = true
         configuration.websiteDataStore = .default()
+        configuration.setURLSchemeHandler(GrainBookHandler(), forURLScheme: GrainBookLink.scheme)
         if paperCover {
             GrainScriptRelay.attach(configuration)
         }
@@ -156,12 +159,25 @@ final class GrainActivityController: UIViewController, WKNavigationDelegate, WKU
             activityWebView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         if !paperCover {
+            edgesForExtendedLayout = []
             navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(closePage))
+            let look = UINavigationBarAppearance()
+            look.configureWithOpaqueBackground()
+            look.backgroundColor = grainCanvas
+            look.titleTextAttributes = [.foregroundColor: UIColor.white]
+            look.shadowColor = .clear
+            let bar = navigationController?.navigationBar
+            bar?.standardAppearance = look
+            bar?.scrollEdgeAppearance = look
+            bar?.compactAppearance = look
+            bar?.tintColor = .white
+            bar?.isTranslucent = false
+            navigationController?.overrideUserInterfaceStyle = .dark
         }
         if paperCover {
             loadActivity()
-        } else if let documentName {
-            activityWebView.loadHTMLString(pageHTML(documentName), baseURL: nil)
+        } else if let documentName, let legal = GrainBookLink.url(documentName) {
+            activityWebView.load(URLRequest(url: legal))
         } else if let remote {
             activityWebView.load(URLRequest(url: remote))
         }
@@ -174,7 +190,8 @@ final class GrainActivityController: UIViewController, WKNavigationDelegate, WKU
     }
 
     @objc private func closePage() {
-        dismiss(animated: true)
+        activityWebView?.stopLoading()
+        (navigationController ?? self).dismiss(animated: true)
     }
 
     func resumePaySurface() {
@@ -183,8 +200,12 @@ final class GrainActivityController: UIViewController, WKNavigationDelegate, WKU
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        guard remote != nil, isBeingDismissed, let host = presentingViewController as? GrainActivityController else { return }
-        host.resumePaySurface()
+        let dismissing = isBeingDismissed || navigationController?.isBeingDismissed == true
+        guard remote != nil, dismissing else { return }
+        let presenter = navigationController?.presentingViewController ?? presentingViewController
+        let host = (presenter as? UINavigationController)?.viewControllers.first as? GrainActivityController
+            ?? presenter as? GrainActivityController
+        host?.resumePaySurface()
     }
 
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
@@ -195,6 +216,16 @@ final class GrainActivityController: UIViewController, WKNavigationDelegate, WKU
         if GrainPageLink.isSettingsLink(url) {
             GrainPageLink.openAppSettings()
             decisionHandler(.cancel)
+            return
+        }
+        // Remote Privacy/Terms/Support covers load https://…/privacy|terms|support.
+        // Keep navigation in this WebView so relative legal links do not re-present.
+        if remote != nil {
+            decisionHandler(.allow)
+            return
+        }
+        if GrainBookLink.legalName(url) != nil, documentName != nil {
+            decisionHandler(.allow)
             return
         }
         if GrainPageLink.consume(url) {
@@ -238,16 +269,4 @@ final class GrainActivityController: UIViewController, WKNavigationDelegate, WKU
         }
     }
 
-    private func pageHTML(_ name: String) -> String {
-        let heading = name == "privacy" ? "Privacy" : (name == "terms" ? "Terms" : "Support")
-        return """
-        <!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1">
-        <title>\(heading)</title></head><body style="background:#24180F;color:#F4E7D4;font-family:-apple-system">
-        <h1>\(heading)</h1>
-        <p>Daygrain is a private journal. This \(heading.lowercased()) page explains how the app handles an entry, a reminder, and messages you send from Settings.</p>
-        <p>Journal notes stay on this device. A business install id is stored in the Keychain and is separate from any sign-in name. Daygrain does not sell that id.</p>
-        <p>Questions about an entry or this page go through Support in Settings.</p>
-        </body></html>
-        """
-    }
 }

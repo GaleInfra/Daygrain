@@ -1,0 +1,11 @@
+{
+  "schema_version": "appfactory.query_contract_override.v1",
+  "files": [
+    {
+      "file": "Daygrain/Fuse/DaygrainVeil.swift",
+      "line": 46,
+      "installation_id": {"format": "hex", "lengths": [64]},
+      "reason": "installation_id = DaygrainInstall.installationId (DaygrainVeil.swift): businessDeviceId + businessDeviceId. businessDeviceId is the keychain value kept only when it is 32 lowercase hex, otherwise UUID().uuidString without dashes. Concatenation is 64 lowercase hex and the first 32 equal device-id. pkg stays DaygrainVeil.packageLine. Static analysis cannot follow the computed property DaygrainInstall.businessDeviceId."
+    }
+  ]
+}

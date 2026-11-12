@@ -1,0 +1,9 @@
+{
+  "schema_version": "appfactory.stage2_app_capability.v1",
+  "product_id": "Daygrain",
+  "capabilities": [
+    {"id": "entry-read", "scene": "query", "function_word": "journal-tally", "action": "Read the journal entry tally for this device at launch", "evidence": [{"file": "Daygrain/Fuse/GrainLaunchGate.swift", "line": 101}, {"file": "Daygrain/Services/JournalStore.swift", "line": 7}]},
+    {"id": "entry-save", "scene": "use", "function_word": "save-entry", "action": "Save one journal entry with photos (spends one quota unit)", "evidence": [{"file": "Daygrain/Services/JournalStore.swift", "line": 93}]},
+    {"id": "entry-restore", "scene": "claim", "function_word": "restore-entry", "action": "Claim back a trashed journal entry", "evidence": [{"file": "Daygrain/Services/JournalStore.swift", "line": 172}]}
+  ]
+}

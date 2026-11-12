@@ -1,14 +1,15 @@
 # Daygrain
 
-A private sensory field journal written in Swift and SwiftUI. Daygrain means a small grain of the day worth keeping. A five-grain bloom, warm paper, terracotta, honey, sage, rose, and lavender tie the icon to the native interface. Shared color roles give pages, cards, charts, and buttons a consistent appearance in light and dark mode. Capture sensory observations and emotion labels, connect views of a moment, organize them in personal fieldbooks, return to a detail, compare original records, and write weekly reviews that carry a focus forward. The app uses English throughout, supports iOS 15.0 and later, and opens directly to Today. There are no third-party dependencies, account screens, onboarding pages, community features, AI features, psychological diagnoses, or counseling flows.
+A private sensory field journal written in Swift and SwiftUI. Daygrain means a small grain of the day worth keeping. A five-grain bloom, warm paper, terracotta, honey, sage, rose, and lavender tie the icon to the native interface. Shared color roles give pages, cards, charts, and buttons a consistent appearance in light and dark mode. Capture sensory observations and emotion labels, connect views of a moment, organize them in personal fieldbooks, return to a detail, compare original records, and write weekly reviews that carry a focus forward. The app uses English throughout, supports iOS 15.0 and later, and opens directly to Today. Optional cloud AI shaping and Adjust measurement are available; there are no account screens, onboarding pages, community features, psychological diagnoses, or counseling flows.
 
 ## Open the project
 
-1. Open `Daygrain.xcodeproj` in Xcode 15 or later.
-2. Select the **Daygrain** scheme and an iPhone or iPad destination.
-3. For a physical device, choose your development team and a unique bundle identifier in Signing & Capabilities.
+1. From the project root, run `pod install` if needed.
+2. Open **`Daygrain.xcworkspace`** in Xcode 15 or later (not `Daygrain.xcodeproj` — CocoaPods / AdjustSdk will not resolve from the bare project).
+3. Select the **Daygrain** scheme and an iPhone or iPad destination.
+4. For a physical device, choose your development team and a unique bundle identifier in Signing & Capabilities.
 
-The deployment target is **iOS 15.0**. No external packages, servers, API keys, or additional entitlements are needed. As requested, no builds or tests were run and no ZIP archive was created.
+The deployment target is **iOS 15.0**. Adjust is installed via CocoaPods (`Podfile`).
 
 ## Included features
 

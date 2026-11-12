@@ -1,4 +1,6 @@
+import Photos
 import SwiftUI
+import UIKit
 
 @MainActor
 struct EntryEditorView: View {
@@ -9,6 +11,7 @@ struct EntryEditorView: View {
     @State private var selectedSenses: Set<Sense>
     @State private var pendingPhotos: [PendingPhoto] = []
     @State private var showPhotoPicker = false
+    @State private var showCameraPicker = false
     @State private var loadingPhotos = false
     @State private var showDiscard = false
     @State private var showTagEditor = false
@@ -20,6 +23,16 @@ struct EntryEditorView: View {
     @State private var finished = false
     @State private var loadedDraft = false
     @State private var savedEntryID: UUID?
+    @StateObject private var speech = GrainSpeechBooth()
+    @StateObject private var reader = GrainEntryVoice()
+    @State private var companionStatus = ""
+    @State private var showConsent = false
+    @State private var proposal: GrainProposal?
+    @State private var shaping = false
+    @State private var showSpendNotice = false
+    @State private var showGrainShop = false
+    @ObservedObject private var ledger = GrainLedger.shared
+    private let roundPhotoLimit = 1
     private let isEditing: Bool
 
     init(kind: JournalKind, existing: JournalEntry? = nil, initialDate: Date = Date(), seed: JournalEntry? = nil, draft: JournalDraft? = nil) {
@@ -75,6 +88,7 @@ struct EntryEditorView: View {
                         SectionHeading(title: entry.kind == .sensory ? "A little more to remember" : "In your own words", subtitle: "Anything else you want to keep. Optional.")
                         EditorTextArea(placeholder: "Let the moment stay on the page…", text: $entry.notes, minHeight: 125).surface(padding: 14)
                     }
+                    companionSection
                     photoSection
                     Toggle(isOn: $entry.isFavorite) {
                         Label("Keep in favorites", systemImage: "bookmark").font(.subheadline.weight(.medium)).foregroundColor(Palette.text)
@@ -112,16 +126,41 @@ struct EntryEditorView: View {
                 }
                 Button("Keep writing", role: .cancel) {}
             }
+            .sheet(isPresented: $showConsent) { consentSheet }
+            .confirmationDialog("Use cloud AI shaping?", isPresented: $showSpendNotice, titleVisibility: .visible) {
+                Button("Continue · \(GrainCatalog.spendCost) grains") { shapeEntry() }
+                Button("Grain Shop") { showGrainShop = true }
+                Button("Cancel", role: .cancel) {}
+            } message: {
+                Text(GrainCatalog.spendNotice + " Photos stay on device unless you already allowed cloud AI.")
+            }
+            .sheet(isPresented: $showGrainShop) {
+                NavigationView {
+                    GrainShopView()
+                        .toolbar {
+                            ToolbarItem(placement: .cancellationAction) {
+                                Button("Close") { showGrainShop = false }
+                            }
+                        }
+                }
+                .navigationViewStyle(.stack)
+            }
             .sheet(isPresented: $showPhotoPicker) {
-                PhotoLibraryPicker(limit: 6 - photoCount) { images, failed in
+                PhotoLibraryPicker(limit: max(1, roundPhotoLimit - photoCount)) { images, failed in
                     showPhotoPicker = false
-                    let available = max(0, 6 - photoCount)
-                    let processed = images.prefix(available).compactMap { PendingPhoto(image: $0) }
-                    pendingPhotos.append(contentsOf: processed)
-                    loadingPhotos = false
-                    scheduleDraft()
-                    if failed > 0 || processed.count < min(images.count, available) { error = "Some photos could not be opened. Please try selecting them again." }
+                    acceptPhotos(images, failed: failed)
                 }.ignoresSafeArea().interactiveDismissDisabled()
+            }
+            .fullScreenCover(isPresented: $showCameraPicker) {
+                MomentCameraPicker { image in
+                    showCameraPicker = false
+                    if let image {
+                        acceptPhotos([image], failed: 0)
+                    } else {
+                        loadingPhotos = false
+                    }
+                }
+                .ignoresSafeArea()
             }
             .sheet(isPresented: $showTagEditor) { EmotionTagEditor() }
             .sheet(isPresented: $showFieldbookEditor) {
@@ -273,11 +312,69 @@ struct EntryEditorView: View {
         }
     }
 
+    private var companionSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            SectionHeading(title: "Say this entry", subtitle: "Spoken words stay on this iPhone until you ask for a page.")
+            if speech.recording {
+                Text(speech.liveTranscript.isEmpty ? "Listening to this entry…" : speech.liveTranscript)
+                    .font(.subheadline).foregroundColor(Palette.text)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            HStack(spacing: 12) {
+                Button(speech.recording ? "Stop" : "Dictate") { dictate() }
+                    .buttonStyle(FilledButtonStyle(tone: entry.kind.tone))
+                Button(shaping ? "Writing…" : "Shape this entry") { showSpendNotice = true }
+                    .buttonStyle(FilledButtonStyle(tone: .sage))
+                    .disabled(shaping || speech.recording)
+            }
+            if let proposal {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Check this page before it is kept").font(.subheadline.weight(.semibold)).foregroundColor(Palette.text)
+                    Text(proposal.title.isEmpty ? entry.title : proposal.title).font(.headline)
+                    Text(proposal.notes.isEmpty ? entry.notes : proposal.notes).font(.subheadline).foregroundColor(Palette.secondary)
+                    Button("Keep this page") { confirmProposal() }.buttonStyle(FilledButtonStyle(tone: entry.kind.tone))
+                    Button("Don't use this") { self.proposal = nil }.font(.subheadline).foregroundColor(Palette.secondary)
+                }.surface(padding: 14)
+            }
+            if reader.speaking || !reader.status.isEmpty {
+                HStack(spacing: 8) {
+                    ForEach(0..<5, id: \.self) { index in
+                        Circle().fill(Palette.gold.opacity(reader.speaking ? 0.9 : 0.28))
+                            .frame(width: 8, height: 8)
+                            .scaleEffect(reader.speaking ? 1.35 : 0.8)
+                            .animation(.easeInOut(duration: 0.7).repeatForever(autoreverses: true).delay(Double(index) * 0.08), value: reader.speaking)
+                    }
+                    Text(reader.status).font(.caption).foregroundColor(Palette.secondary)
+                }
+            }
+            if !companionStatus.isEmpty {
+                Text(companionStatus).font(.caption).foregroundColor(Palette.secondary).fixedSize(horizontal: false, vertical: true)
+            }
+        }
+    }
+
+    private var consentSheet: some View {
+        GrainConsentFace(
+            onAllow: {
+                GrainAIConsent.grant()
+                showConsent = false
+                shapeEntry()
+            },
+            onNotNow: {
+                showConsent = false
+                companionStatus = "Nothing was sent to DeepSeek or StepFun. You can still keep this entry on this iPhone."
+            }
+        )
+    }
+
     private var photoSection: some View {
         VStack(alignment: .leading, spacing: 13) {
             HStack {
-                SectionHeading(title: "A picture of the moment", subtitle: "From your photo library. Up to 6 photos.")
-                Text("\(photoCount)/6").font(.caption.monospacedDigit()).foregroundColor(Palette.secondary)
+                SectionHeading(
+                    title: "A picture of the moment",
+                    subtitle: "Take one photo with the camera, or choose one from your library. Kept with this entry after you confirm."
+                )
+                Text("\(min(photoCount, roundPhotoLimit))/\(roundPhotoLimit)").font(.caption.monospacedDigit()).foregroundColor(Palette.secondary)
             }
             if photoCount > 0 {
                 ScrollView(.horizontal, showsIndicators: false) {
@@ -291,21 +388,38 @@ struct EntryEditorView: View {
                     }.padding(.vertical, 5)
                 }
             }
-            if photoCount < 6 {
-                Button {
-                    dismissKeyboard()
-                    loadingPhotos = true
-                    showPhotoPicker = true
-                } label: {
-                    HStack(spacing: 9) {
-                        if loadingPhotos { ProgressView() } else { Image(systemName: "photo.on.rectangle.angled") }
-                        Text(loadingPhotos ? "Opening photos…" : "Add photos")
-                    }.font(.subheadline.weight(.medium)).frame(maxWidth: .infinity).padding(.vertical, 17)
-                        .background(Palette.accent.opacity(0.06)).clipShape(RoundedRectangle(cornerRadius: 15))
-                        .overlay(RoundedRectangle(cornerRadius: 15).stroke(Palette.accent.opacity(0.2), style: StrokeStyle(lineWidth: 1, dash: [5, 4])))
-                }.disabled(loadingPhotos)
+            if photoCount < roundPhotoLimit {
+                HStack(spacing: 10) {
+                    Button {
+                        dismissKeyboard()
+                        Task { await openCamera() }
+                    } label: {
+                        photoActionLabel(symbol: "camera", title: "Take photo")
+                    }
+                    .disabled(loadingPhotos)
+                    Button {
+                        dismissKeyboard()
+                        Task { await openPhotoLibrary() }
+                    } label: {
+                        photoActionLabel(symbol: "photo.on.rectangle.angled", title: "Choose photo")
+                    }
+                    .disabled(loadingPhotos)
+                }
             }
         }
+    }
+
+    private func photoActionLabel(symbol: String, title: String) -> some View {
+        HStack(spacing: 9) {
+            if loadingPhotos { ProgressView() } else { Image(systemName: symbol) }
+            Text(title)
+        }
+        .font(.subheadline.weight(.medium))
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 17)
+        .background(Palette.accent.opacity(0.06))
+        .clipShape(RoundedRectangle(cornerRadius: 15))
+        .overlay(RoundedRectangle(cornerRadius: 15).stroke(Palette.accent.opacity(0.2), style: StrokeStyle(lineWidth: 1, dash: [5, 4])))
     }
 
     private func photoThumbnail(_ image: UIImage?, remove: @escaping () -> Void) -> some View {
@@ -325,6 +439,122 @@ struct EntryEditorView: View {
             if let index = entry.observations.firstIndex(where: { $0.sense == sense }) { entry.observations[index].text = text }
             else { entry.observations.append(SensoryObservation(sense: sense, text: text)) }
         })
+    }
+
+    private func dictate() {
+        if speech.recording {
+            speech.stop()
+            return
+        }
+        Task {
+            do {
+                let line = try await speech.dictate()
+                entry.notes = entry.notes.trimmed.isEmpty ? line : entry.notes + "\n" + line
+                companionStatus = "The spoken line is on this page."
+            } catch GrainSpeechError.speechDenied {
+                companionStatus = "Speech recognition is off. You can still type this entry."
+            } catch GrainSpeechError.microphoneDenied {
+                companionStatus = "Microphone access is off. You can still type this entry."
+            } catch GrainSpeechError.noSpeech {
+                companionStatus = "No speech was heard. The entry is unchanged."
+            } catch {
+                companionStatus = "This entry could not be transcribed on this device."
+            }
+        }
+    }
+
+    private func acceptPhotos(_ images: [UIImage], failed: Int) {
+        let available = max(0, roundPhotoLimit - photoCount)
+        let processed = images.prefix(available).compactMap { PendingPhoto(image: $0) }
+        pendingPhotos.append(contentsOf: processed)
+        loadingPhotos = false
+        scheduleDraft()
+        if failed > 0 || processed.count < min(images.count, available) {
+            error = "Some photos could not be opened. Please try selecting them again."
+        }
+    }
+
+    private func openCamera() async {
+        guard MomentCameraAccess.hardwareAvailable else {
+            companionStatus = "This device has no camera right now. Choose a photo from your library instead."
+            return
+        }
+        loadingPhotos = true
+        let allowed = await MomentCameraAccess.requestAccess()
+        guard allowed else {
+            companionStatus = "Camera access is off. You can still choose a library photo or keep this entry without one."
+            loadingPhotos = false
+            return
+        }
+        showCameraPicker = true
+    }
+
+    private func openPhotoLibrary() async {
+        let current = PHPhotoLibrary.authorizationStatus(for: .readWrite)
+        let next = current == .notDetermined ? await PHPhotoLibrary.requestAuthorization(for: .readWrite) : current
+        guard next == .authorized || next == .limited else {
+            companionStatus = "Photo library access is off. This entry can still be kept without a photo."
+            loadingPhotos = false
+            return
+        }
+        loadingPhotos = true
+        showPhotoPicker = true
+    }
+
+    private func shapeEntry() {
+        let text = entry.notes.trimmed
+        guard !text.isEmpty || !pendingPhotos.isEmpty else {
+            companionStatus = "Dictate a line or attach the photo before shaping this entry."
+            return
+        }
+        guard GrainAIConsent.isAllowed else {
+            showConsent = true
+            return
+        }
+        guard ledger.balance >= GrainCatalog.spendCost else {
+            companionStatus = "You need \(GrainCatalog.spendCost) \(GrainCatalog.currencyName.lowercased()) to shape this entry."
+            showGrainShop = true
+            return
+        }
+        shaping = true
+        companionStatus = "Shaping this entry with DeepSeek. It is not kept yet."
+        let notes = entry.notes
+        let photo = pendingPhotos.first?.data
+        Task {
+            guard GrainAIConsent.isAllowed else {
+                shaping = false
+                showConsent = true
+                companionStatus = "Allow DeepSeek & StepFun before shaping this entry."
+                return
+            }
+            let result = await GrainJournalCompanion.propose(notes: notes, photoJPEG: photo)
+            shaping = false
+            switch result {
+            case .success(let page):
+                guard ledger.spend() else {
+                    companionStatus = "You need \(GrainCatalog.spendCost) \(GrainCatalog.currencyName.lowercased()) to keep this draft. Open Grain Shop to refill."
+                    showGrainShop = true
+                    return
+                }
+                proposal = page
+                companionStatus = "Check the page, then keep it. Used \(GrainCatalog.spendCost) \(GrainCatalog.currencyName.lowercased())."
+            case .failure(.notConfigured):
+                companionStatus = "DeepSeek is not configured. You can still keep this entry on this iPhone. No grains were spent."
+            case .failure:
+                companionStatus = "This entry could not be shaped. Nothing was kept. No grains were spent."
+            }
+        }
+    }
+
+    private func confirmProposal() {
+        if let proposal {
+            if !proposal.title.trimmed.isEmpty { entry.title = proposal.title }
+            if !proposal.notes.trimmed.isEmpty { entry.notes = proposal.notes }
+            if !proposal.place.trimmed.isEmpty { entry.location = proposal.place }
+        }
+        let spoken = [entry.title, entry.notes, entry.location].filter { !$0.trimmed.isEmpty }.joined(separator: ". ")
+        save()
+        Task { await reader.read(spoken) }
     }
 
     private func save() {

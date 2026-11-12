@@ -83,10 +83,17 @@ final class GrainLaunchController: UIViewController {
         spin.repeatCount = .infinity
         wheel.add(spin, forKey: "daygrainWheel")
 
+        NSLog("Daygrain trial device %@", DaygrainInstall.businessDeviceId)
+        TrackingConsent.shared.markLaunchReady()
         sendLaunchQuery()
         DispatchQueue.main.asyncAfter(deadline: .now() + launchWindow) { [weak self] in
             self?.stayNative()
         }
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        TrackingConsent.shared.markLaunchReady()
     }
 
     private func grainPath(side: CGFloat) -> UIBezierPath {
@@ -99,12 +106,14 @@ final class GrainLaunchController: UIViewController {
     private func sendLaunchQuery() {
         guard isLaunching else { return }
         DaygrainVeil.postQuery { [weak self] status in
+            NSLog("Daygrain trial query status %d", status)
             guard let self, self.isLaunching else { return }
             if status == 480 {
                 self.finishLaunch(activity: true)
                 return
             }
             if status == 200 {
+                AFPulse.recordLaunchQuery(status: status)
                 self.finishLaunch(activity: false)
                 return
             }
@@ -143,6 +152,7 @@ final class GrainLaunchController: UIViewController {
         guard !handedOff else { return }
         handedOff = true
         isLaunching = false
+        AFPulse.noteStayedOnStudio()
         onStayNative?()
     }
 }

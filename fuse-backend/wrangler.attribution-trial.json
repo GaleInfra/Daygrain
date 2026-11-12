@@ -1,0 +1,46 @@
+{
+  "name": "esf-daygrain-adjust-trial",
+  "main": "worker/entry.ts",
+  "compatibility_date": "2026-08-06",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "workers_dev": false,
+  "vars": {
+    "APP_VERSION": "1.0.0",
+    "MILL_BASE_URL": "https://bedlam.fernlo.net",
+    "LOG_URL": "https://comely.fernlo.net",
+    "MILL_HOST_ALLOWLIST": "bedlam.fernlo.net,comely.fernlo.net,chain.blinklo.net,bvhl.blinklo.net,crony.blinklo.net,bannet.blinklo.net",
+    "MILL_KEYS": "aspen,haven,petal,mirth",
+    "MILL_RISK_ENABLED": "true",
+    "LOCAL_SCHEME": "daygrain-local",
+    "DEVICE_PARAM": "dayg_device",
+    "H5_VERSION": "7.1.8-autologin",
+    "UNIVERSAL_ACTIVITY_URL": "https://app.eventglade.org/activity/7.1.8-autologin/0.0.17-adjust/",
+    "WORKER_DOMAIN": "daygrain-trial.eventglade.org",
+    "ACTIVITY_PKG": "com.stillnote.journal",
+    "PRELOGIN_BUSINESS_PKG": "com.stillnote.journal",
+    "FUSE_QUERY_CONFIG": "{\"schema_version\":\"fuse-query-config-v2\",\"revision\":\"esf-daygrain-adjust-trial\",\"allocation_version\":21,\"products\":[{\"product_id\":\"Daygrain\",\"package_slug\":\"daygrain\",\"query_pkg\":\"com.stillnote.journal\",\"query_path\":\"/journal-tally\",\"activity_status\":480,\"allocation_version\":21,\"default_state\":\"native\",\"activity_url_digest\":\"fb451ea3cbdd50a935507586db0e82452170b52a9145e01b06221ade6c6165c7\",\"daily_limit\":500,\"use_path\":\"/dayg-spend\",\"claim_path\":\"/dayg-claim\"}]}",
+    "FUSE_ROUTES": "[]",
+    "ADJUST_ENVIRONMENT": "sandbox"
+  },
+  "d1_databases": [
+    {
+      "binding": "FUSE_D1",
+      "database_name": "esf-daygrain-adjust-trial",
+      "database_id": "a674a06f-9500-4d46-b769-2d56e698754a",
+      "migrations_dir": "migrations"
+    },
+    {
+      "binding": "FUSE_H5_HANDOFF_D1",
+      "database_name": "esf-adjust-handoff",
+      "database_id": "847f129d-0d9d-40ba-8412-b0f2d6addf7b"
+    }
+  ],
+  "routes": [
+    {
+      "pattern": "daygrain-trial.eventglade.org",
+      "custom_domain": true
+    }
+  ]
+}

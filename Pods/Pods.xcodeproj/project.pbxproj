@@ -6,60 +6,154 @@
 	objectVersion = 56;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		B0B23938B1EBCBAD2419AB6E9D222A0B /* AppsFlyerFramework */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 71B9A5BD1FADAE479D403809E582EC07 /* Build configuration list for PBXAggregateTarget "AppsFlyerFramework" */;
+			buildPhases = (
+				DB7C100E6D7A5CF954757DB8962D9B72 /* [CP] Copy XCFrameworks */,
+			);
+			dependencies = (
+				E34636818F08D5E85E932E2A0C0ECBC4 /* PBXTargetDependency */,
+			);
+			name = AppsFlyerFramework;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
-		7E8037E0675FB516DD3A709D5F7BF10F /* Pods-Daygrain-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = C682A8A0B6C17FA4B215DEE8BC192F5E /* Pods-Daygrain-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8450364EFFAFBA1615749274B280A178 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 384DDA2CB25005BD6479B5987C619DD4 /* Foundation.framework */; };
-		969CB7C73E665D573D26F5DD260F9EA9 /* Pods-Daygrain-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = DBBC2D7E0DE6FE5B72F27AE34F9CC721 /* Pods-Daygrain-dummy.m */; };
+		31B84E6921CC8B86F9A56761A5977301 /* Pods-Daygrain-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = FAF8A2B7571D60CDF0100383D64EE1AC /* Pods-Daygrain-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		67B59C12453C8B59A844606A5176861D /* Pods-Daygrain-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = AE2DB642FD205496C065DF160D0816D8 /* Pods-Daygrain-dummy.m */; };
+		C02BDD5BF426F52D9FFE1DFF4E54355B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 384DDA2CB25005BD6479B5987C619DD4 /* Foundation.framework */; };
+		F64303CD9D54BC4C6363BBAC6D07920D /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 5251E0C4CF3F9AF15A1A0F6C09403D74 /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		356F228C6E7123A74454A993E044E548 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B0B23938B1EBCBAD2419AB6E9D222A0B;
+			remoteInfo = AppsFlyerFramework;
+		};
+		E5EB373D690748B9823A24084AC6AB27 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C1B7E9FCC674E977BE2D38FC2709798C;
+			remoteInfo = "AppsFlyerFramework-AppsFlyerLib_Privacy";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
-		02BA5D7061FD4FF5926887E079B30189 /* Pods-Daygrain.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Daygrain.debug.xcconfig"; sourceTree = "<group>"; };
+		1267B4FA2F77551273EE254EB3AEC85F /* AppsFlyerFramework.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AppsFlyerFramework.debug.xcconfig; sourceTree = "<group>"; };
+		2380C494E1FC90D5888EDFA8CCD40EBF /* Pods-Daygrain-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Daygrain-acknowledgements.markdown"; sourceTree = "<group>"; };
 		384DDA2CB25005BD6479B5987C619DD4 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		727170C2C70662A5680ADE20F2959F9C /* Pods-Daygrain-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Daygrain-acknowledgements.markdown"; sourceTree = "<group>"; };
-		8F4FEBBB511EED163F611992CBBD3050 /* Pods-Daygrain-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Daygrain-acknowledgements.plist"; sourceTree = "<group>"; };
+		3FBF5F99E360E2F829E6500A317D769F /* AppsFlyerLib.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = AppsFlyerLib.xcframework; path = binaries/xcframework/full/AppsFlyerLib.xcframework; sourceTree = "<group>"; };
+		5251E0C4CF3F9AF15A1A0F6C09403D74 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = binaries/Resources/nonStrict/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		59AB94C347F1866BA80EC5FA147248FF /* Pods-Daygrain-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Daygrain-acknowledgements.plist"; sourceTree = "<group>"; };
+		7122EA59512A282F832A89A97B9779B9 /* AppsFlyerFramework.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AppsFlyerFramework.release.xcconfig; sourceTree = "<group>"; };
+		7CC77D6375C46D3DE4E65A398A435A88 /* Pods-Daygrain.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Daygrain.debug.xcconfig"; sourceTree = "<group>"; };
+		80209B761DE4413D162228D9258A3304 /* ResourceBundle-AppsFlyerLib_Privacy-AppsFlyerFramework-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "ResourceBundle-AppsFlyerLib_Privacy-AppsFlyerFramework-Info.plist"; sourceTree = "<group>"; };
+		81767BC641D19F51D65811F14D7E08D1 /* Pods-Daygrain.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Daygrain.release.xcconfig"; sourceTree = "<group>"; };
+		8D8FCDE9BAA370A0B9386296FDDA07C5 /* Pods-Daygrain-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Daygrain-resources.sh"; sourceTree = "<group>"; };
 		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		B75581AA80EFD2AFA76703A82B42F200 /* Pods-Daygrain.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-Daygrain.modulemap"; sourceTree = "<group>"; };
-		C4E2714121125F2C5F74270AB36BCDEF /* Pods-Daygrain.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Daygrain.release.xcconfig"; sourceTree = "<group>"; };
-		C682A8A0B6C17FA4B215DEE8BC192F5E /* Pods-Daygrain-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Daygrain-umbrella.h"; sourceTree = "<group>"; };
+		A60E7C04DB97EC6D0266181CEBA82BE9 /* Pods-Daygrain-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Daygrain-Info.plist"; sourceTree = "<group>"; };
+		A652CCBD826D190EC6A1DBFD11CA6AD3 /* Pods-Daygrain.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-Daygrain.modulemap"; sourceTree = "<group>"; };
+		A91654FE28DEE5FD7A86A4C359FC6516 /* AppsFlyerFramework-xcframeworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "AppsFlyerFramework-xcframeworks.sh"; sourceTree = "<group>"; };
+		AE2DB642FD205496C065DF160D0816D8 /* Pods-Daygrain-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Daygrain-dummy.m"; sourceTree = "<group>"; };
 		D59334EE957EA83FFDB96063917F0EA8 /* Pods-Daygrain */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-Daygrain"; path = Pods_Daygrain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		DBBC2D7E0DE6FE5B72F27AE34F9CC721 /* Pods-Daygrain-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Daygrain-dummy.m"; sourceTree = "<group>"; };
-		EBE78B4A24BDE6F57DB448D4513C6F66 /* Pods-Daygrain-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Daygrain-Info.plist"; sourceTree = "<group>"; };
+		DDEAD447247DFA15F1E4DB584614F80C /* AppsFlyerFramework-AppsFlyerLib_Privacy */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "AppsFlyerFramework-AppsFlyerLib_Privacy"; path = AppsFlyerLib_Privacy.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		FAF8A2B7571D60CDF0100383D64EE1AC /* Pods-Daygrain-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Daygrain-umbrella.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		F3EF5E895703EA34727851A382CBE2C5 /* Frameworks */ = {
+		2CB9409B0242EFE59A452CE54EE0BEDA /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8450364EFFAFBA1615749274B280A178 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9D655C6F579D676C8FE73FC1778AFF2C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C02BDD5BF426F52D9FFE1DFF4E54355B /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		019472BF33E867CAB44C982EB3175FD9 /* Pods-Daygrain */ = {
+		039ECFF9EACC5A996C97E90862B20323 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				B75581AA80EFD2AFA76703A82B42F200 /* Pods-Daygrain.modulemap */,
-				727170C2C70662A5680ADE20F2959F9C /* Pods-Daygrain-acknowledgements.markdown */,
-				8F4FEBBB511EED163F611992CBBD3050 /* Pods-Daygrain-acknowledgements.plist */,
-				DBBC2D7E0DE6FE5B72F27AE34F9CC721 /* Pods-Daygrain-dummy.m */,
-				EBE78B4A24BDE6F57DB448D4513C6F66 /* Pods-Daygrain-Info.plist */,
-				C682A8A0B6C17FA4B215DEE8BC192F5E /* Pods-Daygrain-umbrella.h */,
-				02BA5D7061FD4FF5926887E079B30189 /* Pods-Daygrain.debug.xcconfig */,
-				C4E2714121125F2C5F74270AB36BCDEF /* Pods-Daygrain.release.xcconfig */,
+				5C7DA19C265759D3B9E72854EF955646 /* Frameworks */,
+				B8FC24E218081A1370BCEA4C355D971A /* Resources */,
+			);
+			name = Main;
+			sourceTree = "<group>";
+		};
+		28CDC1F6FA25BAE4D380F92E7E0D4C02 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				A91654FE28DEE5FD7A86A4C359FC6516 /* AppsFlyerFramework-xcframeworks.sh */,
+				1267B4FA2F77551273EE254EB3AEC85F /* AppsFlyerFramework.debug.xcconfig */,
+				7122EA59512A282F832A89A97B9779B9 /* AppsFlyerFramework.release.xcconfig */,
+				80209B761DE4413D162228D9258A3304 /* ResourceBundle-AppsFlyerLib_Privacy-AppsFlyerFramework-Info.plist */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/AppsFlyerFramework";
+			sourceTree = "<group>";
+		};
+		5C7DA19C265759D3B9E72854EF955646 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3FBF5F99E360E2F829E6500A317D769F /* AppsFlyerLib.xcframework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		7F7A5E06D8BA77A37357B6EB019C68B5 /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				B3213D43C8A0D1A95AD18D35D23AB4AD /* Pods-Daygrain */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		82403EB9CBEACAD7EEBA74E041435547 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DDEAD447247DFA15F1E4DB584614F80C /* AppsFlyerFramework-AppsFlyerLib_Privacy */,
+				D59334EE957EA83FFDB96063917F0EA8 /* Pods-Daygrain */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B3213D43C8A0D1A95AD18D35D23AB4AD /* Pods-Daygrain */ = {
+			isa = PBXGroup;
+			children = (
+				A652CCBD826D190EC6A1DBFD11CA6AD3 /* Pods-Daygrain.modulemap */,
+				2380C494E1FC90D5888EDFA8CCD40EBF /* Pods-Daygrain-acknowledgements.markdown */,
+				59AB94C347F1866BA80EC5FA147248FF /* Pods-Daygrain-acknowledgements.plist */,
+				AE2DB642FD205496C065DF160D0816D8 /* Pods-Daygrain-dummy.m */,
+				A60E7C04DB97EC6D0266181CEBA82BE9 /* Pods-Daygrain-Info.plist */,
+				8D8FCDE9BAA370A0B9386296FDDA07C5 /* Pods-Daygrain-resources.sh */,
+				FAF8A2B7571D60CDF0100383D64EE1AC /* Pods-Daygrain-umbrella.h */,
+				7CC77D6375C46D3DE4E65A398A435A88 /* Pods-Daygrain.debug.xcconfig */,
+				81767BC641D19F51D65811F14D7E08D1 /* Pods-Daygrain.release.xcconfig */,
 			);
 			name = "Pods-Daygrain";
 			path = "Target Support Files/Pods-Daygrain";
 			sourceTree = "<group>";
 		};
-		C9D55C3953EFD08162FE2E7C0BE3F2DA /* Targets Support Files */ = {
+		B8FC24E218081A1370BCEA4C355D971A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				019472BF33E867CAB44C982EB3175FD9 /* Pods-Daygrain */,
+				5251E0C4CF3F9AF15A1A0F6C09403D74 /* PrivacyInfo.xcprivacy */,
 			);
-			name = "Targets Support Files";
+			name = Resources;
 			sourceTree = "<group>";
 		};
 		CF1408CF629C7361332E53B88F7BD30C = {
@@ -67,8 +161,9 @@
 			children = (
 				9D940727FF8FB9C785EB98E56350EF41 /* Podfile */,
 				D210D550F4EA176C3123ED886F8F87F5 /* Frameworks */,
-				F080A1B867227D297C06EE55DAC75EC5 /* Products */,
-				C9D55C3953EFD08162FE2E7C0BE3F2DA /* Targets Support Files */,
+				F8C7C2E6058A1A7AA06352E1A89839CF /* Pods */,
+				82403EB9CBEACAD7EEBA74E041435547 /* Products */,
+				7F7A5E06D8BA77A37357B6EB019C68B5 /* Targets Support Files */,
 			);
 			sourceTree = "<group>";
 		};
@@ -88,22 +183,32 @@
 			name = iOS;
 			sourceTree = "<group>";
 		};
-		F080A1B867227D297C06EE55DAC75EC5 /* Products */ = {
+		EB6D1F84989BBA77CEEC0973022CB777 /* AppsFlyerFramework */ = {
 			isa = PBXGroup;
 			children = (
-				D59334EE957EA83FFDB96063917F0EA8 /* Pods-Daygrain */,
+				039ECFF9EACC5A996C97E90862B20323 /* Main */,
+				28CDC1F6FA25BAE4D380F92E7E0D4C02 /* Support Files */,
 			);
-			name = Products;
+			name = AppsFlyerFramework;
+			path = AppsFlyerFramework;
+			sourceTree = "<group>";
+		};
+		F8C7C2E6058A1A7AA06352E1A89839CF /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				EB6D1F84989BBA77CEEC0973022CB777 /* AppsFlyerFramework */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		7578E77F8BE13C89F3FFB97D893CDCE5 /* Headers */ = {
+		841BE3C736884B37F19788297D4590AE /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7E8037E0675FB516DD3A709D5F7BF10F /* Pods-Daygrain-umbrella.h in Headers */,
+				31B84E6921CC8B86F9A56761A5977301 /* Pods-Daygrain-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,21 +217,39 @@
 /* Begin PBXNativeTarget section */
 		AF5677759FF6EC68A89029F72EA2B4CE /* Pods-Daygrain */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 69AFB29E9C8CA1ABBC162762070016F0 /* Build configuration list for PBXNativeTarget "Pods-Daygrain" */;
+			buildConfigurationList = 9A482C58FBA02573134ECE12CA114EB2 /* Build configuration list for PBXNativeTarget "Pods-Daygrain" */;
 			buildPhases = (
-				7578E77F8BE13C89F3FFB97D893CDCE5 /* Headers */,
-				5CA5F20E9C99F41972CCB81D8316C439 /* Sources */,
-				F3EF5E895703EA34727851A382CBE2C5 /* Frameworks */,
-				0B8BF58F3644F8017D83BC993B0FC4AA /* Resources */,
+				841BE3C736884B37F19788297D4590AE /* Headers */,
+				F82A24A222974B4C9FF7FF51A8A2974C /* Sources */,
+				9D655C6F579D676C8FE73FC1778AFF2C /* Frameworks */,
+				6B5649B72B7FF49F07089D402EDCEA3E /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				5042900DAE911EDC4BE41BAD1BFA401A /* PBXTargetDependency */,
 			);
 			name = "Pods-Daygrain";
 			productName = Pods_Daygrain;
 			productReference = D59334EE957EA83FFDB96063917F0EA8 /* Pods-Daygrain */;
 			productType = "com.apple.product-type.framework";
+		};
+		C1B7E9FCC674E977BE2D38FC2709798C /* AppsFlyerFramework-AppsFlyerLib_Privacy */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0BEAAA6B0E2E6FB880427C16EC0CED01 /* Build configuration list for PBXNativeTarget "AppsFlyerFramework-AppsFlyerLib_Privacy" */;
+			buildPhases = (
+				E32D039672D2424CEF8A39C401A0B1F1 /* Sources */,
+				2CB9409B0242EFE59A452CE54EE0BEDA /* Frameworks */,
+				94544A3B597A99F6BD8FA6D6D407DE04 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "AppsFlyerFramework-AppsFlyerLib_Privacy";
+			productName = AppsFlyerLib_Privacy;
+			productReference = DDEAD447247DFA15F1E4DB584614F80C /* AppsFlyerFramework-AppsFlyerLib_Privacy */;
+			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
 
@@ -148,37 +271,142 @@
 			mainGroup = CF1408CF629C7361332E53B88F7BD30C;
 			minimizedProjectReferenceProxies = 0;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = F080A1B867227D297C06EE55DAC75EC5 /* Products */;
+			productRefGroup = 82403EB9CBEACAD7EEBA74E041435547 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
+				B0B23938B1EBCBAD2419AB6E9D222A0B /* AppsFlyerFramework */,
+				C1B7E9FCC674E977BE2D38FC2709798C /* AppsFlyerFramework-AppsFlyerLib_Privacy */,
 				AF5677759FF6EC68A89029F72EA2B4CE /* Pods-Daygrain */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		0B8BF58F3644F8017D83BC993B0FC4AA /* Resources */ = {
+		6B5649B72B7FF49F07089D402EDCEA3E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		94544A3B597A99F6BD8FA6D6D407DE04 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F64303CD9D54BC4C6363BBAC6D07920D /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		DB7C100E6D7A5CF954757DB8962D9B72 /* [CP] Copy XCFrameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/AppsFlyerFramework/AppsFlyerFramework-xcframeworks-input-files.xcfilelist",
+			);
+			name = "[CP] Copy XCFrameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/AppsFlyerFramework/AppsFlyerFramework-xcframeworks-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/AppsFlyerFramework/AppsFlyerFramework-xcframeworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
-		5CA5F20E9C99F41972CCB81D8316C439 /* Sources */ = {
+		E32D039672D2424CEF8A39C401A0B1F1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				969CB7C73E665D573D26F5DD260F9EA9 /* Pods-Daygrain-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F82A24A222974B4C9FF7FF51A8A2974C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				67B59C12453C8B59A844606A5176861D /* Pods-Daygrain-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		5042900DAE911EDC4BE41BAD1BFA401A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = AppsFlyerFramework;
+			target = B0B23938B1EBCBAD2419AB6E9D222A0B /* AppsFlyerFramework */;
+			targetProxy = 356F228C6E7123A74454A993E044E548 /* PBXContainerItemProxy */;
+		};
+		E34636818F08D5E85E932E2A0C0ECBC4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "AppsFlyerFramework-AppsFlyerLib_Privacy";
+			target = C1B7E9FCC674E977BE2D38FC2709798C /* AppsFlyerFramework-AppsFlyerLib_Privacy */;
+			targetProxy = E5EB373D690748B9823A24084AC6AB27 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		4A23F1203421E4CF6B79B43E8332B863 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7122EA59512A282F832A89A97B9779B9 /* AppsFlyerFramework.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		6C708079E1BEDE0845192D5464CF4B22 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1267B4FA2F77551273EE254EB3AEC85F /* AppsFlyerFramework.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGNING_ALLOWED = NO;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/AppsFlyerFramework";
+				IBSC_MODULE = AppsFlyerFramework;
+				INFOPLIST_FILE = "Target Support Files/AppsFlyerFramework/ResourceBundle-AppsFlyerLib_Privacy-AppsFlyerFramework-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				PRODUCT_NAME = AppsFlyerLib_Privacy;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
+		};
+		7BDF77E73CEA4A5C3559D60310F0B882 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7122EA59512A282F832A89A97B9779B9 /* AppsFlyerFramework.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGNING_ALLOWED = NO;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/AppsFlyerFramework";
+				IBSC_MODULE = AppsFlyerFramework;
+				INFOPLIST_FILE = "Target Support Files/AppsFlyerFramework/ResourceBundle-AppsFlyerLib_Privacy-AppsFlyerFramework-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				PRODUCT_NAME = AppsFlyerLib_Privacy;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Release;
+		};
 		90D4D09BCB6A4660E43ACBE9ECB6FE9A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -245,46 +473,6 @@
 			};
 			name = Debug;
 		};
-		9357166E73D3B50F23FC104636B11E6C /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = C4E2714121125F2C5F74270AB36BCDEF /* Pods-Daygrain.release.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = NO;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				INFOPLIST_FILE = "Target Support Files/Pods-Daygrain/Pods-Daygrain-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-Daygrain/Pods-Daygrain.modulemap";
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
 		9553C89E183877A5CB2F3C6801BEC129 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -347,9 +535,27 @@
 			};
 			name = Release;
 		};
-		A44B89BAB713725F88D5FAB9A93E40B7 /* Debug */ = {
+		99A6E2A2C1D500617DAAC7110C82BDEE /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 02BA5D7061FD4FF5926887E079B30189 /* Pods-Daygrain.debug.xcconfig */;
+			baseConfigurationReference = 1267B4FA2F77551273EE254EB3AEC85F /* AppsFlyerFramework.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A027EA825BD7DCCD9DD527AA4FF2A896 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7CC77D6375C46D3DE4E65A398A435A88 /* Pods-Daygrain.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CLANG_ENABLE_OBJC_WEAK = NO;
@@ -386,9 +592,58 @@
 			};
 			name = Debug;
 		};
+		A313EF01C8F1C71F8065F9337B526D69 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 81767BC641D19F51D65811F14D7E08D1 /* Pods-Daygrain.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				INFOPLIST_FILE = "Target Support Files/Pods-Daygrain/Pods-Daygrain-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-Daygrain/Pods-Daygrain.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		0BEAAA6B0E2E6FB880427C16EC0CED01 /* Build configuration list for PBXNativeTarget "AppsFlyerFramework-AppsFlyerLib_Privacy" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6C708079E1BEDE0845192D5464CF4B22 /* Debug */,
+				7BDF77E73CEA4A5C3559D60310F0B882 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -398,11 +653,20 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		69AFB29E9C8CA1ABBC162762070016F0 /* Build configuration list for PBXNativeTarget "Pods-Daygrain" */ = {
+		71B9A5BD1FADAE479D403809E582EC07 /* Build configuration list for PBXAggregateTarget "AppsFlyerFramework" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				A44B89BAB713725F88D5FAB9A93E40B7 /* Debug */,
-				9357166E73D3B50F23FC104636B11E6C /* Release */,
+				99A6E2A2C1D500617DAAC7110C82BDEE /* Debug */,
+				4A23F1203421E4CF6B79B43E8332B863 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9A482C58FBA02573134ECE12CA114EB2 /* Build configuration list for PBXNativeTarget "Pods-Daygrain" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A027EA825BD7DCCD9DD527AA4FF2A896 /* Debug */,
+				A313EF01C8F1C71F8065F9337B526D69 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

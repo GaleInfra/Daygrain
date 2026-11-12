@@ -6,6 +6,7 @@ import UserNotifications
 struct SettingsView: View {
     @EnvironmentObject private var store: JournalStore
     @EnvironmentObject private var privacy: AppPrivacy
+    @ObservedObject private var ledger = GrainLedger.shared
     @Environment(\.scenePhase) private var scenePhase
     @AppStorage("appearance") private var appearance = "system"
     @AppStorage("appLock") private var appLock = false
@@ -22,12 +23,15 @@ struct SettingsView: View {
     @State private var confirmErase = false
     @State private var notice: String?
     @State private var error: String?
+    @State private var showAIConsent = false
+    @State private var cloudAIAllowed = GrainAIConsent.isAllowed
 
     var body: some View {
         NavigationView {
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 25) {
                     brandCard
+                    grainsCard
                     VStack(alignment: .leading, spacing: 13) {
                         sectionCaption("MAKE IT YOURS")
                         VStack(spacing: 12) {
@@ -143,11 +147,77 @@ struct SettingsView: View {
                     SettingsRow(symbol: "lock", title: "App Lock", subtitle: "Use Face ID, Touch ID, or passcode", color: Palette.sage, chevron: false)
                 }
                 Divider()
-                NavigationLink { PrivacyInfoView() } label: {
-                    SettingsRow(symbol: "hand.raised", title: "Privacy & local storage", subtitle: "Your journal, in your hands", color: Palette.sage)
+                Toggle(isOn: Binding(
+                    get: { cloudAIAllowed },
+                    set: { enabled in
+                        if enabled {
+                            showAIConsent = true
+                        } else {
+                            GrainAIConsent.revoke()
+                            cloudAIAllowed = false
+                            notice = "Cloud AI sharing is off. Shaping and read-aloud will not send data to DeepSeek or StepFun."
+                        }
+                    }
+                )) {
+                    SettingsRow(
+                        symbol: "sparkles",
+                        title: "Cloud AI sharing",
+                        subtitle: cloudAIAllowed
+                            ? "DeepSeek & StepFun allowed — turn off anytime"
+                            : "Off until you allow DeepSeek & StepFun",
+                        color: Palette.sage,
+                        chevron: false
+                    )
+                }
+                Divider()
+                Button { GrainPageLink.openLegal("privacy") } label: {
+                    SettingsRow(symbol: "hand.raised", title: "Privacy", subtitle: "Local journal plus optional cloud AI", color: Palette.sage)
+                }.buttonStyle(.plain)
+                Divider()
+                Button { GrainPageLink.openVendorPrivacy(GrainAIConsent.deepSeekPrivacyURL) } label: {
+                    SettingsRow(symbol: "link", title: "DeepSeek Privacy", subtitle: "Vendor policy for shaping a page", color: Palette.sage)
+                }.buttonStyle(.plain)
+                Divider()
+                Button { GrainPageLink.openVendorPrivacy(GrainAIConsent.stepFunPrivacyURL) } label: {
+                    SettingsRow(symbol: "link", title: "StepFun Privacy", subtitle: "Vendor policy for read-aloud", color: Palette.sage)
+                }.buttonStyle(.plain)
+                Divider()
+                Button { GrainPageLink.openLegal("terms") } label: {
+                    SettingsRow(symbol: "doc.text", title: "Terms", subtitle: "What this journal keeps", color: Palette.sage)
+                }.buttonStyle(.plain)
+                Divider()
+                Button { GrainPageLink.openLegal("support") } label: {
+                    SettingsRow(symbol: "questionmark.circle", title: "Support", subtitle: "Permissions for an entry", color: Palette.sage)
                 }.buttonStyle(.plain)
             }.tint(JournalTone.sage.action).surface(tint: Palette.sage)
         }
+        .sheet(isPresented: $showAIConsent) {
+            NavigationView {
+                GrainConsentFace(
+                    onAllow: {
+                        GrainAIConsent.grant()
+                        cloudAIAllowed = true
+                        showAIConsent = false
+                        notice = "Cloud AI sharing is on."
+                    },
+                    onNotNow: {
+                        showAIConsent = false
+                        cloudAIAllowed = GrainAIConsent.isAllowed
+                    }
+                )
+                .navigationTitle("Cloud AI")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Close") {
+                            showAIConsent = false
+                            cloudAIAllowed = GrainAIConsent.isAllowed
+                        }
+                    }
+                }
+            }
+        }
+        .onAppear { cloudAIAllowed = GrainAIConsent.isAllowed }
     }
 
     private var backupCard: some View {
@@ -176,6 +246,36 @@ struct SettingsView: View {
                 Label("Recovery mode: existing files are preserved. Restore a valid backup to reopen your journal.", systemImage: "exclamationmark.triangle")
                     .font(.caption).foregroundColor(Palette.rose)
             }
+        }
+    }
+
+    private var grainsCard: some View {
+        VStack(alignment: .leading, spacing: 13) {
+            sectionCaption("GRAINS")
+            NavigationLink { GrainShopView() } label: {
+                HStack(spacing: 14) {
+                    ZStack {
+                        Circle().fill(Palette.gold.opacity(0.22))
+                        Image(systemName: "leaf.fill").foregroundColor(Palette.accent)
+                    }
+                    .frame(width: 44, height: 44)
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("\(ledger.balance) \(GrainCatalog.currencyName)")
+                            .font(.system(size: 24, weight: .medium, design: .serif))
+                            .foregroundColor(Palette.text)
+                        Text("Balance for cloud AI shaping · Open Grain Shop")
+                            .font(.caption)
+                            .foregroundColor(Palette.secondary)
+                    }
+                    Spacer(minLength: 0)
+                    Image(systemName: "chevron.right")
+                        .font(.caption.weight(.semibold))
+                        .foregroundColor(Palette.secondary)
+                }
+                .padding(16)
+            }
+            .buttonStyle(.plain)
+            .surface(tint: Palette.gold)
         }
     }
 
@@ -252,8 +352,11 @@ struct PrivacyInfoView: View {
             VStack(alignment: .leading, spacing: 24) {
                 IconBadge(symbol: "lock.shield", size: 70).frame(maxWidth: .infinity).padding(.vertical, 10)
                 Text("A journal that belongs to you.").font(.system(size: 29, weight: .regular, design: .serif)).foregroundColor(Palette.text)
-                privacyBlock("Stored locally", symbol: "iphone", text: "Notes, photo copies, fieldbooks, reviews, revisit plans, drafts, and Recently Deleted are saved in this app's private storage on your device. Daygrain has no account system, social feed, advertising, analytics, or automatic cloud sync.")
-                privacyBlock("Only the photos you choose", symbol: "photo", text: "Daygrain uses the system photo picker. It receives only the images you select and stores resized copies. Removing a photo from a note does not change your photo library.")
+                privacyBlock("Stored locally", symbol: "iphone", text: "Notes, photo copies, fieldbooks, reviews, revisit plans, drafts, and Recently Deleted are saved in this app's private storage on your device. Daygrain has no account system, social feed, or automatic cloud sync of your journal.")
+                privacyBlock("Optional cloud AI", symbol: "sparkles", text: "If you allow it, DeepSeek may receive entry text and one photo to suggest a page, and StepFun may receive page text for read-aloud after you keep a page. Dictation stays on this iPhone. Shaping uses consumable grains from Apple In-App Purchase. You can revoke Cloud AI sharing in Settings anytime.")
+                privacyBlock("Grains and purchases", symbol: "leaf.circle", text: "Grains are consumable credits purchased through Apple In-App Purchase and used only for optional cloud AI shaping inside Daygrain.")
+                privacyBlock("Measurement with Adjust", symbol: "chart.xyaxis.line", text: "Daygrain uses Adjust to measure installs and in-app purchase performance. Journal text, photos, and cloud AI prompts are not sent to Adjust. App Tracking Transparency controls whether the advertising identifier is available for that measurement.")
+                privacyBlock("Only the photos you choose", symbol: "photo", text: "Daygrain can take one photo with the camera or use the system photo picker. It stores resized copies with the entry. Removing a photo from a note does not change your photo library.")
                 privacyBlock("Your own record", symbol: "chart.bar", text: "Charts count your entries and labels and show the intensity and energy values you entered. All calculations happen on your device.")
                 privacyBlock("Drafts and deleted notes", symbol: "trash", text: "Unfinished notes and their selected photo copies are saved as drafts. Deleted notes stay in Recently Deleted for 30 days before removal while the app is running. You can restore or permanently delete them sooner. Full backups include drafts and Recently Deleted; readable exports include saved notes and reviews.")
                 privacyBlock("An extra layer of privacy", symbol: "lock", text: "App Lock uses your device's authentication. When enabled, your journal locks after the app goes into the background. The app switcher hides your journal's contents. Unlocking takes you back to where you left off.")

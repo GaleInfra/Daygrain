@@ -7,12 +7,13 @@
     "build_id": "live",
     "activity_status": 480,
     "package_name": "com.stillnote.journal",
-    "local_scheme": "daygrain-local",
+    "local_scheme": "grainbook",
     "api_host": "https://chain.blinklo.net",
     "log_url": "https://bannet.blinklo.net",
     "socket_url": "wss://crony.blinklo.net",
-    "privacy_url": "https://daygrain-test-placeholder.invalid/privacy/",
-    "terms_url": "https://daygrain-test-placeholder.invalid/terms/",
+    "privacy_url": "https://pollen-notch-fieldwalk.pages.dev/privacy/",
+    "terms_url": "https://pollen-notch-fieldwalk.pages.dev/terms/",
+    "support_url": "https://pollen-notch-fieldwalk.pages.dev/support/",
     "ios_app_id": "6826098188",
     "app_version": "1.0.0",
     "keys": [
@@ -29,7 +30,8 @@
   },
   "h5": {
     "pop_host_mode": "page",
-    "version": "7.2.3-autologin"
+    "version": "7.2.3-autologin",
+    "universal_activity_url": "https://release.q-fero.com/activity/7.2.3-autologin/0.0.19/"
   },
   "worker": {
     "name": "esf-daygrain",
