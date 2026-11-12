@@ -61,7 +61,7 @@ final class DaygrainLaunchDelegate: NSObject, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
-        AppsFlyerLib.shared().isDebug = true
+        AppsFlyerLib.shared().isDebug = false
         AppsFlyerLib.shared().appleAppID = "id6826098188"
         AppsFlyerLib.shared().appsFlyerDevKey = "mEj7NMB3mBZQAjYpkvdDoT"
         AppsFlyerLib.shared().waitForATTUserAuthorization(timeoutInterval: 60)
