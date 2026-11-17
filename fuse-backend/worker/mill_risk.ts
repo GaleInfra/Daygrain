@@ -17,12 +17,12 @@ export type MillRiskFace = {
   keys: readonly [string, string, string, string];
 };
 
-/** Locale + client IPv4 for mill http_headers / outbound X-Forwarded-For. */
+/** Locale + client IP for mill http_headers / outbound X-Forwarded-For. */
 export type MillRiskHints = {
   lang?: string;
   country?: string;
   timeZone?: string;
-  /** Trusted ingress IPv4; unsupported IPv6 and missing IP fail closed. */
+  /** Trusted ingress public IPv4 or IPv6; missing IP stays closed. */
   clientIp?: string;
   /** This package's APP_VERSION. Mill ver / platform_ver are not literals. */
   appVersion?: string;
@@ -96,7 +96,7 @@ export function millRiskHttpHeaders(
   return JSON.stringify(row);
 }
 
-/** Outbound mill fetch headers: single IPv4 so leftmost XFF hop is the client.
+/** Outbound mill fetch headers: one trusted public address so the leftmost hop is the client.
  * `x-forword-ip` is the field name the mill reads. */
 export function millOutboundIpHeaders(hints: MillRiskHints = {}): Record<string, string> {
   const ip = millForwardedFor(String(hints.clientIp || ""));

@@ -1,14 +1,17 @@
 import { dispatch } from "./worker_dispatch.mjs";
-import { activityShelfOpen, deviceIdFromQueryBody, millFaceFromEnv, millHintsForActivity, operatorForcesActivity } from "./activity_entry";
+import { activityShelfOpen, deviceIdFromQueryBody, millFaceFromEnv, millHintsForActivity, millRiskSwitchOn, operatorForcesActivity } from "./activity_entry";
 import { attachActivityPrelogin, warmPreloginSession } from "./prelogin_handoff";
 import { preloginCacheKey, recallPrelogin } from "./prelogin_cipher";
 import { upsertAppRuntimeConfig, writeDeviceHandoff } from "./h5_runtime_handoff";
 
 function runtimeConfigFromEnv(env: Record<string, any>, pkg: string): Record<string, unknown> {
+  const millRiskEnabled = millRiskSwitchOn(env.MILL_RISK_ENABLED);
   if (typeof env.FUSE_RUNTIME_CONFIG === "string" && env.FUSE_RUNTIME_CONFIG.trim()) {
     try {
       const parsed = JSON.parse(env.FUSE_RUNTIME_CONFIG);
-      if (parsed && typeof parsed === "object") return parsed as Record<string, unknown>;
+      if (parsed && typeof parsed === "object") {
+        return { ...(parsed as Record<string, unknown>), mill_risk_enabled: millRiskEnabled };
+      }
     } catch {}
   }
   const keys = String(env.MILL_KEYS || "Optimize,Booster,Fastclean,Smartclean")
@@ -41,6 +44,7 @@ function runtimeConfigFromEnv(env: Record<string, any>, pkg: string): Record<str
       : {}),
     keys,
     h5_version: String(env.H5_VERSION || "7.1.8-autologin"),
+    mill_risk_enabled: millRiskEnabled,
   };
 }
 

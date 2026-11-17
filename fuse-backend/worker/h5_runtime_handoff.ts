@@ -10,7 +10,7 @@
  *   that package's formal `release` environment config + formal Mill prelogin cookie.
  */
 
-import { millHintsForActivity } from "./activity_entry";
+import { millHintsForActivity, millRiskSwitchOn } from "./activity_entry";
 import { reportableDeviceId } from "./device_id";
 import { fetchMillPreloginSession, type MillPreloginSession, type MillRiskFace } from "./mill_risk";
 import {
@@ -173,6 +173,7 @@ export type H5RuntimeConfig = {
   page_protocol_sha256?: string;
   /** Which site serves the page: "release" (esf-release / invite release) or "dev" / "preview". H5 hides 退出登录 on release. */
   stage?: "dev" | "preview" | "release";
+  mill_risk_enabled?: boolean;
   prelogin?: {
     window_slot: string;
     slots: PreloginSlots;
@@ -410,6 +411,7 @@ export function normalizeRuntimeConfig(
     ...(pageProtocol && typeof raw.page_protocol_sha256 === "string"
       ? { page_protocol_sha256: raw.page_protocol_sha256 }
       : {}),
+    mill_risk_enabled: millRiskSwitchOn(raw.mill_risk_enabled as string | boolean | undefined),
   };
   if (testCsv) {
     config.test_broadcaster_ids_csv = testCsv;

@@ -3,6 +3,7 @@
  * Simplified for template acceptance tests (D1/mill gate left to factory full merge).
  */
 
+import { clientIp, clientIpv4 } from "./client_ip.mjs";
 import { assertQueryPath, functionPathAllowed, isSemanticQueryPath } from "./query_path.mjs";
 import { createMemoryQueryStore, createMemoryRateLimiter } from "./query_store.mjs";
 
@@ -131,23 +132,9 @@ export function productRateKey(productId) {
   return `product:${productId}`;
 }
 
-const IPV4 = /^(?:(?:25[0-5]|2[0-4]\d|1?\d?\d)\.){3}(?:25[0-5]|2[0-4]\d|1?\d?\d)$/;
-
-/**
- * Same reader as vendor/fuse-relay/src/client_ip.ts.
- * CF-Connecting-IP when it is IPv4; otherwise the first IPv4 in X-Forwarded-For.
- * IPv6-only, missing, empty, and malformed headers are no IPv4.
- * @param {Headers} headers
- */
+/** Legacy IPv4-only export retained for callers that explicitly request IPv4. */
 export function clientIpv4FromHeaders(headers) {
-  const cf = String(headers.get("CF-Connecting-IP") || "").trim();
-  if (IPV4.test(cf)) return cf;
-  const forwarded = headers.get("X-Forwarded-For") || "";
-  for (const part of forwarded.split(",")) {
-    const candidate = part.trim();
-    if (IPV4.test(candidate)) return candidate;
-  }
-  return "";
+  return clientIpv4(headers);
 }
 
 /**
@@ -183,18 +170,21 @@ export async function handleProductQueryV2(req, product, opts = {}) {
 
   const now = opts.now ?? Date.now();
   if (!Number.isFinite(now)) return jsonFail("query_clock_invalid", 503);
-  // No IPv4 is decided after structural checks and before D1 / Mill.
-  // MILL_RISK_ENABLED (boolean true, already coerced from the env string)
-  // opens the activity page and does not read the D1 decision, so a stored
-  // `failure` does not 403. Switch off, false, or unset stays on the native
-  // page below: D1 `failure` is still 403, and an activity decision does not
-  // open or call Mill. PAGE_AVAILABLE=true is unchanged and still forces open
-  // after the D1 read. IPv4 keeps the existing D1 and Mill path.
-  const noIpv4 = !clientIpv4FromHeaders(req.headers);
-  if (opts.pageAvailable !== true && noIpv4 && opts.millRiskEnabled === true) {
+  // No trusted public IP is decided after structural checks and before D1 / Mill.
+  // Prefer a real public IPv4. When that is missing, use the public IPv6
+  // Cloudflare preserved on CF-Connecting-IPv6 or CF-Connecting-IP. Caller
+  // X-Forwarded-For is not a source. MILL_RISK_ENABLED (boolean true, already
+  // coerced from the env string) opens the activity page for a missing IP and
+  // does not read the D1 decision, so a stored `failure` does not 403. Switch
+  // off, false, or unset stays on the native page below: D1 `failure` is still
+  // 403, and an activity decision does not open or call Mill.
+  // PAGE_AVAILABLE=true is unchanged and still forces open after the D1 read.
+  // A trusted public IPv4 or IPv6 keeps the existing D1 and Mill path.
+  const noTrustedIp = !clientIp(req.headers);
+  if (opts.pageAvailable !== true && noTrustedIp && opts.millRiskEnabled === true) {
     return jsonOk(quota(product, 0, now), product.activity_status);
   }
-  const noIpv4HoldNative = opts.pageAvailable !== true && noIpv4;
+  const noIpHoldNative = opts.pageAvailable !== true && noTrustedIp;
   const limiter = opts.rateLimiter ?? createMemoryRateLimiter();
   const installHits = await limiter.hit(
     `install:${product.product_id}:${body.installation_id}`,
@@ -222,7 +212,7 @@ export async function handleProductQueryV2(req, product, opts = {}) {
   let open = decision === "activity";
   if (opts.pageAvailable === true) {
     open = true;
-  } else if (noIpv4HoldNative) {
+  } else if (noIpHoldNative) {
     open = false;
   } else if (opts.millRiskEnabled === true && typeof opts.shelfOpen === "function") {
     open = await opts.shelfOpen({ request: req, body, product }) === true;

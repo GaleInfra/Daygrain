@@ -3,7 +3,7 @@
  * Bootstrap RELAY_SEAL_KEY / seal() zero-fill must not be used here.
  */
 
-import { clientIpv4, isIpv4 } from "./client_ip";
+import { clientIp, publicClientIp } from "./client_ip";
 import { millKey, open, seal } from "./codec";
 import { reportableDeviceId } from "./device_id";
 
@@ -54,18 +54,18 @@ export type MillAppConfigOk = {
 
 export type MillAppConfigResult = MillAppConfigOk | MillAppConfigError;
 
-/** The current mill transport supports IPv4 only; IPv6 fails closed. */
+/** Mill accepts public IPv4 or IPv6; private and special-purpose addresses stay closed. */
 export function isClientIp(raw: string): boolean {
-  return isIpv4(raw);
+  return publicClientIp(raw) !== "";
 }
 
 export function millForwardedFor(ip: string): string {
-  return isClientIp(ip) ? ip.trim() : "";
+  return publicClientIp(ip);
 }
 
-/** Same reader as client_ip.ts: CF-Connecting-IP, else the first IPv4 in X-Forwarded-For. */
+/** Trusted public CF-Connecting-IP only; never use a caller-supplied X-Forwarded-For. */
 export function clientIpFromHeaders(headers: Headers): string {
-  return clientIpv4(headers);
+  return clientIp(headers);
 }
 
 export function parseHttpsOrigin(raw: string): URL | null {
