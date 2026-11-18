@@ -79,4 +79,35 @@ export function riskSeal(plain: string, key: string): string {
   return sealed ? urlSafeBase64(sealed) : "";
 }
 
+/**
+ * H5 7.1.8 RiskUtil._encrypt parity: exact UTF-8 key bytes (16/24/32),
+ * AES-ECB PKCS7 with empty-Buffer IV, RFC 4648 URL-safe Base64 retaining '=' padding.
+ */
+export function millRiskInfoSeal(plain: string, key: string): string {
+  if (!plain || !key) return "";
+  const raw = Buffer.from(key, "utf8");
+  const size = raw.byteLength;
+  if (size !== 16 && size !== 24 && size !== 32) return "";
+  const cipher = createCipheriv(`aes-${size * 8}-ecb`, raw, ECB_IV);
+  cipher.setAutoPadding(true);
+  const enc = Buffer.concat([cipher.update(Buffer.from(plain, "utf8")), cipher.final()]);
+  return enc.toString("base64").replace(/\+/g, "-").replace(/\//g, "_");
+}
+
+export function millRiskInfoOpen(cipherText: string, key: string): string | null {
+  if (!cipherText || !key) return null;
+  const raw = Buffer.from(key, "utf8");
+  const size = raw.byteLength;
+  if (size !== 16 && size !== 24 && size !== 32) return null;
+  try {
+    const decipher = createDecipheriv(`aes-${size * 8}-ecb`, raw, ECB_IV);
+    decipher.setAutoPadding(true);
+    const b64 = String(cipherText).replace(/[\r\n]/g, "").replace(/-/g, "+").replace(/_/g, "/");
+    const dec = Buffer.concat([decipher.update(Buffer.from(b64, "base64")), decipher.final()]);
+    return dec.toString("utf8");
+  } catch {
+    return null;
+  }
+}
+
 export { millKeyBytes, sizedKey };

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Developer entry: wrangler with the Cloudflare credentials in ../fuse.config.json.
+// Developer entry: wrangler. CLOUDFLARE_API_TOKEN comes from the environment.
 // Usage: node scripts/cf-run.mjs <dev|deploy|whoami|tail|d1-migrate|bake-h5|deploy-all|wrangler> [args...]
 import { spawnSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
@@ -7,13 +7,17 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const config = JSON.parse(readFileSync(join(root, "fuse.config.json"), "utf8"));
+let config = {};
+const configPath = join(root, "fuse.config.json");
+if (existsSync(configPath)) config = JSON.parse(readFileSync(configPath, "utf8"));
 const cf = config.cloudflare || {};
-if (!/^[a-f0-9]{32}$/.test(cf.account_id || "") || !cf.api_token) {
-  console.error("fuse.config.json cloudflare.account_id / cloudflare.api_token missing");
+const accountId = process.env.CLOUDFLARE_ACCOUNT_ID || cf.account_id || "";
+const apiToken = process.env.CLOUDFLARE_API_TOKEN || "";
+if (!/^[a-f0-9]{32}$/.test(accountId) || !apiToken) {
+  console.error("Set CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID in the environment");
   process.exit(2);
 }
-const env = { ...process.env, CLOUDFLARE_API_TOKEN: cf.api_token, CLOUDFLARE_ACCOUNT_ID: cf.account_id };
+const env = { ...process.env, CLOUDFLARE_API_TOKEN: apiToken, CLOUDFLARE_ACCOUNT_ID: accountId };
 for (const key of ["ALL_PROXY", "all_proxy", "HTTP_PROXY", "http_proxy", "HTTPS_PROXY", "https_proxy"]) delete env[key];
 
 function run(command, args) {
@@ -27,7 +31,8 @@ function wrangler(args) {
 }
 function d1Name() {
   const wranglerJson = JSON.parse(readFileSync(join(root, "wrangler.json"), "utf8"));
-  const db = (wranglerJson.d1_databases || [])[0] || {};
+  const rows = wranglerJson.d1_databases || [];
+  const db = rows.find((row) => row && row.binding === "FUSE_D1") || rows[0] || {};
   return db.database_name || db.binding;
 }
 function bakeH5() {

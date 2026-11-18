@@ -108,6 +108,39 @@ export function createD1QueryStore(d1) {
         .bind(productId, installationId, columnState(decision), resetsAt)
         .run();
     },
+    async readDaily(productId, installationId, day) {
+      await ensureSchema(d1);
+      const row = await d1
+        .prepare(`SELECT used, resets_at FROM query_business_state WHERE product_id = ? AND installation = ?`)
+        .bind(productId, installationId)
+        .first();
+      if (!row) return 0;
+      const used = storedInteger(row.used);
+      if (used == null) return 0;
+      if (String(row.resets_at) <= `${day}T00:00:00.000Z`) return 0;
+      return used;
+    },
+    async claimPass(productId, installationId, day) {
+      await ensureSchema(d1);
+      const minute = Number(String(day).replaceAll("-", ""));
+      const row = await d1
+        .prepare(`SELECT count FROM query_rate WHERE product_id = ? AND installation = ? AND minute = ?`)
+        .bind(productId, `claim:${installationId}`, minute)
+        .first();
+      return row ? 0 : 1;
+    },
+    async markClaim(productId, installationId, day) {
+      await ensureSchema(d1);
+      const minute = Number(String(day).replaceAll("-", ""));
+      await d1
+        .prepare(
+          `INSERT INTO query_rate (product_id, installation, minute, count) VALUES (?, ?, ?, 1)
+           ON CONFLICT(product_id, installation) DO UPDATE SET minute = excluded.minute, count = 1`,
+        )
+        .bind(productId, `claim:${installationId}`, minute)
+        .run();
+      return 0;
+    },
     async incrementDaily(productId, installationId, day, limit) {
       await ensureSchema(d1);
       const nowIso = `${day}T00:00:00.000Z`;

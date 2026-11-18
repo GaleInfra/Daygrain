@@ -3,7 +3,7 @@
  * A request without device-id never calls Mill and never sets a cookie.
  */
 import { reportableDeviceId } from "./device_id";
-import { millFaceFromEnv, millHintsForActivity } from "./activity_entry";
+import { millFaceFromEnv, millHintsForActivity, millRiskSwitchOn, millVisitorBlocked, type MillPrescreenEnv } from "./activity_entry";
 import { fetchMillPreloginSession, type MillRiskFace, type MillRiskHints } from "./mill_risk";
 import {
   buildPreloginSetCookies,
@@ -18,8 +18,7 @@ import {
 
 export { splitbiteWebDeviceId };
 
-type PreloginEnv = {
-  PAGE_AVAILABLE?: string;
+type PreloginEnv = MillPrescreenEnv & {
   MILL_RISK_ENABLED?: string | boolean;
   MILL_BASE_URL?: string;
   MILL_KEYS?: string;
@@ -51,10 +50,13 @@ function preloginKeys(env: PreloginEnv): string[] {
 }
 
 function deviceFromUrl(url: URL, env: PreloginEnv): string {
-  const named = (url.searchParams.get("device-id") || "").trim();
-  if (named) return named;
+  // 千包千面: prefer package-unique DEVICE_PARAM over shared device-id.
   const param = (env.DEVICE_PARAM || "").trim();
-  return param ? (url.searchParams.get(param) || "").trim() : "";
+  if (param) {
+    const named = (url.searchParams.get(param) || "").trim();
+    if (named) return named;
+  }
+  return (url.searchParams.get("device-id") || "").trim();
 }
 
 export async function warmPreloginSession(options: {
@@ -66,7 +68,9 @@ export async function warmPreloginSession(options: {
   fetchImpl?: typeof fetch;
 }): Promise<boolean> {
   const id = reportableDeviceId(options.deviceId);
-  if (!id || !options.face) return false;
+  const ip = String(options.hints?.clientIp || "").trim();
+  if (!id || !options.face || !ip) return false;
+  if (!options.face.gatewaySecret && ip.startsWith("17.")) return false;
   const key = preloginCacheKey(options.businessPkg, id, options.appVersion || "");
   const row = await getOrFetchPrelogin(key, () => fetchMillPreloginSession(
     options.face as MillRiskFace,
@@ -78,7 +82,10 @@ export async function warmPreloginSession(options: {
 }
 
 export async function warmQueryPrelogin(request: Request, env: PreloginEnv, businessPkg: string): Promise<void> {
-  if (env.PAGE_AVAILABLE !== "true" && env.MILL_RISK_ENABLED !== "true" && env.MILL_RISK_ENABLED !== true) return;
+  if (!millRiskSwitchOn(env.MILL_RISK_ENABLED)) return;
+  const face = millFaceFromEnv(env, env.PRELOGIN_BUSINESS_PKG || businessPkg);
+  const hints = millHintsForActivity(request, env.APP_VERSION);
+  if (!hints.clientIp || (!face?.gatewaySecret && millVisitorBlocked(request, hints.clientIp, env, "query"))) return;
   let body: unknown = null;
   try {
     body = await request.json();
@@ -92,13 +99,12 @@ export async function warmQueryPrelogin(request: Request, env: PreloginEnv, busi
   const bearer = (request.headers.get("authorization") || "").replace(/^Bearer\s+/i, "").trim();
   const deviceId = (fromBody || headerId || (bearer ? splitbiteWebDeviceId(bearer) : "")).trim();
   if (!deviceId) return;
-  const face = millFaceFromEnv(env, env.PRELOGIN_BUSINESS_PKG || businessPkg);
   await warmPreloginSession({
     businessPkg: env.PRELOGIN_BUSINESS_PKG || businessPkg,
     deviceId,
     appVersion: env.APP_VERSION,
     face,
-    hints: millHintsForActivity(request, env.APP_VERSION),
+    hints,
     fetchImpl: env.fetchImpl,
   });
 }
@@ -127,38 +133,34 @@ function sealCached(key: string, pkg: string, buildId: string, keys: string[], a
 
 /** Cookie lines for an activity index that already carries device-id. Null means do not call Mill. */
 export async function activityPreloginCookies(request: Request, env: PreloginEnv): Promise<string[] | null> {
+  if (!millRiskSwitchOn(env.MILL_RISK_ENABLED)) return null;
   const url = new URL(request.url);
   const parts = activityIndexParts(url.pathname);
   const deviceId = deviceFromUrl(url, env);
   if (!parts || !deviceId) return null;
+  const businessPkg = env.PRELOGIN_BUSINESS_PKG || env.ACTIVITY_PKG || parts.pkg;
+  const face = millFaceFromEnv(env, businessPkg);
+  const hints = millHintsForActivity(request, env.APP_VERSION);
+  // Local prescreen runs in the business Worker first; the service repeats it.
+  if (millVisitorBlocked(request, hints.clientIp || "", env, "activity")) return null;
   const keys = preloginKeys(env);
   if (keys.length !== 4) return null;
   const id = reportableDeviceId(deviceId);
   if (!id) return null;
-  const businessPkg = env.PRELOGIN_BUSINESS_PKG || env.ACTIVITY_PKG || parts.pkg;
-  const forcedOpen = String(env.PAGE_AVAILABLE || "").toLowerCase() === "true";
-  const explicitlyClosed =
-    String(env.PAGE_AVAILABLE || "").toLowerCase() === "false" &&
-    String(env.MILL_RISK_ENABLED || "").toLowerCase() === "false";
-  if (explicitlyClosed) return null;
   const key = preloginCacheKey(businessPkg, id, env.APP_VERSION || "");
-  if (!recallPrelogin(key)) {
-    const riskOn = env.MILL_RISK_ENABLED === "true" || env.MILL_RISK_ENABLED === true;
-    const defaultRisk = env.PAGE_AVAILABLE === undefined && env.MILL_RISK_ENABLED === undefined;
-    if (!forcedOpen && !riskOn && !defaultRisk) return null;
-    const face = millFaceFromEnv(env, businessPkg);
+  if (!recallPrelogin(key) && hints.clientIp) {
     await warmPreloginSession({
       businessPkg,
       deviceId: id,
       appVersion: env.APP_VERSION,
       face,
-      hints: millHintsForActivity(request, env.APP_VERSION),
+      hints,
       fetchImpl: env.fetchImpl,
     });
   }
   const row = recallPrelogin(key);
   if (!row) return null;
-  if (!forcedOpen && row.session.isReviewPkg) return null;
+  if (row.session.isReviewPkg) return null;
   return sealCached(key, parts.pkg, parts.buildId, keys, `/activity/${parts.pkg}/${parts.buildId}/`);
 }
 
@@ -169,6 +171,6 @@ export async function attachActivityPrelogin(request: Request, response: Respons
   if (!cookies?.length) return response;
   const headers = new Headers(response.headers);
   for (const row of cookies) headers.append("set-cookie", row);
-  headers.set("cache-control", "private, no-store");
+  headers.set("cache-control", "public, max-age=0, must-revalidate");
   return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
 }

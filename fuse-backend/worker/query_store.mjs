@@ -6,12 +6,23 @@
 export function createMemoryQueryStore() {
   const decisions = new Map();
   const daily = new Map();
+  const claims = new Map();
   return {
     async getDecision(productId, installationId) {
       return decisions.get(`${productId}\0${installationId}`) ?? null;
     },
     async putDecision(productId, installationId, state) {
       decisions.set(`${productId}\0${installationId}`, state);
+    },
+    async readDaily(productId, installationId, day) {
+      return daily.get(`${productId}\0${installationId}\0${day}`) || 0;
+    },
+    async claimPass(productId, installationId, day) {
+      return claims.get(`${productId}\0${installationId}\0${day}`) ? 0 : 1;
+    },
+    async markClaim(productId, installationId, day) {
+      claims.set(`${productId}\0${installationId}\0${day}`, 1);
+      return 0;
     },
     async incrementDaily(productId, installationId, day, limit) {
       const prefix = `${productId}\0${installationId}\0`;

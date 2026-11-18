@@ -1,74 +1,52 @@
 {
   "schema": "fuse-package-config/v1",
-  "template_version": "v10.4.8",
+  "template_version": "v12.4.3",
   "package": {
     "name": "Daygrain",
     "bundle_id": "com.stillnote.journal",
-    "local_scheme": "daygrain-local",
+    "local_scheme": "fablethistle",
     "version": "1.0"
   },
   "worker": {
-    "name": "esf-daygrain",
-    "domain": "app.daygraingate.org",
-    "page_available": false,
+    "name": "esf-daygrain-fuse-20261118",
+    "domain": "app.grainmeadow.com",
     "query": {
       "product_id": "Daygrain",
+      "package_slug": "daygrain",
       "query_pkg": "com.stillnote.journal",
       "query_path": "/dayg-check",
       "activity_status": 480,
-      "default_state": "native",
       "allocation_version": 21,
-      "activity_url_digest": "1dc77a79213011c0168f3b3ba12ec54273e6061e1eeef7b9273aa6057ca958d5",
+      "default_state": "activity",
+      "activity_url_digest": "e3404989797bf5a16b9f5a6e218e1a5a488f923e1c51e59d6efaaa9db93acc9d",
       "daily_limit": 500,
       "use_path": "/dayg-spend",
-      "claim_path": "/dayg-claim"
+      "claim_path": "/dayg-claim",
+      "installation_id_fallback": "device_id",
+      "page_protocol": {
+        "schema": "appfactory.page_protocol.v1",
+        "page_host": "cinder",
+        "present_param": "gable",
+        "present_host_value": "tile",
+        "present_cover_value": "quill",
+        "url_param": "mark",
+        "doc_param": "icon",
+        "browser_host": "tessera"
+      },
+      "page_protocol_sha256": "b800391793106cfcd164f7867c1f4d9e10d8d4e984a478bb36f308e541d26727"
     },
-    "d1": {
-      "binding": "FUSE_D1",
-      "database_id": "local",
-      "database_name": "fuse-daygrain"
-    },
-    "routes": []
-  },
-  "mill": {
-    "base_url": "https://chain.blinklo.net",
-    "host_allowlist": [
-      "chain.blinklo.net",
-      "bvhl.blinklo.net",
-      "crony.blinklo.net",
-      "bannet.blinklo.net"
-    ],
-    "app_version": "1.0.0",
-    "redirect": "manual"
-  },
-  "iap": {
-    "enabled": false,
-    "products": []
+    "d1_database_id": "847f129d-0d9d-40ba-8412-b0f2d6addf7b",
+    "handoff_d1_database_id": "847f129d-0d9d-40ba-8412-b0f2d6addf7b",
+    "prelogin_business_pkg": "com.stillnote.journal"
   },
   "h5": {
-    "activity_url": "https://app.daygraingate.org/activity/com.stillnote.journal/live/",
-    "theme": {
-      "background": "#24180F"
-    },
-    "legal": {
-      "privacy": "privacy.html",
-      "terms": "terms.html",
-      "support": "support.html"
-    },
-    "adjust": {
-      "app_token": "测试占位-adjust-token",
-      "events": {
-        "purchase": "p1",
-        "register": "r1"
-      }
-    }
+    "activity_url": "https://app.eventglade.org/activity/7.1.8-autologin/0.0.18-attribution/",
+    "h5_version": "7.1.8-autologin",
+    "build_version": "0.0.18-attribution",
+    "dev_sha": "a3b22a68fb4f2f5653893d79f571bae90fde8e12",
+    "code_sha256": "e3268d9651dbc24fd702b671e6c6480a81f812c94a391c39de3c89e26379298f"
   },
-  "iohub": {
-    "app_key": "测试占位-iohub-app-key"
-  },
-  "ai_api_key": "sk-review-required",
   "cloudflare": {
-    "account_id": "c07026da6b24d5dc319cb2a16776e894",
-    "api_token": "测试占位-cf-api-token"
+    "account_id": "014b1d1d65abcb6724b646cd5eb09d11"
   }
 }
