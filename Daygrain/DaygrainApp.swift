@@ -5,8 +5,8 @@ import SwiftUI
 struct DaygrainApp: App {
     @StateObject private var store = JournalStore()
     @StateObject private var privacy = AppPrivacy()
+    @StateObject private var launch = DaygrainLaunchOrchestrator()
     @AppStorage("appearance") private var appearance = "system"
-    @State private var launchRoute: GrainLaunchRoute = .launching
 
     init() {
         let navigation = UINavigationBarAppearance()
@@ -29,9 +29,9 @@ struct DaygrainApp: App {
     var body: some Scene {
         WindowGroup {
             Group {
-                switch launchRoute {
+                switch launch.route {
                 case .launching:
-                    GrainLaunchGateView(route: $launchRoute)
+                    GrainLaunchGateView(orchestrator: launch)
                 case .native:
                     RootView()
                         .environmentObject(store)
@@ -44,6 +44,7 @@ struct DaygrainApp: App {
                         .ignoresSafeArea()
                 }
             }
+            .onAppear { launch.startObserving() }
         }
     }
 }

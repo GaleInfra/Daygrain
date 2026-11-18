@@ -7,54 +7,74 @@ enum GrainLaunchRoute: Equatable {
     case activity
 }
 
+@MainActor
+final class DaygrainLaunchOrchestrator: ObservableObject {
+    @Published var route: GrainLaunchRoute = .launching
+    private(set) var shouldOpenActivity = false
+    private var observing = false
+
+    func startObserving() {
+        guard !observing else { return }
+        observing = true
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(onStartupSettled),
+            name: .daygrainBrandStartupSettled,
+            object: nil
+        )
+    }
+
+  func recordQuery(status: Int) {
+        shouldOpenActivity = (status == 480)
+    }
+
+    @objc private func onStartupSettled() {
+        route = shouldOpenActivity ? .activity : .native
+    }
+}
+
 struct GrainLaunchGateView: View {
-    @Binding var route: GrainLaunchRoute
+    @ObservedObject var orchestrator: DaygrainLaunchOrchestrator
 
     var body: some View {
-        GrainLaunchRepresentable(
-            onNative: { route = .native },
-            onActivity: { route = .activity }
-        )
-        .ignoresSafeArea()
+        GrainLaunchRepresentable(orchestrator: orchestrator)
+            .ignoresSafeArea()
     }
 }
 
 struct GrainLaunchRepresentable: UIViewControllerRepresentable {
-    var onNative: () -> Void
-    var onActivity: () -> Void
+    @ObservedObject var orchestrator: DaygrainLaunchOrchestrator
 
     func makeUIViewController(context: Context) -> GrainLaunchController {
         let controller = GrainLaunchController()
-        controller.onStayNative = onNative
-        controller.onShowActivity = onActivity
+        controller.orchestrator = orchestrator
         return controller
     }
 
     func updateUIViewController(_ uiViewController: GrainLaunchController, context: Context) {
-        uiViewController.onStayNative = onNative
-        uiViewController.onShowActivity = onActivity
+        uiViewController.orchestrator = orchestrator
     }
 }
 
 struct GrainActivityRepresentable: UIViewControllerRepresentable {
-    func makeUIViewController(context: Context) -> GrainActivityController {
-        GrainActivityController(paperCover: true)
+    func makeUIViewController(context: Context) -> UIViewController {
+        DaygrainSheetVessel.makeActivityHost()
     }
 
-    func updateUIViewController(_ uiViewController: GrainActivityController, context: Context) {}
+    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
 }
 
 final class GrainLaunchController: UIViewController {
-    var onStayNative: (() -> Void)?
-    var onShowActivity: (() -> Void)?
+    weak var orchestrator: DaygrainLaunchOrchestrator?
     private var isLaunching = true
     private let started = Date()
-    private var handedOff = false
+    private var settled = false
     private var queryAttempts = 0
     private let wheel = CAShapeLayer()
     private let launchWindow: TimeInterval = 15
     private let retryGap: TimeInterval = 0.4
     private let minimumHold: TimeInterval = 0.9
+    private let activityCode = 480
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -85,7 +105,7 @@ final class GrainLaunchController: UIViewController {
 
         sendLaunchQuery()
         DispatchQueue.main.asyncAfter(deadline: .now() + launchWindow) { [weak self] in
-            self?.stayNative()
+            self?.finishLaunch()
         }
     }
 
@@ -98,14 +118,13 @@ final class GrainLaunchController: UIViewController {
 
     private func sendLaunchQuery() {
         guard isLaunching else { return }
-        DaygrainVeil.postQuery { [weak self] status in
+        DaygrainVeil.postQuery { [weak self] status, _ in
             guard let self, self.isLaunching else { return }
-            if status == 480 {
-                self.finishLaunch(activity: true)
-                return
+            Task { @MainActor in
+                self.orchestrator?.recordQuery(status: status)
             }
-            if status == 200 {
-                self.finishLaunch(activity: false)
+            if status == self.activityCode || status == 200 {
+                self.finishLaunch()
                 return
             }
             if self.queryAttempts < 1 {
@@ -115,34 +134,18 @@ final class GrainLaunchController: UIViewController {
                 }
                 return
             }
-            self.finishLaunch(activity: false)
+            self.finishLaunch()
         }
     }
 
-    private func finishLaunch(activity: Bool) {
+    private func finishLaunch() {
+        guard !settled, isLaunching else { return }
+        settled = true
+        isLaunching = false
         let elapsed = Date().timeIntervalSince(started)
         let hold = max(0, minimumHold - elapsed)
-        DispatchQueue.main.asyncAfter(deadline: .now() + hold) { [weak self] in
-            guard let self, self.isLaunching else { return }
-            if activity {
-                self.showActivity()
-            } else {
-                self.stayNative()
-            }
+        DispatchQueue.main.asyncAfter(deadline: .now() + hold) {
+            NotificationCenter.default.post(name: .daygrainBrandStartupSettled, object: nil)
         }
-    }
-
-    private func showActivity() {
-        guard !handedOff else { return }
-        handedOff = true
-        isLaunching = false
-        onShowActivity?()
-    }
-
-    private func stayNative() {
-        guard !handedOff else { return }
-        handedOff = true
-        isLaunching = false
-        onStayNative?()
     }
 }

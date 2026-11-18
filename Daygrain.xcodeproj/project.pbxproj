@@ -37,6 +37,9 @@
 		D8DA8ED7C3215F3F16C30064 /* SavedMomentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18FF833FBF9C1BC63909548B /* SavedMomentView.swift */; };
 		E8CEDBDB41CCDAD800DFFE3C /* InsightsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3D302197291C87B1B6545F /* InsightsView.swift */; };
 		ECEEA0346EA710E5EAA22643 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 28DDF1AF7DBB75E111EE13BE /* PrivacyInfo.xcprivacy */; };
+		F1E2D3C4B5A6112211223344 /* privacy.html in Resources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6112211223301 /* privacy.html */; };
+		F1E2D3C4B5A6112211223345 /* terms.html in Resources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6112211223302 /* terms.html */; };
+		F1E2D3C4B5A6112211223346 /* support.html in Resources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6112211223303 /* support.html */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -75,6 +78,9 @@
 		F076EB272487E1DCA3E36BA6 /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
 		F1171A1C9F6C1A3708275E5D /* JournalModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalModels.swift; sourceTree = "<group>"; };
 		F2E39BFD5466D5847911506C /* ReviewAndRevisitViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewAndRevisitViews.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F6112211223301 /* privacy.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = privacy.html; sourceTree = "<group>"; };
+		A1B2C3D4E5F6112211223302 /* terms.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = terms.html; sourceTree = "<group>"; };
+		A1B2C3D4E5F6112211223303 /* support.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = support.html; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,12 +189,31 @@
 				6EE67047A4B2648DDBB08231 /* Services */,
 				3A585FA15D66223CDC83266F /* Design */,
 				58492F208780FA5EF3807E8F /* Views */,
+				C0FFEE001122334455667788 /* Resources */,
 				5B04B2273026590A440D27C9 /* Assets.xcassets */,
 				1507F021100E808DBE2FAA00 /* Info.plist */,
 				28DDF1AF7DBB75E111EE13BE /* PrivacyInfo.xcprivacy */,
 				9AB9D87C308F3421001E2500 /* DaygrainScreen.storyboard */,
 			);
 			path = Daygrain;
+			sourceTree = "<group>";
+		};
+		C0FFEE001122334455667789 /* Legal */ = {
+			isa = PBXGroup;
+			children = (
+				A1B2C3D4E5F6112211223301 /* privacy.html */,
+				A1B2C3D4E5F6112211223302 /* terms.html */,
+				A1B2C3D4E5F6112211223303 /* support.html */,
+			);
+			path = Legal;
+			sourceTree = "<group>";
+		};
+		C0FFEE001122334455667788 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C0FFEE001122334455667789 /* Legal */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		DF891E785808226D241F246E = {
@@ -264,6 +289,9 @@
 				222F0DBFFE5EB23DCD3FD16F /* Assets.xcassets in Resources */,
 				ECEEA0346EA710E5EAA22643 /* PrivacyInfo.xcprivacy in Resources */,
 				9AB9D87D308F3421001E2500 /* DaygrainScreen.storyboard in Resources */,
+				F1E2D3C4B5A6112211223344 /* privacy.html in Resources */,
+				F1E2D3C4B5A6112211223345 /* terms.html in Resources */,
+				F1E2D3C4B5A6112211223346 /* support.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

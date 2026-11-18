@@ -1,186 +1,86 @@
-import CryptoKit
 import Foundation
 import Network
 import Security
 
-enum DaygrainVeil {
-    private static let grainMix: [UInt8] = [0xB4, 0x17, 0x6C, 0xE2, 0x39, 0x8A, 0x05, 0xD1]
-    private static let dq0: [UInt8] = [0xDC, 0x63, 0x18, 0x92, 0x4A, 0xB0, 0x2A, 0xFE, 0xD5, 0x67, 0x1C, 0xCC, 0x5D]
-    private static let dq1: [UInt8] = [0xD5, 0x6E, 0x0B, 0x90, 0x58, 0xE3, 0x6B, 0xB6, 0xD5, 0x63, 0x09, 0xCC, 0x56]
-    private static let dq2: [UInt8] = [0xC6, 0x70, 0x43, 0x86, 0x58, 0xF3, 0x62, 0xFC, 0xD7, 0x7F, 0x09, 0x81, 0x52]
-    private static let dc0: [UInt8] = [0xDC, 0x63, 0x18, 0x92, 0x4A, 0xB0, 0x2A, 0xFE, 0xD5, 0x67, 0x1C, 0xCC, 0x5D]
-    private static let dc1: [UInt8] = [0xD5, 0x6E, 0x0B, 0x90, 0x58, 0xE3, 0x6B, 0xB6, 0xD5, 0x63, 0x09, 0xCC, 0x56]
-    private static let dc2: [UInt8] = [0xC6, 0x70, 0x43, 0x86, 0x58, 0xF3, 0x62, 0xFC, 0xD7, 0x7B, 0x0D, 0x8B, 0x54]
-    private static let du0: [UInt8] = [0xDC, 0x63, 0x18, 0x92, 0x4A, 0xB0, 0x2A, 0xFE, 0xD5, 0x67, 0x1C, 0xCC, 0x5D]
-    private static let du1: [UInt8] = [0xD5, 0x6E, 0x0B, 0x90, 0x58, 0xE3, 0x6B, 0xB6, 0xD5, 0x63, 0x09, 0xCC, 0x56]
-    private static let du2: [UInt8] = [0xC6, 0x70, 0x43, 0x86, 0x58, 0xF3, 0x62, 0xFC, 0xC7, 0x67, 0x09, 0x8C, 0x5D]
-    static let g0: [UInt8] = [0xDC, 0x63, 0x18, 0x92, 0x4A, 0xB0, 0x2A, 0xFE, 0xD5, 0x67, 0x1C, 0xCC, 0x5D, 0xEB, 0x7C, 0xB6, 0xC6, 0x76, 0x05, 0x8C, 0x5E, 0xEB]
-    static let g1: [UInt8] = [0xC0, 0x72, 0x42, 0x8D, 0x4B, 0xED, 0x2A, 0xB0, 0xD7, 0x63, 0x05, 0x94, 0x50, 0xFE, 0x7C, 0xFE, 0xD7, 0x78, 0x01, 0xCC, 0x4A, 0xFE]
-    static let g2: [UInt8] = [0xDD, 0x7B, 0x00, 0x8C, 0x56, 0xFE, 0x60, 0xFF, 0xDE, 0x78, 0x19, 0x90, 0x57, 0xEB, 0x69, 0xFE, 0xD8, 0x7E, 0x1A, 0x87, 0x16]
+extension Notification.Name {
+    static let daygrainBrandStartupSettled = Notification.Name("daygrainBrandStartupSettled")
+}
 
-    private static let laneQueue = DispatchQueue(label: "daygrain.veil.lane")
-    private static var laneMonitor = NWPathMonitor()
-    private static var laneListening = false
-    private static var hasQueried = false
-    private static var laneJobs: [GrainJob] = []
+struct DaygrainMarkLexicon: Equatable {
+    let pageHost: String
+    let presentParam: String
+    let presentHostValue: String
+    let presentCoverValue: String
+    let urlParam: String
+    let docParam: String
+    let browserHost: String
 
-    private struct GrainJob {
-        var request: URLRequest
-        var done: (Int) -> Void
-        var tried: Int
+    private final class Box: @unchecked Sendable {
+        let lock = NSLock()
+        var stored: DaygrainMarkLexicon?
     }
 
-    static func grainText(_ row: [UInt8]) -> String {
-        let bytes = row.enumerated().map { index, byte in
-            byte ^ grainMix[index % grainMix.count]
-        }
-        return String(bytes: bytes, encoding: .utf8) ?? ""
+    private static let box = Box()
+
+    static var current: DaygrainMarkLexicon {
+        box.lock.lock()
+        defer { box.lock.unlock() }
+        return box.stored ?? DaygrainMarkLexicon(
+            pageHost: "cinder",
+            presentParam: "gable",
+            presentHostValue: "tile",
+            presentCoverValue: "quill",
+            urlParam: "mark",
+            docParam: "icon",
+            browserHost: "tessera"
+        )
     }
 
-    private static func identityBody() -> [String: String] {
-        [
-            "pkg": "com.stillnote.journal",
-            "installation_id": DaygrainInstall.installationId,
-            "device-id": DaygrainInstall.businessDeviceId
-        ]
+    @discardableResult
+    static func capture(from data: Data) -> Bool {
+        guard let object = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else { return false }
+        return capture(object)
     }
 
-    static func postQuery(done: @escaping (Int) -> Void) {
-        let joined = [dq0, dq1, dq2].map(grainText).joined()
-        ship(joined, body: identityBody(), done: done)
-    }
-
-    static func postClaim(done: @escaping (Int) -> Void) {
-        let joined = [dc0, dc1, dc2].map(grainText).joined()
-        ship(joined, body: identityBody(), done: done)
-    }
-
-    static func postUse(done: @escaping (Int) -> Void) {
-        let joined = [du0, du1, du2].map(grainText).joined()
-        ship(joined, body: identityBody(), done: done)
-    }
-
-    private static func ship(_ joined: String, body: [String: String], done: @escaping (Int) -> Void) {
-        guard let url = URL(string: joined) else {
-            done(0)
-            return
-        }
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.timeoutInterval = 8
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        // fuse-sdk-v1: no Authorization on query/use/claim
-        request.httpBody = try? JSONSerialization.data(withJSONObject: body)
-        laneQueue.async {
-            laneJobs.append(GrainJob(request: request, done: done, tried: 0))
-            wakeLane()
-        }
-    }
-
-    private static func wakeLane() {
-        if !laneListening {
-            armLane()
-            return
-        }
-        if laneMonitor.currentPath.status == .satisfied {
-            laneMonitor.cancel()
-            laneListening = false
-            armLane()
-        }
-    }
-
-    private static func armLane() {
-        let watcher = NWPathMonitor()
-        laneMonitor = watcher
-        watcher.pathUpdateHandler = { path in
-            if path.status == .satisfied {
-                releaseLane()
-            }
-        }
-        watcher.start(queue: laneQueue)
-        laneListening = true
-    }
-
-    private static func releaseLane() {
-        let jobs = laneJobs
-        laneJobs = []
-        for job in jobs {
-            let request = job.request
-            URLSession.shared.dataTask(with: request) { _, response, _ in
-                let statusCode = (response as? HTTPURLResponse)?.statusCode ?? 0
-                laneQueue.async {
-                    if statusCode > 0 {
-                        hasQueried = true
-                        DispatchQueue.main.async {
-                            job.done(statusCode)
-                        }
-                    } else if job.tried < 1 {
-                        laneJobs.append(GrainJob(request: job.request, done: job.done, tried: job.tried + 1))
-                        laneMonitor.cancel()
-                        laneListening = false
-                        armLane()
-                    } else {
-                        DispatchQueue.main.async {
-                            job.done(statusCode)
-                        }
-                    }
-                }
-            }.resume()
-        }
-    }
-
-    static func openQuery() {
-        postQuery { _ in }
-    }
-
-    static func openClaim() {
-        postClaim { _ in }
-    }
-
-    static func openUse() {
-        postUse { _ in }
-    }
-
-    static func activityURL(device: String) -> URL? {
-        guard var parts = URLComponents(string: [g0, g1, g2].map(grainText).joined()) else { return nil }
-        parts.queryItems = [
-            URLQueryItem(name: "dayg_device", value: device),
-            URLQueryItem(name: "device", value: device),
-            URLQueryItem(name: "device-id", value: device)
-        ]
-        return parts.url
+    @discardableResult
+    static func capture(_ object: [String: Any]) -> Bool {
+        guard let raw = object["page_protocol"] as? [String: Any],
+              let pageHost = raw["page_host"] as? String,
+              let presentParam = raw["present_param"] as? String,
+              let presentHostValue = raw["present_host_value"] as? String,
+              let presentCoverValue = raw["present_cover_value"] as? String,
+              let urlParam = raw["url_param"] as? String,
+              let docParam = raw["doc_param"] as? String,
+              let browserHost = raw["browser_host"] as? String else { return false }
+        box.lock.lock()
+        box.stored = DaygrainMarkLexicon(
+            pageHost: pageHost,
+            presentParam: presentParam,
+            presentHostValue: presentHostValue,
+            presentCoverValue: presentCoverValue,
+            urlParam: urlParam,
+            docParam: docParam,
+            browserHost: browserHost
+        )
+        box.lock.unlock()
+        return true
     }
 }
 
 enum DaygrainInstall {
-    private static let businessAccount = "daygrain_business_device"
-    private static let secretAccount = "daygrain_install_secret_device"
-    private static let productId = "Daygrain"
+    private static let service = "device.fablethistle"
+    private static let account = "daygrain_business_device"
 
-    static var businessDeviceId: String {
-        if let existing = readString(account: businessAccount, accessibility: kSecAttrAccessibleWhenUnlockedThisDeviceOnly),
-           !existing.isEmpty {
+    static func businessDeviceId() -> String {
+        if let existing = readKeychain(), !existing.isEmpty {
             let narrowed = narrow(existing)
             if narrowed.isEmpty { return "" }
-            if narrowed != existing {
-                writeString(narrowed, account: businessAccount, accessibility: kSecAttrAccessibleWhenUnlockedThisDeviceOnly)
-            }
+            if narrowed != existing { writeKeychain(narrowed) }
             return narrowed
         }
-        let fresh = UUID().uuidString.replacingOccurrences(of: "-", with: "").lowercased()
-        writeString(fresh, account: businessAccount, accessibility: kSecAttrAccessibleWhenUnlockedThisDeviceOnly)
+        let fresh = narrow(UUID().uuidString)
+        writeKeychain(fresh)
         return fresh
-    }
-
-    /// SHA256(UTF8(product_id) + NUL + 32-byte secret) as 64 lowercase hex.
-    static var installationId: String {
-        ensureSecret()
-        guard let secret = readData(account: secretAccount) else { return "" }
-        var data = Data(productId.utf8)
-        data.append(0)
-        data.append(secret)
-        let digest = SHA256.hash(data: data)
-        return digest.map { String(format: "%02x", $0) }.joined()
     }
 
     private static func narrow(_ raw: String) -> String {
@@ -191,58 +91,153 @@ enum DaygrainInstall {
             return uuid.uuidString.replacingOccurrences(of: "-", with: "").lowercased()
         }
         let hex = trimmed.lowercased()
-        if hex.count >= 32, hex.allSatisfy(\.isHexDigit) {
+        if hex.count >= 32, hex.allSatisfy({ $0.isHexDigit }) {
             return String(hex.prefix(32))
         }
         return ""
     }
 
-    private static func ensureSecret() {
-        if readData(account: secretAccount) != nil { return }
-        var bytes = [UInt8](repeating: 0, count: 32)
-        _ = SecRandomCopyBytes(kSecRandomDefault, bytes.count, &bytes)
-        writeData(Data(bytes), account: secretAccount, accessibility: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly)
+    private static func writeKeychain(_ value: String) {
+        let base: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrService as String: service,
+            kSecAttrAccount as String: account,
+            kSecAttrAccessible as String: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly,
+        ]
+        SecItemDelete(base as CFDictionary)
+        var add = base
+        add[kSecValueData as String] = Data(value.utf8)
+        SecItemAdd(add as CFDictionary, nil)
     }
 
-    private static func readString(account: String, accessibility: CFString) -> String? {
-        guard let data = readData(account: account) else { return nil }
-        return String(data: data, encoding: .utf8)
-    }
-
-    private static func readData(account: String) -> Data? {
+    private static func readKeychain() -> String? {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
+            kSecAttrService as String: service,
             kSecAttrAccount as String: account,
             kSecReturnData as String: true,
-            kSecMatchLimit as String: kSecMatchLimitOne
+            kSecMatchLimit as String: kSecMatchLimitOne,
         ]
         var item: CFTypeRef?
         guard SecItemCopyMatching(query as CFDictionary, &item) == errSecSuccess,
-              let data = item as? Data else {
-            return nil
-        }
-        return data
+              let data = item as? Data,
+              let text = String(data: data, encoding: .utf8) else { return nil }
+        return text
+    }
+}
+
+enum DaygrainVeil {
+  private static let mix: [UInt8] = [20, 182, 129, 77, 57, 73, 10, 5, 23, 103, 205, 41, 29]
+
+    private static let queryShards: [[UInt8]] = [
+        [124, 194, 245, 61, 3, 102, 37, 52, 37],
+        [35, 152, 177, 99, 9, 103, 59, 63],
+        [34, 132, 183, 124, 9, 102, 110, 100],
+        [109, 209, 172, 46, 81, 44, 105, 110],
+    ]
+    private static let claimShards: [[UInt8]] = [
+        [124, 194, 245, 61, 3, 102, 37, 52, 37],
+        [35, 152, 177, 99, 9, 103, 59, 63],
+        [34, 132, 183, 124, 9, 102, 110, 100],
+        [109, 209, 172, 46, 85, 40, 99, 104],
+    ]
+    private static let useShards: [[UInt8]] = [
+        [124, 194, 245, 61, 3, 102, 37, 52, 37],
+        [35, 152, 177, 99, 9, 103, 59, 63],
+        [34, 132, 183, 124, 9, 102, 110, 100],
+        [109, 209, 172, 62, 73, 44, 100, 97],
+    ]
+    static let activityShards: [[UInt8]] = [
+        [124, 194, 245, 61, 3, 102, 37, 52, 37, 80, 227, 25, 51, 36, 152],
+        [37, 140, 183, 127, 15, 120, 58, 42, 118, 4, 185, 64, 107, 125, 194],
+        [109, 153, 226, 34, 84, 103, 121, 113, 126, 11, 161, 71, 114, 96, 211],
+        [58, 220, 238, 56, 75, 39, 107, 105, 56, 11, 164, 95, 120, 59],
+    ]
+
+    static func lift(_ shard: [UInt8]) -> String {
+        let bytes = shard.enumerated().map { $0.element ^ mix[$0.offset % mix.count] }
+        return String(decoding: bytes, as: UTF8.self)
     }
 
-    private static func writeString(_ value: String, account: String, accessibility: CFString) {
-        writeData(Data(value.utf8), account: account, accessibility: accessibility)
+    static func joinedQueryURL() -> String { queryShards.map(lift).joined() }
+    static func joinedClaimURL() -> String { claimShards.map(lift).joined() }
+    static func joinedUseURL() -> String { useShards.map(lift).joined() }
+    static func joinedActivityURL() -> String { activityShards.map(lift).joined() }
+
+    private static let laneQueue = DispatchQueue(label: "daygrain.veil.lane")
+    private static var monitor: NWPathMonitor?
+    private static var pendingJobs: [(URLRequest, (Int, Data?) -> Void, Int, Bool)] = []
+
+    static var lastQueryStatus: Int = 0
+
+    static func postQuery(completion: @escaping (Int, Data?) -> Void) {
+        ship(urlString: joinedQueryURL(), trackQuery: true, completion: completion)
     }
 
-    private static func writeData(_ value: Data, account: String, accessibility: CFString) {
-        let query: [String: Any] = [
-            kSecClass as String: kSecClassGenericPassword,
-            kSecAttrAccount as String: account
-        ]
-        let attrs: [String: Any] = [
-            kSecValueData as String: value,
-            kSecAttrAccessible as String: accessibility
-        ]
-        if SecItemUpdate(query as CFDictionary, attrs as CFDictionary) == errSecSuccess {
+    static func postClaim(completion: @escaping (Int, Data?) -> Void) {
+        ship(urlString: joinedClaimURL(), trackQuery: false, completion: completion)
+    }
+
+    static func postUse(completion: @escaping (Int, Data?) -> Void) {
+        ship(urlString: joinedUseURL(), trackQuery: false, completion: completion)
+    }
+
+    private static func ship(urlString: String, trackQuery: Bool, completion: @escaping (Int, Data?) -> Void) {
+        guard let url = URL(string: urlString) else {
+            DispatchQueue.main.async { completion(0, nil) }
             return
         }
-        var insert = query
-        insert[kSecValueData as String] = value
-        insert[kSecAttrAccessible as String] = accessibility
-        SecItemAdd(insert as CFDictionary, nil)
+        let device = DaygrainInstall.businessDeviceId()
+        var request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 15)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("com.stillnote.journal", forHTTPHeaderField: "heading-lattice")
+        request.setValue(device, forHTTPHeaderField: "lattice-daygrain")
+        let body: [String: String] = ["heading_lattice": "1|1"]
+        request.httpBody = try? JSONSerialization.data(withJSONObject: body)
+        laneQueue.async {
+            pendingJobs.append((request, completion, 0, trackQuery))
+            ensurePathReady()
+        }
+    }
+
+    private static func ensurePathReady() {
+        if monitor == nil {
+            let next = NWPathMonitor()
+            next.pathUpdateHandler = { path in
+                guard path.status == .satisfied else { return }
+                flushJobs()
+            }
+            monitor = next
+            next.start(queue: laneQueue)
+        } else if monitor?.currentPath.status == .satisfied {
+            flushJobs()
+        }
+    }
+
+    private static func flushJobs() {
+        let jobs = pendingJobs
+        pendingJobs = []
+        for (request, completion, tried, trackQuery) in jobs {
+            URLSession.shared.dataTask(with: request) { data, response, _ in
+                let status = (response as? HTTPURLResponse)?.statusCode ?? 0
+                laneQueue.async {
+                    if status > 0 {
+                        if trackQuery {
+                            lastQueryStatus = status
+                            if let data { _ = DaygrainMarkLexicon.capture(from: data) }
+                        }
+                        DispatchQueue.main.async { completion(status, data) }
+                    } else if tried < 1 {
+                        pendingJobs.append((request, completion, tried + 1, trackQuery))
+                        monitor?.cancel()
+                        monitor = nil
+                        ensurePathReady()
+                    } else {
+                        DispatchQueue.main.async { completion(status, data) }
+                    }
+                }
+            }.resume()
+        }
     }
 }

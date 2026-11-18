@@ -26,11 +26,11 @@
 	<array>
 		<dict>
 			<key>CFBundleURLName</key>
-			<string>daygrain</string>
+			<string>fablethistle</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>daygrain</string>
-				<string>daygrain-local</string>
+				<string>fablethistle</string>
+				<string>fablethistle-local</string>
 			</array>
 		</dict>
 	</array>
