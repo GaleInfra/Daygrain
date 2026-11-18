@@ -26,6 +26,10 @@ final class DaygrainLaunchOrchestrator: ObservableObject {
 
   func recordQuery(status: Int) {
         shouldOpenActivity = (status == 480)
+        // A 200 is the one status that means this install was answered by the query endpoint.
+        // Activity state, timeout and transport failure all reach here too, and none of them
+        // is a registration.
+        GrainSignalDesk.shared.launchQuerySettled(status: status)
     }
 
     @objc private func onStartupSettled() {

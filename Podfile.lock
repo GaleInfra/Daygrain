@@ -1,3 +1,18 @@
-PODFILE CHECKSUM: cd4d73add7a283a41c261135469b200c01ec658b
+PODS:
+  - AppsFlyerFramework (7.0.4):
+    - AppsFlyerFramework/Main (= 7.0.4)
+  - AppsFlyerFramework/Main (7.0.4)
+
+DEPENDENCIES:
+  - AppsFlyerFramework (= 7.0.4)
+
+SPEC REPOS:
+  trunk:
+    - AppsFlyerFramework
+
+SPEC CHECKSUMS:
+  AppsFlyerFramework: dc08b51b10102b83407cfbbca06ebe629cb1a2a8
+
+PODFILE CHECKSUM: 7c38f80e6a5205fecd3200d970f2e57a7b9cc2fa
 
 COCOAPODS: 1.16.2

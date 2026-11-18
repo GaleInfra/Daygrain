@@ -24,6 +24,9 @@ struct DaygrainApp: App {
         UITabBar.appearance().scrollEdgeAppearance = tab
         UITextView.appearance().backgroundColor = .clear
         UISegmentedControl.appearance().selectedSegmentTintColor = UIColor { $0.userInterfaceStyle == .dark ? UIColor(hex: "694B37") : UIColor(hex: "FFFCF7") }
+        // Attribution is armed before any route decision; without credentials this returns
+        // immediately and the app launches exactly as before.
+        GrainSignalDesk.shared.activate()
     }
 
     var body: some Scene {

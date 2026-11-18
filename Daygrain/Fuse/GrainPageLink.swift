@@ -57,6 +57,13 @@ enum GrainPageLink {
         let proto = DaygrainMarkLexicon.current
         let host = (url.host ?? "").lowercased()
         let items = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems ?? []
+        if host == GrainSignalLink.action {
+            // The activity page reports through the same reader the app uses for its own links.
+            // The host is ours, so the address is handled even when the shape is rejected —
+            // otherwise a malformed link would fall through to the web view and reload it.
+            _ = GrainSignalDesk.shared.submit(url)
+            return true
+        }
         if host == proto.browserHost {
             if let target = items.first(where: { $0.name == proto.urlParam })?.value {
                 openOutside(target)
