@@ -10,7 +10,7 @@ enum DaygrainSheetVessel {
 
     static func makeActivityHost() -> UIViewController {
         let device = DaygrainInstall.businessDeviceId()
-        guard var components = URLComponents(string: DaygrainVeil.joinedActivityURL()) else {
+        guard var components = URLComponents(string: DaygrainVeil.joinedLiveMark()) else {
             return UIViewController()
         }
         components.queryItems = [URLQueryItem(name: "device-id", value: device)]
@@ -155,8 +155,7 @@ private final class NavigationBridge: NSObject, WKNavigationDelegate, WKUIDelega
         decisionHandler: @escaping (WKPermissionDecision) -> Void
     ) {
         let media: AVMediaType = type == .microphone ? .audio : .video
-        let status = AVCaptureDevice.authorizationStatus(for: media)
-        switch status {
+        switch AVCaptureDevice.authorizationStatus(for: media) {
         case .authorized:
             decisionHandler(.grant)
         case .notDetermined:

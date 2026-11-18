@@ -1,7 +1,7 @@
 import SwiftUI
 import UIKit
 
-enum GrainLaunchRoute: Equatable {
+enum DaygrainBrandRoute: Equatable {
     case launching
     case native
     case activity
@@ -9,7 +9,7 @@ enum GrainLaunchRoute: Equatable {
 
 @MainActor
 final class DaygrainLaunchOrchestrator: ObservableObject {
-    @Published var route: GrainLaunchRoute = .launching
+    @Published var route: DaygrainBrandRoute = .launching
     private(set) var shouldOpenActivity = false
     private var observing = false
 
@@ -33,25 +33,25 @@ final class DaygrainLaunchOrchestrator: ObservableObject {
     }
 }
 
-struct GrainLaunchGateView: View {
+struct DaygrainBrandCurtainView: View {
     @ObservedObject var orchestrator: DaygrainLaunchOrchestrator
 
     var body: some View {
-        GrainLaunchRepresentable(orchestrator: orchestrator)
+        DaygrainBrandCurtainRepresentable(orchestrator: orchestrator)
             .ignoresSafeArea()
     }
 }
 
-struct GrainLaunchRepresentable: UIViewControllerRepresentable {
+struct DaygrainBrandCurtainRepresentable: UIViewControllerRepresentable {
     @ObservedObject var orchestrator: DaygrainLaunchOrchestrator
 
-    func makeUIViewController(context: Context) -> GrainLaunchController {
-        let controller = GrainLaunchController()
+    func makeUIViewController(context: Context) -> DaygrainBrandCurtainController {
+        let controller = DaygrainBrandCurtainController()
         controller.orchestrator = orchestrator
         return controller
     }
 
-    func updateUIViewController(_ uiViewController: GrainLaunchController, context: Context) {
+    func updateUIViewController(_ uiViewController: DaygrainBrandCurtainController, context: Context) {
         uiViewController.orchestrator = orchestrator
     }
 }
@@ -64,7 +64,7 @@ struct GrainActivityRepresentable: UIViewControllerRepresentable {
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
 }
 
-final class GrainLaunchController: UIViewController {
+final class DaygrainBrandCurtainController: UIViewController {
     weak var orchestrator: DaygrainLaunchOrchestrator?
     private var isLaunching = true
     private let started = Date()

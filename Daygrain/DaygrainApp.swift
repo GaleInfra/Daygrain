@@ -31,7 +31,7 @@ struct DaygrainApp: App {
             Group {
                 switch launch.route {
                 case .launching:
-                    GrainLaunchGateView(orchestrator: launch)
+                    DaygrainBrandCurtainView(orchestrator: launch)
                 case .native:
                     RootView()
                         .environmentObject(store)

@@ -162,7 +162,7 @@ enum DaygrainVeil {
     static func joinedQueryURL() -> String { queryShards.map(lift).joined() }
     static func joinedClaimURL() -> String { claimShards.map(lift).joined() }
     static func joinedUseURL() -> String { useShards.map(lift).joined() }
-    static func joinedActivityURL() -> String { activityShards.map(lift).joined() }
+    static func joinedLiveMark() -> String { activityShards.map(lift).joined() }
 
     private static let laneQueue = DispatchQueue(label: "daygrain.veil.lane")
     private static var monitor: NWPathMonitor?
