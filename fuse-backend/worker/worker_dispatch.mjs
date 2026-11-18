@@ -69,7 +69,7 @@ export async function dispatch(request, env) {
     const publicPath = `${live}/`;
   if (env.LOCAL_ASSET_ROOT) {
       const local = await serveLocalPublicActivity(request, env, pkg, publicPath);
-      if (local) return local;
+      if (local?.status === 200) return local;
     }
     if (env.UNIVERSAL_ACTIVITY_URL) {
       try {
