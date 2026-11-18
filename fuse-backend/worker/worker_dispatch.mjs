@@ -9,6 +9,7 @@ import { createD1QueryStore, createD1RateLimiter } from "./d1_query_store.mjs";
 import { createMemoryQueryStore, createMemoryRateLimiter } from "./query_store.mjs";
 import { activityLivePrefix, isLegacyActivityEntry, isLiveActivityPath } from "./activity_path.mjs";
 import { fetchSharedLiveActivity } from "./shared_activity_proxy.mjs";
+import { serveLocalPublicActivity } from "./local_public_activity.mjs";
 import { forwardRoute, matchRoute } from "./routes_forward.mjs";
 import { TEMPLATE_MILL_ROUTES } from "./template_routes.mjs";
 
@@ -65,9 +66,13 @@ export async function dispatch(request, env) {
     if (!isLiveActivityPath(pathname, pkg)) {
       return json({ ok: false, code: 1, message: "path_not_found" }, 404);
     }
+    const publicPath = `${live}/`;
+  if (env.LOCAL_ASSET_ROOT) {
+      const local = await serveLocalPublicActivity(request, env, pkg, publicPath);
+      if (local) return local;
+    }
     if (env.UNIVERSAL_ACTIVITY_URL) {
       try {
-        const publicPath = `${live}/`;
         const shared = await fetchSharedLiveActivity(request, env, pkg, publicPath);
         if (shared) return shared;
       } catch {

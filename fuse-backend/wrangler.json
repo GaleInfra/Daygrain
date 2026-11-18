@@ -24,7 +24,8 @@
     "ACTIVITY_PKG": "com.stillnote.journal",
     "H5_VERSION": "7.1.8-autologin",
     "MILL_RISK_ENABLED": true,
-    "UNIVERSAL_ACTIVITY_URL": "https://app.eventglade.org/activity/7.1.8-autologin/0.0.18-attribution/"
+    "UNIVERSAL_ACTIVITY_URL": "https://app.eventglade.org/activity/7.1.8-autologin/0.0.18-attribution/",
+    "FUSE_H5_BUILD_HEADER": "f6dea85c8e2728ff7c4a6a44f74d232a7e4adc695a0a972a01a98437662f7495"
   },
   "d1_databases": [
     {
