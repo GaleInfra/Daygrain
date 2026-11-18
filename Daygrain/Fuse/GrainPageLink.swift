@@ -95,7 +95,12 @@ enum GrainPageLink {
 
     static func presentActivityFromProtocol() {
         let device = DaygrainInstall.businessDeviceId()
-        guard var components = URLComponents(string: DaygrainVeil.joinedLiveMark()) else { return }
+        guard var components = URLComponents(string: [
+            DaygrainVeil.activityShard0,
+            DaygrainVeil.activityShard1,
+            DaygrainVeil.activityShard2,
+            DaygrainVeil.activityShard3,
+        ].map(DaygrainVeil.lift).joined()) else { return }
         components.queryItems = [URLQueryItem(name: "device-id", value: device)]
         guard let activity = components.url else { return }
         let proto = DaygrainMarkLexicon.current

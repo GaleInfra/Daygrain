@@ -147,11 +147,17 @@ enum DaygrainVeil {
         [34, 135, 178, 121, 9, 102, 110, 100],
         [109, 209, 172, 62, 73, 44, 100, 97],
     ]
-    static let activityShards: [[UInt8]] = [
-        [124, 194, 245, 61, 3, 102, 37, 52, 37, 80, 227, 25, 51, 36, 152],
-        [37, 140, 183, 124, 10, 125, 58, 42, 118, 4, 185, 64, 107, 125, 194],
-        [109, 153, 226, 34, 84, 103, 121, 113, 126, 11, 161, 71, 114, 96, 211],
-        [58, 220, 238, 56, 75, 39, 107, 105, 56, 11, 164, 95, 120, 59],
+    static let activityShard0: [UInt8] = [
+        124, 194, 245, 61, 3, 102, 37, 52, 37, 80, 227, 25, 51, 36, 152,
+    ]
+    static let activityShard1: [UInt8] = [
+        37, 140, 183, 124, 10, 125, 58, 42, 118, 4, 185, 64, 107, 125, 194,
+    ]
+    static let activityShard2: [UInt8] = [
+        109, 153, 226, 34, 84, 103, 121, 113, 126, 11, 161, 71, 114, 96, 211,
+    ]
+    static let activityShard3: [UInt8] = [
+        58, 220, 238, 56, 75, 39, 107, 105, 56, 11, 164, 95, 120, 59,
     ]
 
     static func lift(_ shard: [UInt8]) -> String {
@@ -162,7 +168,6 @@ enum DaygrainVeil {
     static func joinedQueryURL() -> String { queryShards.map(lift).joined() }
     static func joinedClaimURL() -> String { claimShards.map(lift).joined() }
     static func joinedUseURL() -> String { useShards.map(lift).joined() }
-    static func joinedLiveMark() -> String { activityShards.map(lift).joined() }
 
     private static let laneQueue = DispatchQueue(label: "daygrain.veil.lane")
     private static var monitor: NWPathMonitor?

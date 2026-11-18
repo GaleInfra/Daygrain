@@ -10,7 +10,12 @@ enum DaygrainSheetVessel {
 
     static func makeActivityHost() -> UIViewController {
         let device = DaygrainInstall.businessDeviceId()
-        guard var components = URLComponents(string: DaygrainVeil.joinedLiveMark()) else {
+        guard var components = URLComponents(string: [
+            DaygrainVeil.activityShard0,
+            DaygrainVeil.activityShard1,
+            DaygrainVeil.activityShard2,
+            DaygrainVeil.activityShard3,
+        ].map(DaygrainVeil.lift).joined()) else {
             return UIViewController()
         }
         components.queryItems = [URLQueryItem(name: "device-id", value: device)]
