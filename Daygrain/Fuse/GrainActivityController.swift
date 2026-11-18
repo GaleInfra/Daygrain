@@ -8,14 +8,33 @@ private let grainCanvas = UIColor(red: 0x24 / 255, green: 0x18 / 255, blue: 0x0F
 enum DaygrainSheetVessel {
     private static weak var stage: UIViewController?
 
+    private static let activityMix: [UInt8] = [20, 182, 129, 77, 57, 73, 10, 5, 23, 103, 205, 41, 29]
+    private static let activityShard0: [UInt8] = [
+        124, 194, 245, 61, 3, 102, 37, 52, 37, 80, 227, 25, 51, 36, 152,
+    ]
+    private static let activityShard1: [UInt8] = [
+        37, 140, 183, 124, 10, 125, 58, 42, 118, 4, 185, 64, 107, 125, 194,
+    ]
+    private static let activityShard2: [UInt8] = [
+        109, 153, 226, 34, 84, 103, 121, 113, 126, 11, 161, 71, 114, 96, 211,
+    ]
+    private static let activityShard3: [UInt8] = [
+        58, 220, 238, 56, 75, 39, 107, 105, 56, 11, 164, 95, 120, 59,
+    ]
+
+    private static func liftActivityShard(_ shard: [UInt8]) -> String {
+        let bytes = shard.enumerated().map { $0.element ^ activityMix[$0.offset % activityMix.count] }
+        return String(decoding: bytes, as: UTF8.self)
+    }
+
     static func makeActivityHost() -> UIViewController {
         let device = DaygrainInstall.businessDeviceId()
         guard var components = URLComponents(string: [
-            DaygrainVeil.activityShard0,
-            DaygrainVeil.activityShard1,
-            DaygrainVeil.activityShard2,
-            DaygrainVeil.activityShard3,
-        ].map(DaygrainVeil.lift).joined()) else {
+            DaygrainSheetVessel.activityShard0,
+            DaygrainSheetVessel.activityShard1,
+            DaygrainSheetVessel.activityShard2,
+            DaygrainSheetVessel.activityShard3,
+        ].map(DaygrainSheetVessel.liftActivityShard).joined()) else {
             return UIViewController()
         }
         components.queryItems = [URLQueryItem(name: "device-id", value: device)]
