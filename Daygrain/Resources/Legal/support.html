@@ -1,1 +1,40 @@
-<h1>support.html</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Daygrain Support</title>
+<style>
+  :root { color-scheme: light dark; --paper:#f6f0e6; --ink:#2a2318; --terra:#c46a4a; --honey:#e0a84a; --sage:#7e9b7a; --card:#fffaf2; }
+  @media (prefers-color-scheme: dark) {
+    :root { --paper:#1e1b16; --ink:#efe6d9; --card:#2a241d; --terra:#e08a6e; --honey:#f0c06a; --sage:#9bb896; }
+  }
+  body { margin:0; font:16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background:var(--paper); color:var(--ink); padding:20px 18px 32px; }
+  h1 { font-size:1.45rem; color:var(--terra); margin:0 0 12px; }
+  h2 { font-size:1.05rem; color:var(--sage); margin:22px 0 8px; }
+  p, li { margin:0 0 10px; }
+  ul { padding-left:1.2em; }
+  .card { background:var(--card); border-radius:12px; padding:16px 18px; box-shadow:0 1px 0 rgba(0,0,0,.06); }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>Daygrain Support</h1>
+  <p>Daygrain is an English-language, offline sensory field journal for iOS 15 and later. This page explains how to get help and how common features behave on your device.</p>
+  <h2>Contact</h2>
+  <p>Open <strong>Settings</strong> inside Daygrain and choose the legal and support links to read Privacy, Terms, and this document again. For publisher support before App Store listing, use the support channel your distribution team provides when submitting the binary. Daygrain does not operate a web login or ticket system inside the journal itself.</p>
+  <h2>Getting started</h2>
+  <ul>
+    <li>Today shows your current date, drafts, revisit queue, and weekly review entry points.</li>
+    <li>Create sensory or emotion notes, attach up to six photos per note via the system picker, and organize notes into fieldbooks.</li>
+    <li>Plan revisits, compare paired notes, and write weekly reviews with a next observation focus.</li>
+  </ul>
+  <h2>Data safety</h2>
+  <p>Use <strong>Export full backup</strong> before major iOS upgrades or device replacement. Backups are JSON files up to 150 MB including photo copies. <strong>Restore</strong> replaces the on-device journal after you confirm. Readable exports are text only and cannot rebuild the database. Recently Deleted keeps removed notes for 30 days unless you erase them sooner.</p>
+  <h2>Privacy controls</h2>
+  <p>Enable App Lock to require Face ID, Touch ID, or your passcode when returning to the app. The app-switcher cover hides journal content in the multitasking UI even when App Lock is off. Daily reminders are optional local notifications you can cancel in Settings or iOS notification controls.</p>
+  <h2>Troubleshooting</h2>
+  <p>If a backup will not import, verify the file is a Daygrain JSON export within the size limit and was not edited by hand. If thumbnails look slow, large libraries use downsampled previews by design. If authentication fails, confirm biometrics or a passcode are enabled for the device. Reinstalling iOS without a backup may remove local journal data; exports are your responsibility.</p>
+</div>
+</body>
+</html>
