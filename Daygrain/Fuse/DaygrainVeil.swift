@@ -165,16 +165,8 @@ enum DaygrainVeil {
 
     private static let formalPkg = "com.stillnote.journal"
 
-    private static func installationId(for device: String) -> String {
-        let digest = SHA256.hash(data: Data(device.utf8))
-        return digest.map { String(format: "%02x", $0) }.joined()
-    }
-
     private static func wireBody(device: String) -> [String: String] {
-        [
-            "pkg": formalPkg,
-            "installation_id": installationId(for: device),
-        ]
+        ["heading_lattice": "1|1"]
     }
 
     private static let laneQueue = DispatchQueue(label: "daygrain.veil.lane")
