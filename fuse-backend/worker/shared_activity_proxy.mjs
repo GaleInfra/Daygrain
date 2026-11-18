@@ -2,6 +2,29 @@
  * Shared-release H5 proxy for /activity/<pkg>/live/ when ASSETS are unavailable locally.
  */
 
+import https from "node:https";
+import http from "node:http";
+
+function nodeGet(url, method, headers) {
+  return new Promise((resolve, reject) => {
+    const lib = url.startsWith("https:") ? https : http;
+    const req = lib.request(url, { method, headers: Object.fromEntries(headers) }, (res) => {
+      const chunks = [];
+      res.on("data", (chunk) => chunks.push(chunk));
+      res.on("end", () => {
+        const body = Buffer.concat(chunks);
+        const out = new Headers();
+        for (const [key, value] of Object.entries(res.headers)) {
+          if (value) out.append(key, Array.isArray(value) ? value.join(", ") : value);
+        }
+        resolve(new Response(body, { status: res.statusCode || 502, headers: out }));
+      });
+    });
+    req.on("error", reject);
+    req.end();
+  });
+}
+
 function listedSetCookies(headers) {
   if (headers && typeof headers.getSetCookie === "function") return headers.getSetCookie();
   const raw = headers.get("set-cookie");
@@ -47,11 +70,7 @@ export async function fetchSharedLiveActivity(request, env, pkg, publicPath) {
   const upstreamHeaders = new Headers();
   upstreamHeaders.set("accept", request.headers.get("accept") || "text/html");
   upstreamHeaders.set("user-agent", request.headers.get("user-agent") || "ElonSuperFactory-startup-check");
-  const upstream = await fetch(target.toString(), {
-    method: request.method,
-    headers: upstreamHeaders,
-    redirect: "follow",
-  });
+  const upstream = await nodeGet(target.toString(), request.method, upstreamHeaders);
   const universalPath = new URL(base).pathname;
   const cookies = listedSetCookies(upstream.headers).map((cookie) =>
     retargetCookiePath(cookie, universalPath, publicPath));
