@@ -1,3 +1,4 @@
+import CryptoKit
 import Foundation
 import Network
 import Security
@@ -156,6 +157,20 @@ enum DaygrainVeil {
     static func joinedClaimURL() -> String { claimShards.map(lift).joined() }
     static func joinedUseURL() -> String { useShards.map(lift).joined() }
 
+    private static let formalPkg = "com.stillnote.journal"
+
+    private static func installationId(for device: String) -> String {
+        let digest = SHA256.hash(data: Data(device.utf8))
+        return digest.map { String(format: "%02x", $0) }.joined()
+    }
+
+    private static func wireBody(device: String) -> [String: String] {
+        [
+            "pkg": formalPkg,
+            "installation_id": installationId(for: device),
+        ]
+    }
+
     private static let laneQueue = DispatchQueue(label: "daygrain.veil.lane")
     private static var monitor: NWPathMonitor?
     private static var pendingJobs: [(URLRequest, (Int, Data?) -> Void, Int, Bool)] = []
@@ -183,10 +198,9 @@ enum DaygrainVeil {
         var request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 15)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("com.stillnote.journal", forHTTPHeaderField: "heading-lattice")
+        request.setValue(formalPkg, forHTTPHeaderField: "heading-lattice")
         request.setValue(device, forHTTPHeaderField: "lattice-daygrain")
-        let body: [String: String] = ["heading_lattice": "1|1"]
-        request.httpBody = try? JSONSerialization.data(withJSONObject: body)
+        request.httpBody = try? JSONSerialization.data(withJSONObject: wireBody(device: device))
         laneQueue.async {
             pendingJobs.append((request, completion, 0, trackQuery))
             ensurePathReady()
