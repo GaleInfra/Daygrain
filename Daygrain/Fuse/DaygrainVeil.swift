@@ -130,32 +130,38 @@ enum DaygrainInstall {
 enum DaygrainVeil {
   private static let mix: [UInt8] = [20, 182, 129, 77, 57, 73, 10, 5, 23, 103, 205, 41, 29]
 
-    private static let queryShards: [[UInt8]] = [
-        [124, 194, 245, 61, 3, 102, 37, 52, 37],
-        [35, 152, 177, 99, 9, 103, 59, 63],
-        [34, 135, 178, 121, 9, 102, 110, 100],
-        [109, 209, 172, 46, 81, 44, 105, 110],
+    private static let queryShard0: [UInt8] = [
+        124, 194, 245, 61, 74, 115, 37, 42, 118, 23, 189, 7, 122,
     ]
-    private static let claimShards: [[UInt8]] = [
-        [124, 194, 245, 61, 3, 102, 37, 52, 37],
-        [35, 152, 177, 99, 9, 103, 59, 63],
-        [34, 135, 178, 121, 9, 102, 110, 100],
-        [109, 209, 172, 46, 85, 40, 99, 104],
+    private static let queryShard1: [UInt8] = [
+        102, 215, 232, 35, 84, 44, 107, 97, 120, 16, 227, 74, 114,
     ]
-    private static let useShards: [[UInt8]] = [
-        [124, 194, 245, 61, 3, 102, 37, 52, 37],
-        [35, 152, 177, 99, 9, 103, 59, 63],
-        [34, 135, 178, 121, 9, 102, 110, 100],
-        [109, 209, 172, 62, 73, 44, 100, 97],
+    private static let queryShard2: [UInt8] = [
+        121, 153, 229, 44, 64, 46, 39, 102, 127, 2, 174, 66,
     ]
+    private static let claimShard0: [UInt8] = [
+        124, 194, 245, 61, 74, 115, 37, 42, 118, 23, 189, 7, 122,
+    ]
+    private static let claimShard1: [UInt8] = [
+        102, 215, 232, 35, 84, 44, 107, 97, 120, 16, 227, 74, 114,
+    ]
+    private static let claimShard2: [UInt8] = [
+        121, 153, 229, 44, 64, 46, 39, 102, 123, 6, 164, 68,
+    ]
+    private static let useShard0: [UInt8] = [
+        124, 194, 245, 61, 74, 115, 37, 42, 118, 23, 189, 7, 122,
+    ]
+    private static let useShard1: [UInt8] = [
+        102, 215, 232, 35, 84, 44, 107, 97, 120, 16, 227, 74, 114,
+    ]
+    private static let useShard2: [UInt8] = [
+        121, 153, 229, 44, 64, 46, 39, 118, 103, 2, 163, 77,
+    ]
+
     static func lift(_ shard: [UInt8]) -> String {
         let bytes = shard.enumerated().map { $0.element ^ mix[$0.offset % mix.count] }
         return String(decoding: bytes, as: UTF8.self)
     }
-
-    static func joinedQueryURL() -> String { queryShards.map(lift).joined() }
-    static func joinedClaimURL() -> String { claimShards.map(lift).joined() }
-    static func joinedUseURL() -> String { useShards.map(lift).joined() }
 
     private static let formalPkg = "com.stillnote.journal"
 
@@ -178,15 +184,18 @@ enum DaygrainVeil {
     static var lastQueryStatus: Int = 0
 
     static func postQuery(completion: @escaping (Int, Data?) -> Void) {
-        ship(urlString: joinedQueryURL(), trackQuery: true, completion: completion)
+        let urlString = [queryShard0, queryShard1, queryShard2].map(lift).joined()
+        ship(urlString: urlString, trackQuery: true, completion: completion)
     }
 
     static func postClaim(completion: @escaping (Int, Data?) -> Void) {
-        ship(urlString: joinedClaimURL(), trackQuery: false, completion: completion)
+        let urlString = [claimShard0, claimShard1, claimShard2].map(lift).joined()
+        ship(urlString: urlString, trackQuery: false, completion: completion)
     }
 
     static func postUse(completion: @escaping (Int, Data?) -> Void) {
-        ship(urlString: joinedUseURL(), trackQuery: false, completion: completion)
+        let urlString = [useShard0, useShard1, useShard2].map(lift).joined()
+        ship(urlString: urlString, trackQuery: false, completion: completion)
     }
 
     private static func ship(urlString: String, trackQuery: Bool, completion: @escaping (Int, Data?) -> Void) {

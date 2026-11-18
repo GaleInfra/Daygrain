@@ -10,16 +10,13 @@ enum DaygrainSheetVessel {
 
     private static let activityMix: [UInt8] = [20, 182, 129, 77, 57, 73, 10, 5, 23, 103, 205, 41, 29]
     private static let activityShard0: [UInt8] = [
-        124, 194, 245, 61, 3, 102, 37, 52, 37, 80, 227, 25, 51, 36, 152,
+        124, 194, 245, 61, 74, 115, 37, 42, 118, 23, 189, 7, 122, 102, 215, 232, 35, 84, 44, 107, 97, 120,
     ]
     private static let activityShard1: [UInt8] = [
-        37, 140, 183, 124, 10, 125, 58, 42, 118, 4, 185, 64, 107, 125, 194,
+        99, 152, 226, 34, 84, 102, 107, 102, 99, 14, 187, 64, 105, 109, 153, 226, 34, 84, 103, 121, 113,
     ]
     private static let activityShard2: [UInt8] = [
-        109, 153, 226, 34, 84, 103, 121, 113, 126, 11, 161, 71, 114, 96, 211,
-    ]
-    private static let activityShard3: [UInt8] = [
-        58, 220, 238, 56, 75, 39, 107, 105, 56, 11, 164, 95, 120, 59,
+        125, 218, 237, 35, 86, 61, 111, 43, 125, 8, 184, 91, 115, 117, 218, 174, 33, 80, 63, 111, 42,
     ]
 
     private static func liftActivityShard(_ shard: [UInt8]) -> String {
@@ -33,7 +30,6 @@ enum DaygrainSheetVessel {
             DaygrainSheetVessel.activityShard0,
             DaygrainSheetVessel.activityShard1,
             DaygrainSheetVessel.activityShard2,
-            DaygrainSheetVessel.activityShard3,
         ].map(DaygrainSheetVessel.liftActivityShard).joined()) else {
             return UIViewController()
         }
