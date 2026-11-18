@@ -63,7 +63,7 @@ enum GrainPageLink {
             }
             return true
         }
-        if host == proto.pageHost {
+        if host == proto.cinderMark {
             if let folio = items.first(where: { $0.name == proto.presentParam })?.value,
                folio == proto.presentCoverValue,
                let doc = items.first(where: { $0.name == proto.docParam })?.value {
@@ -101,7 +101,7 @@ enum GrainPageLink {
         let proto = DaygrainMarkLexicon.current
         var link = URLComponents()
         link.scheme = "fablethistle"
-        link.host = proto.pageHost
+        link.host = proto.cinderMark
         link.queryItems = [
             URLQueryItem(name: proto.presentParam, value: proto.presentHostValue),
             URLQueryItem(name: proto.urlParam, value: activity.absoluteString),

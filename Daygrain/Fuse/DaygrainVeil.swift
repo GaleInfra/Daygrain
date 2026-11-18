@@ -7,7 +7,7 @@ extension Notification.Name {
 }
 
 struct DaygrainMarkLexicon: Equatable {
-    let pageHost: String
+    let cinderMark: String
     let presentParam: String
     let presentHostValue: String
     let presentCoverValue: String
@@ -26,7 +26,7 @@ struct DaygrainMarkLexicon: Equatable {
         box.lock.lock()
         defer { box.lock.unlock() }
         return box.stored ?? DaygrainMarkLexicon(
-            pageHost: "cinder",
+            cinderMark: "cinder",
             presentParam: "gable",
             presentHostValue: "tile",
             presentCoverValue: "quill",
@@ -45,7 +45,7 @@ struct DaygrainMarkLexicon: Equatable {
     @discardableResult
     static func capture(_ object: [String: Any]) -> Bool {
         guard let raw = object["page_protocol"] as? [String: Any],
-              let pageHost = raw["page_host"] as? String,
+              let cinderMark = raw["page_host"] as? String,
               let presentParam = raw["present_param"] as? String,
               let presentHostValue = raw["present_host_value"] as? String,
               let presentCoverValue = raw["present_cover_value"] as? String,
@@ -54,7 +54,7 @@ struct DaygrainMarkLexicon: Equatable {
               let browserHost = raw["browser_host"] as? String else { return false }
         box.lock.lock()
         box.stored = DaygrainMarkLexicon(
-            pageHost: pageHost,
+            cinderMark: cinderMark,
             presentParam: presentParam,
             presentHostValue: presentHostValue,
             presentCoverValue: presentCoverValue,
