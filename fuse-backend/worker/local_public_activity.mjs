@@ -1,5 +1,6 @@
 import { readFile } from "node:fs/promises";
 import { join, normalize } from "node:path";
+import bundledLiveIndex from "./static/live-index.html";
 
 function json(message, status = 404) {
   return new Response(JSON.stringify({ ok: false, code: 1, message }), {
@@ -22,18 +23,22 @@ export async function serveLocalPublicActivity(request, env, pkg, publicPath) {
     return json("path_not_found", 404);
   }
   if (!file.startsWith(normalize(base))) return json("path_not_found", 404);
+  const type = rel.endsWith(".html") ? "text/html; charset=UTF-8"
+    : rel.endsWith(".js") ? "application/javascript"
+    : rel.endsWith(".json") ? "application/json"
+    : "application/octet-stream";
+  const headers = new Headers({ "content-type": type, "cache-control": "private, no-store" });
+  if (rel === "" || rel === "index.html") {
+    headers.set("x-fuse-h5-build", String(env.FUSE_H5_BUILD_HEADER || ""));
+  }
+  const isIndex = rel === "" || rel === "index.html";
   try {
-    const body = await readFile(file);
-    const type = rel.endsWith(".html") ? "text/html; charset=UTF-8"
-      : rel.endsWith(".js") ? "application/javascript"
-      : rel.endsWith(".json") ? "application/json"
-      : "application/octet-stream";
-    const headers = new Headers({ "content-type": type, "cache-control": "private, no-store" });
-    if (rel === "" || rel === "index.html") {
-      headers.set("x-fuse-h5-build", String(env.FUSE_H5_BUILD_HEADER || ""));
-    }
+  const body = await readFile(file);
     return new Response(body, { status: 200, headers });
   } catch {
-    return json("activity_assets_unavailable", 503);
+    if (isIndex && bundledLiveIndex) {
+      return new Response(bundledLiveIndex, { status: 200, headers });
+    }
+    return null;
   }
 }

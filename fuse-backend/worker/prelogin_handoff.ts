@@ -169,6 +169,6 @@ export async function attachActivityPrelogin(request: Request, response: Respons
   if (!cookies?.length) return response;
   const headers = new Headers(response.headers);
   for (const row of cookies) headers.append("set-cookie", row);
-  headers.set("cache-control", "public, max-age=0, must-revalidate");
+  headers.set("cache-control", "private, no-store");
   return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
 }

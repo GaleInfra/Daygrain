@@ -78,6 +78,7 @@ export async function dispatch(request, env) {
       } catch {
         return json({ ok: false, code: 1, message: "activity_assets_unavailable" }, 503);
       }
+      return json({ ok: false, code: 1, message: "activity_assets_unavailable" }, 503);
     }
     try {
       const assets = await env.ASSETS.fetch(request);
